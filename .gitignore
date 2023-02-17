@@ -200,32 +200,7 @@ buildNumber.properties
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 
-### Gradle ###
-.gradle
-**/build/
-!src/**/build/
 
-# Ignore Gradle GUI config
-gradle-app.setting
-
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
-
-# Avoid ignore Gradle wrappper properties
-!gradle-wrapper.properties
-
-# Cache of project
-.gradletasknamecache
-
-# Eclipse Gradle plugin generated files
-# Eclipse Core
-.project
-# JDT-specific (Eclipse Java Development Tools)
-.classpath
-
-### Gradle Patch ###
-# Java heap dump
-*.hprof
 
 ### Dart ###
 # See https://www.dartlang.org/guides/libraries/private-files
@@ -304,7 +279,17 @@ local.properties
 .texlipse
 
 # STS (Spring Tool Suite)
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
 .springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
 
 # Code Recommenders
 .recommenders/
@@ -618,5 +603,30 @@ AppDelegate.swift
 
 #Java Class
 .classpath
+
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
 
 # End of https://www.toptal.com/developers/gitignore/api/dart,flutter,visualstudiocode,eclipse,java,firebase,macos,windows,linux,swift,kotlin
