@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:python_project_test/model/postStatic.dart';
-import 'package:python_project_test/model/timeCompareWidget.dart';
-import 'package:python_project_test/screen/postDetail_screen.dart';
-import 'package:python_project_test/screen/postInsert_Screen.dart';
+import 'package:pcos_app/view/post/postDetail_screen.dart';
+import 'package:pcos_app/view/post/postInsert_Screen.dart';
 
-import '../model/posts.dart';
+import '../../model/post/posts.dart';
+import '../../widget/post/timeCompareWidget.dart';
 
 class PostListScreen extends StatefulWidget {
   const PostListScreen({super.key});

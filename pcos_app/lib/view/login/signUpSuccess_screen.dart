@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:python_project_test/view/signIn_screen.dart';
+import 'package:pcos_app/view/login/signIn_screen.dart';
 
 class SignUpSuccessScreen extends StatefulWidget {
   const SignUpSuccessScreen({super.key});

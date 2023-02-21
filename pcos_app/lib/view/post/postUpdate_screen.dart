@@ -1,9 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:python_project_test/screen/postList_Screen.dart';
-
-import '../model/postStatic.dart';
-import '../model/userInfo.dart';
 
 class PostUpdateScreen extends StatefulWidget {
   const PostUpdateScreen({

@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:python_project_test/model/timeCompareWidget.dart';
-import 'package:python_project_test/view/postUpdate_screen.dart';
+import 'package:pcos_app/view/post/postUpdate_screen.dart';
 
-import '../model/userInfo.dart';
+import '../../model/login/userInfo.dart';
+import '../../widget/post/timeCompareWidget.dart';
 
 class PostDetailScreen extends StatefulWidget {
   const PostDetailScreen({

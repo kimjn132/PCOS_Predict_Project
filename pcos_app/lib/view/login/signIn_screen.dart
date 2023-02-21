@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:python_project_test/model/userInfo.dart';
-import 'package:python_project_test/view/main_screen.dart';
-import 'package:python_project_test/view/signUp_screen.dart';
+import 'package:pcos_app/view/login/signUp_screen.dart';
+
+import '../../model/login/userInfo.dart';
+import '../../tab_bar.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -218,7 +219,7 @@ class _SignInScreenState extends State<SignInScreen> {
       context,
       MaterialPageRoute(
         builder: (context) {
-          return const MainScreen();
+          return const Tabbar();
         },
       ),
     );
