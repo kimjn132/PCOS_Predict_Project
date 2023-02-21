@@ -36,6 +36,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   get: ^4.6.5
+  table_calendar: ^3.0.9
+  sqflite: ^2.2.2
+  intl: ^0.18.0
+  hawk_fab_menu: ^1.2.0
+  path: ^1.8.2
   firebase_core: ^2.6.1
   cloud_firestore: ^4.4.2
 
