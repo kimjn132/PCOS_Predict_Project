@@ -19,6 +19,7 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
   late TextEditingController updatecontroller;
   late DatabaseHandler handler;
 
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   Map<String, List> mySchedule = {};
 
@@ -180,6 +181,7 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
               rangeEndDay: rangeEnd,
               calendarFormat: _calendarFormat,
               selectedDayPredicate: (day) => isSameDay(day, focusedDay),
+              rangeSelectionMode: _rangeSelectionMode,
               onDaySelected: _onDaySelected,
               headerStyle: HeaderStyle(
                 titleCentered: true,
@@ -221,6 +223,88 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
               onPageChanged: (focusedDay) {
                 focusedDay = focusedDay;
               },
+              eventLoader: _listOfDayEvents,
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            ..._listOfDayEvents(selectedDay!).map(
+              (e) => GestureDetector(
+                onTap: () {
+                  updatecontroller.text = e['content'];
+                  // 일정 수정
+                  showModalBottomSheet(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    context: context,
+                    builder: (BuildContext conntext) {
+                      return Container(
+                        height: 450,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Spacer(),
+                                  TextButton(
+                                    onPressed: () {
+                                      updateSchedule(
+                                          updatecontroller.text.trim(),
+                                          e['id']);
+                                      mySchedule.clear();
+                                      setState(() {
+                                        getAll();
+                                      });
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('수정'),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                selectedDay.toString().split(" ")[0],
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                controller: updatecontroller,
+                                maxLines: 8,
+                                decoration: const InputDecoration(
+                                  hintText: "일정을 작성해주세요",
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                onLongPress: () {
+                  deleteAction(e['id']);
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 9.0,
+                    vertical: 5.0,
+                  ),
+                  decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(15.0)),
+                  child: ListTile(
+                    leading: const Icon(Icons.event_available),
+                    title: Text('${e['content']}'),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -234,6 +318,14 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
     Schedule newSchedule =
         Schedule(date: date.toString().split(' ')[0], content: content);
     await handler.insertSchedule(newSchedule);
+  }
+
+  Future<void> updateSchedule(String content, int id) async {
+    await handler.updateSchedule(content, id);
+  }
+
+  Future<void> deleteSchedule(int id, String today) async {
+    await handler.deleteSchedule(id, today);
   }
 
   // 모든 일정 불러오기
@@ -296,5 +388,52 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
         focusedDay = focusedDay;
       });
     }
+  }
+
+  // Marker 찍기
+  List _listOfDayEvents(DateTime dateTime) {
+    if (mySchedule[DateFormat('yyyy-MM-dd').format(dateTime)] != null) {
+      return mySchedule[DateFormat('yyyy-MM-dd').format(dateTime)]!;
+    } else {
+      return [];
+    }
+  }
+
+  // 일정 삭제
+  deleteAction(int id) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('일정 삭제'),
+          content: const Text('일정을 삭제하시겠습니까?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                '취소',
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                deleteSchedule(id, DateTime.now().toString().split(" ")[0]);
+                mySchedule.clear();
+                setState(() {
+                  getAll();
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                '확인',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
