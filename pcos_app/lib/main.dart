@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pcos_app/bottom_navigation.dart';
 import 'package:pcos_app/firebase_options.dart';
 import 'package:pcos_app/tab_bar.dart';
+import 'package:pcos_app/view/login/signIn_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Tabbar(),
+      home: const SignInScreen(),
     );
   }
 }
