@@ -16,12 +16,12 @@ class Tabbar extends GetView<BottomNavController> {
       () => Scaffold(
         body: IndexedStack(
           index: controller.pageIndex.value, // 현재 페이지 확인
-          children: const [
+          children: [
             //여기에 페이지 추가
-            SurveyPage(),
-            MapPage(),
-            CalendarPage(),
-            PostPage(),
+            const SurveyPage(),
+            const MapPage(),
+            const CalendarPage(),
+            const PostPage(),
             MyPage()
           ],
         ),
