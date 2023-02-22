@@ -178,7 +178,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   firstDay: DateTime.utc(2010, 10, 16),
                   lastDay: DateTime.utc(2030, 3, 14),
                   focusedDay: _focusedDay,
-                  // locale: 'ko_kr', main에서 처리해줘야함
+                  locale: 'ko_kr',
                   rangeStartDay: (_rangeStart),
                   rangeEndDay: _rangeEnd,
                   calendarFormat: _calendarFormat,
@@ -195,31 +195,41 @@ class _CalendarPageState extends State<CalendarPage> {
                       fontSize: 20.0,
                       color: Colors.red[300],
                     ),
-                    headerPadding: const EdgeInsets.symmetric(vertical: 4.0),
+                    headerPadding: const EdgeInsets.symmetric(
+                      vertical: 4.0,
+                    ),
+                    leftChevronIcon: const Icon(
+                      Icons.arrow_left,
+                      color: Colors.redAccent,
+                    ),
+                    rightChevronIcon: const Icon(
+                      Icons.arrow_right,
+                      color: Colors.redAccent,
+                    ),
                   ),
                   calendarStyle: const CalendarStyle(
-                    todayDecoration: BoxDecoration(
-                      color: Color.fromARGB(255, 255, 196, 198),
-                      shape: BoxShape.circle,
-                    ),
-                    todayTextStyle: TextStyle(color: Color(0xFFF16A6E)),
-                    rangeHighlightColor: Color.fromARGB(255, 246, 190, 203),
-                    rangeStartDecoration: BoxDecoration(
-                      color: Colors.redAccent,
-                      shape: BoxShape.circle,
-                    ),
-                    rangeEndDecoration: BoxDecoration(
-                      color: Colors.redAccent,
-                      shape: BoxShape.circle,
-                    ),
-                    weekendDecoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    selectedDecoration: BoxDecoration(
-                      color: Colors.redAccent,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
+                      todayDecoration: BoxDecoration(
+                        color: Color.fromARGB(255, 255, 196, 198),
+                        shape: BoxShape.circle,
+                      ),
+                      todayTextStyle: TextStyle(color: Color(0xFFF16A6E)),
+                      rangeHighlightColor: Color.fromARGB(255, 246, 190, 203),
+                      rangeStartDecoration: BoxDecoration(
+                        color: Colors.redAccent,
+                        shape: BoxShape.circle,
+                      ),
+                      rangeEndDecoration: BoxDecoration(
+                        color: Colors.redAccent,
+                        shape: BoxShape.circle,
+                      ),
+                      weekendDecoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      selectedDecoration: BoxDecoration(
+                        color: Colors.redAccent,
+                        shape: BoxShape.circle,
+                      ),
+                      weekendTextStyle: TextStyle(color: Colors.red)),
                   onFormatChanged: (format) {
                     if (_calendarFormat != format) {
                       setState(() {
