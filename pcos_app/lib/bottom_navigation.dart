@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-enum PageName {survey, map, calendar, post, mypage}
+enum PageName { survey, map, calendar, post, mypage }
 
 class BottomNavController extends GetxController {
   static BottomNavController get to => Get.find();
@@ -14,7 +14,6 @@ class BottomNavController extends GetxController {
   // page 관리
   void changeBottomNav(int value, {bool hasGesture = true}) {
     var page = PageName.values[value];
-    print(value);
 
     // bottom_nav에서 선택된 페이지로 이동
     switch (page) {
@@ -28,7 +27,6 @@ class BottomNavController extends GetxController {
     }
   }
 
-
   void _changePage(int value, {bool hasGesture = true}) {
     // bottom_nav에서 클릭한 페이지로 번호 지정
     pageIndex(value);
@@ -38,7 +36,4 @@ class BottomNavController extends GetxController {
       bottomHistory.add(value);
     }
   }
-
-
-  
 }
