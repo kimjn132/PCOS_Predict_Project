@@ -10,6 +10,7 @@ import firebase_auth
 import firebase_core
 import firebase_remote_config
 import package_info
+import sqflite
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   FLTFirebaseFirestorePlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseFirestorePlugin"))
