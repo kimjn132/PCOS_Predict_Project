@@ -113,55 +113,64 @@ class _CalendarPageState extends State<CalendarPage> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30)),
                   context: context,
-                  builder: (BuildContext conntext) {
-                    return Container(
-                      height: 450,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                const Spacer(),
-                                TextButton(
-                                  onPressed: () {
-                                    if (contentcontroller.text.trim() != "") {
-                                      addSchedule(_selectedDay!,
-                                          contentcontroller.text.trim());
-                                      mySchedule.clear();
-                                      setState(() {
-                                        getAll();
-                                      });
-                                      contentcontroller.text = "";
-                                      Navigator.of(context).pop();
-                                    } else {
-                                      showScheduleDialog(context);
-                                    }
-                                  },
-                                  child: const Text('저장'),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              _selectedDay.toString().split(" ")[0],
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            TextFormField(
-                              controller: contentcontroller,
-                              maxLines: 8,
-                              decoration: const InputDecoration(
-                                hintText: "일정을 작성해주세요",
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
+                  isScrollControlled: true,
+                  builder: (BuildContext context) {
+                    return SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Spacer(),
+                                  TextButton(
+                                    onPressed: () {
+                                      if (contentcontroller.text.trim() != "") {
+                                        addSchedule(_selectedDay!,
+                                            contentcontroller.text.trim());
+                                        mySchedule.clear();
+                                        setState(() {
+                                          getAll();
+                                        });
+                                        contentcontroller.text = "";
+                                        Navigator.of(context).pop();
+                                      } else {
+                                        showScheduleDialog(context);
+                                      }
+                                    },
+                                    child: const Text(
+                                      '저장',
+                                      style: TextStyle(color: Colors.redAccent),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                _selectedDay.toString().split(" ")[0],
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                controller: contentcontroller,
+                                maxLines: 10,
+                                decoration: const InputDecoration(
+                                  hintText: "일정을 작성해주세요",
+                                  border: OutlineInputBorder(),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.redAccent,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     );
@@ -256,51 +265,62 @@ class _CalendarPageState extends State<CalendarPage> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
                         context: context,
-                        builder: (BuildContext conntext) {
-                          return Container(
-                            height: 450,
-                            child: Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Spacer(),
-                                      TextButton(
-                                        onPressed: () {
-                                          updateSchedule(
-                                              updatecontroller.text.trim(),
-                                              e['id']);
-                                          mySchedule.clear();
-                                          setState(() {
-                                            getAll();
-                                          });
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('수정'),
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                    _selectedDay.toString().split(" ")[0],
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  TextFormField(
-                                    controller: updatecontroller,
-                                    maxLines: 8,
-                                    decoration: const InputDecoration(
-                                      hintText: "일정을 작성해주세요",
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Colors.blue,
+                        isScrollControlled: true,
+                        builder: (BuildContext context) {
+                          return SingleChildScrollView(
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Spacer(),
+                                        TextButton(
+                                          onPressed: () {
+                                            updateSchedule(
+                                                updatecontroller.text.trim(),
+                                                e['id']);
+                                            mySchedule.clear();
+                                            setState(() {
+                                              getAll();
+                                            });
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text(
+                                            '수정',
+                                            style: TextStyle(
+                                                color: Colors.redAccent),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      _selectedDay.toString().split(" ")[0],
+                                      style: const TextStyle(fontSize: 20),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    TextFormField(
+                                      controller: updatecontroller,
+                                      maxLines: 10,
+                                      decoration: const InputDecoration(
+                                        hintText: "일정을 작성해주세요",
+                                        border: OutlineInputBorder(),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Colors.redAccent,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           );
