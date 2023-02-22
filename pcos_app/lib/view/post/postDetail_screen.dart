@@ -186,12 +186,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                               commentEditBool == false
                                   ? const SizedBox()
                                   : TextField(
+                                      key: cid,
                                       controller: commentUpdateController,
                                     ),
                             ],
                           ),
                           trailing: UserInfoStatic.userNickname ==
-                                  commentData['cNickname']
+                                      commentData['cNickname'] &&
+                                  commentEditBool == false
                               ? SizedBox(
                                   width: 60,
                                   child: Row(
@@ -213,7 +215,21 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          deleteCommentCheckAlert(context, widget.pid, cid);
+                                          showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (BuildContext ctx) {
+                                                return deleteCommentCheckAlert(
+                                                    ctx,
+                                                    context,
+                                                    widget.pid,
+                                                    cid);
+                                              }).then((value) {
+                                            setState(() {
+                                              _postDataFuture =
+                                                  getPostData(widget.pid);
+                                            });
+                                          });
                                         },
                                         child: const Text(
                                           '삭제',
@@ -223,7 +239,44 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                     ],
                                   ),
                                 )
-                              : const SizedBox());
+                              : UserInfoStatic.userNickname ==
+                                          commentData['cNickname'] &&
+                                      commentEditBool == true
+                                  ? SizedBox(
+                                      width: 60,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                commentEditBool = true;
+                                              });
+                                            },
+                                            child: const Text(
+                                              '취소',
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              //
+                                            },
+                                            child: const Text(
+                                              '왼료',
+                                              style:
+                                                  TextStyle(color: Colors.blue),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : const SizedBox());
                     },
                   ),
                 ),
@@ -269,7 +322,6 @@ Future<Map<String, dynamic>> getPostData(String pid) async {
   final commentIds = docs.map((doc) => doc.id).toList();
   postData['comments'] = commentsData;
   postData['cid'] = commentIds;
-  print(postData['cid']);
   return postData;
 }
 
@@ -394,33 +446,28 @@ updateComment(String pid, String cid, String cContent) {
   });
 }
 
-deleteCommentCheckAlert(context, pid, cid) {
-  showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext ctx) {
-        return AlertDialog(
-          title: const Text('삭제하기'),
-          content: const Text('정말로 삭제하시겠습니까?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(ctx).pop();
-                deleteComment(pid, cid);
-                deleteCompleteSnackBar(context);
-              },
-              child: const Text(
-                '네',
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('아니요'),
-            ),
-          ],
-        );
-      });
+deleteCommentCheckAlert(ctx, context, pid, cid) {
+  return AlertDialog(
+    title: const Text('삭제하기'),
+    content: const Text('정말로 삭제하시겠습니까?'),
+    actions: [
+      TextButton(
+        onPressed: () {
+          Navigator.of(ctx).pop();
+          deleteComment(pid, cid);
+          deleteCompleteSnackBar(context);
+        },
+        child: const Text(
+          '네',
+          style: TextStyle(color: Colors.red),
+        ),
+      ),
+      TextButton(
+        onPressed: () => Navigator.of(ctx).pop(),
+        child: const Text('아니요'),
+      ),
+    ],
+  );
 }
 
 deleteComment(String pid, String cid) {

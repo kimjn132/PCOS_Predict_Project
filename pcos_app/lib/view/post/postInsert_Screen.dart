@@ -29,11 +29,24 @@ class _PostInsertScreenState extends State<PostInsertScreen> {
       ),
       body: Column(
         children: [
-          TextField(
-            controller: titleTextController,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: titleTextController,
+              decoration: const InputDecoration(
+                  border: InputBorder.none, label: Text('제목')),
+            ),
           ),
           TextField(
             controller: contentTextController,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              label: Text('내용'),
+              floatingLabelAlignment: FloatingLabelAlignment.center
+            ),
+            // style: TextStyle(),
+            minLines: 20,
+            maxLines: 25,
           ),
           ElevatedButton(
             onPressed: () {

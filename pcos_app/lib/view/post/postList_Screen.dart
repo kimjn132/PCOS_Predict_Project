@@ -23,7 +23,10 @@ class _PostListScreenState extends State<PostListScreen> {
       ),
       body: Center(
         child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+            stream: FirebaseFirestore.instance
+                .collection('posts')
+                .orderBy('pPostDate', descending: true)
+                .snapshots(),
             builder: (context, snapshots) {
               if (!snapshots.hasData) {
                 return const Center(
@@ -67,9 +70,7 @@ class _PostListScreenState extends State<PostListScreen> {
     );
     return GestureDetector(
       onTap: () {
-        FirebaseFirestore.instance
-            .collection('posts')
-            .where(doc.id);
+        FirebaseFirestore.instance.collection('posts').where(doc.id);
         toPostDetail(doc, postList);
       },
       child: ListTile(
