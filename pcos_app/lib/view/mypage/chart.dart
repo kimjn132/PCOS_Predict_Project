@@ -30,7 +30,7 @@ class Chart extends StatelessWidget {
                     final y = spot.y;
                     final date = data[spot.x.toInt()].date;
                     return LineTooltipItem(
-                      'Date: ${DateFormat.yMd().format(date)}\nValue: $y',
+                      '${DateFormat('MM월 dd일').format(date)}\n$y',
                       const TextStyle(color: Colors.white),
                     );
                   }).toList();

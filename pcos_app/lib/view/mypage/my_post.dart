@@ -47,7 +47,7 @@ class _MyPostListState extends State<MyPostList>
           ),
           elevation: 0,
           title: const Text(
-            '내가 쓴 글',
+            '글 목록',
           ),
           bottom: TabBar(
             indicatorColor: Colors.redAccent,
