@@ -242,6 +242,7 @@ class _SignInScreenState extends State<SignInScreen> {
       UserInfoStatic.uid = uid!;
       UserInfoStatic.userId = userId!;
       UserInfoStatic.userNickname = userNickname!;
+      UserInfoStatic.userId = userId;
     }
     print(UserInfoStatic.uid);
   }

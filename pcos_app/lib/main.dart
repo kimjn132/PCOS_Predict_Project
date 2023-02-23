@@ -1,15 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:pcos_app/bottom_navigation.dart';
 import 'package:pcos_app/firebase_options.dart';
 import 'package:pcos_app/view/login/signin_screen.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await initializeDateFormatting();
   // 탭바 연결 - anna
   Get.put(BottomNavController());
 

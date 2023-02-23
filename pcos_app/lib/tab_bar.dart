@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import 'package:pcos_app/bottom_navigation.dart';
 import 'package:pcos_app/view/calendar/calendar.dart';
 import 'package:pcos_app/view/map/map.dart';
-import 'package:pcos_app/view/mypage/mypage.dart';
+
 import 'package:pcos_app/view/post/post_list_screen.dart';
+import 'package:pcos_app/view/mypage/my_page.dart';
+import 'package:pcos_app/view/post/postPage.dart';
 import 'package:pcos_app/view/survey/survey.dart';
 
 class Tabbar extends GetView<BottomNavController> {
@@ -16,12 +18,12 @@ class Tabbar extends GetView<BottomNavController> {
       () => Scaffold(
         body: IndexedStack(
           index: controller.pageIndex.value, // 현재 페이지 확인
-          children: const [
+          children: [
             //여기에 페이지 추가
-            SurveyPage(),
-            MapPage(),
-            CalendarPage(),
-            PostListScreen(),
+            const SurveyPage(),
+            const MapPage(),
+            const CalendarPage(),
+            const PostListScreen(),
             MyPage()
           ],
         ),
