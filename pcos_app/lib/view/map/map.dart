@@ -55,7 +55,6 @@ class _MapPageState extends State<MapPage> {
             zoomGesturesEnabled: true,
             onMapCreated: (GoogleMapController controller) {
               mapController = controller;
-              print("object");
             },
             // 마커 찍어주기 (_markers 는 gps 위치 중심으로 반경 500m에 있는 마커 only)
             markers: Set<Marker>.from(_markers),
@@ -68,7 +67,8 @@ class _MapPageState extends State<MapPage> {
           ),
         ],
       ),
-      floatingActionButton: Stack(
+      floatingActionButton: 
+      Stack(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
@@ -100,7 +100,6 @@ class _MapPageState extends State<MapPage> {
               Marker marker = _markers[index];
               String markerFinal = marker.infoWindow.title!;
               String markersnippet = marker.infoWindow.snippet!;
-              print(marker.infoWindow.snippet!);
               return Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: _boxes(markerFinal, markersnippet),
@@ -119,7 +118,7 @@ class _MapPageState extends State<MapPage> {
       child: FittedBox(
         child: Material(
           color: const Color(0xFFF16A6E),
-          elevation: 14.0,
+          elevation: 0.0,
           borderRadius: BorderRadius.circular(24.0),
           shadowColor: const Color(0xFFE45256),
           child: Row(

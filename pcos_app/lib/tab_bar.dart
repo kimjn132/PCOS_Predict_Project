@@ -33,11 +33,11 @@ class Tabbar extends GetView<BottomNavController> {
           elevation: 0,
           onTap: controller.changeBottomNav,
           items: const [
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.content_paste),
-            //   activeIcon: Icon(Icons.content_paste),
-            //   label: 'PCOS 테스트',
-            // ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.content_paste),
+              activeIcon: Icon(Icons.content_paste),
+              label: 'PCOS 테스트',
+            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.map_outlined),
               activeIcon: Icon(Icons.map_outlined),
