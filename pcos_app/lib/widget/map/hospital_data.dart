@@ -10,6 +10,7 @@ class HospitalData {
     String data = await DefaultAssetBundle.of(context)
         .loadString('datas/hospital_json.json');
     List<dynamic> markersJson = json.decode(data);
+    // print(markersJson);
     List<Marker> markers = markersJson.map((marker) {
       return Marker(
         markerId: MarkerId(marker['name'].toString()),
@@ -18,7 +19,7 @@ class HospitalData {
         infoWindow: InfoWindow(
           title: marker['name'],
           snippet:
-              '${marker['name']}\n전화: ${marker['call']}\n주소: ${marker['address']}',
+              '전화: ${marker['call']}\n주소: ${marker['address']}',
           onTap: () {
             // Container(
             //   decoration: BoxDecoration(

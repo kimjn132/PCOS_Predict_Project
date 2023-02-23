@@ -29,6 +29,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          selectedItemColor: Color(0xFFF16A6E)
+        )
+        
       ),
       debugShowCheckedModeBanner: false,
       home: const SignInScreen(),
