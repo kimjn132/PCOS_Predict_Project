@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../model/login/userInfo.dart';
 
 class PostInsertScreen extends StatefulWidget {
-  const PostInsertScreen({super.key});
+  const PostInsertScreen({Key? key}) : super(key: key);
 
   @override
   State<PostInsertScreen> createState() => _PostInsertScreenState();
@@ -25,7 +25,7 @@ class _PostInsertScreenState extends State<PostInsertScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('data'),
+        title: const Text('글 작성'),
       ),
       body: Column(
         children: [
@@ -34,19 +34,20 @@ class _PostInsertScreenState extends State<PostInsertScreen> {
             child: TextField(
               controller: titleTextController,
               decoration: const InputDecoration(
-                  border: InputBorder.none, label: Text('제목')),
+                  border: OutlineInputBorder(), labelText: '제목'),
             ),
           ),
-          TextField(
-            controller: contentTextController,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              label: Text('내용'),
-              floatingLabelAlignment: FloatingLabelAlignment.center
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: contentTextController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: '내용',
+              ),
+              minLines: 10,
+              maxLines: 15,
             ),
-            // style: TextStyle(),
-            minLines: 20,
-            maxLines: 25,
           ),
           ElevatedButton(
             onPressed: () {
@@ -57,28 +58,24 @@ class _PostInsertScreenState extends State<PostInsertScreen> {
               '완료',
             ),
           ),
-          TextButton(
-              onPressed: () {
-                postingCompleteSnackBar(context);
-              },
-              child: const Text('test'))
         ],
       ),
     );
   }
 
   postingAction() {
+    print(UserInfoStatic.userNickname);
     FirebaseFirestore.instance.collection('posts').add(
       {
         'pNickname': UserInfoStatic.userNickname,
         'pTitle': titleTextController.text,
         'pContent': contentTextController.text,
-        'pImage': '',
+        'pImage': '0',
         'pViewCount': 0,
         'pLikeCount': 0,
         'pPostDate': DateTime.now().toString().substring(0, 19),
-        'pUpdateDate': '',
-        'pDeleteDate': '',
+        'pUpdateDate': '0',
+        'pDeleteDate': '0',
       },
     );
     postingCompleteSnackBar(context);
