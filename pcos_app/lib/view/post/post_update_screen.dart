@@ -32,63 +32,70 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.blueGrey[800], // 앱바 색상 변경
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFFBA5A8), // 앱바 색상 변경
-          foregroundColor: Colors.white, // 앱바 텍스트 색상 변경
-          systemOverlayStyle: SystemUiOverlayStyle.light,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: MaterialApp(
+        theme: ThemeData(
+          primaryColor: Colors.blueGrey[800], // 앱바 색상 변경
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color(0xFFFBA5A8), // 앱바 색상 변경
+            foregroundColor: Colors.white, // 앱바 텍스트 색상 변경
+            systemOverlayStyle: SystemUiOverlayStyle.light,
+          ),
         ),
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.arrow_back)),
-          title: const Text('수정하기'),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  minLines: 1,
-                  maxLines: 2,
-                  controller: titleTextController,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: '제목'),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: contentTextController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: '내용',
-                  ),
-                  minLines: 10,
-                  maxLines: 15,
-                ),
-              ),
-              ElevatedButton(
+        home: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
                 onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                    updatePost(widget.pid, titleTextController.text,
-                        contentTextController.text);
-                  });
+                  Navigator.pop(context);
                 },
-                child: const Text(
-                  '완료',
-                ),
+                icon: const Icon(Icons.arrow_back)),
+            title: const Text('수정하기'),
+          ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      minLines: 1,
+                      maxLines: 2,
+                      controller: titleTextController,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(), labelText: '제목'),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: contentTextController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: '내용',
+                      ),
+                      minLines: 10,
+                      maxLines: 15,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        Navigator.pop(context);
+                        updatePost(widget.pid, titleTextController.text,
+                            contentTextController.text);
+                      });
+                    },
+                    child: const Text(
+                      '완료',
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
