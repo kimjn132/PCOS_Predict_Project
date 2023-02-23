@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:pcos_app/bottom_navigation.dart';
 import 'package:pcos_app/firebase_options.dart';
-import 'package:pcos_app/tab_bar.dart';
 import 'package:pcos_app/view/login/signIn_screen.dart';
 
 void main() async {

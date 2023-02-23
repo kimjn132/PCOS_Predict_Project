@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:pcos_app/bottom_navigation.dart';
 import 'package:pcos_app/view/calendar/calendar.dart';
 import 'package:pcos_app/view/map/map.dart';
-import 'package:pcos_app/view/mypage/mypage.dart';
+import 'package:pcos_app/view/mypage/my_page.dart';
 import 'package:pcos_app/view/post/postPage.dart';
 import 'package:pcos_app/view/survey/survey.dart';
 
