@@ -13,7 +13,7 @@ class Chart extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Container(
         color: Colors.white,
-        width: data.length <= 5 ? 380 : data.length * 70,
+        width: data.length <= 5 ? 350 : data.length * 60,
         height: 200,
         padding: const EdgeInsets.all(16.0),
         child: LineChart(

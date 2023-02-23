@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pcos_app/view/login/signIn_screen.dart';
+import 'package:pcos_app/view/mypage/my_post.dart';
 import 'package:pcos_app/view/mypage/version_manage_page.dart';
 
 import '../../model/login/userInfo.dart';
@@ -17,7 +19,7 @@ class MyPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            _buildProfileSection(),
+            _buildProfileSection(context),
             const Divider(thickness: 1, height: 0),
             Expanded(
                 child: ListView(
@@ -46,7 +48,13 @@ class MyPage extends StatelessWidget {
                 _buildListTile({
                   'title': '내가 쓴 글',
                   'icon': Icons.edit,
-                  'onTap': '내가 쓴 글',
+                  'onTap': () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MyPostList()),
+                    );
+                  },
                 }),
                 _buildListTile({
                   'title': '건의 및 문의',
@@ -83,7 +91,7 @@ class MyPage extends StatelessWidget {
   }
 
   // 프로필
-  Widget _buildProfileSection() {
+  Widget _buildProfileSection(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
       child: Row(
@@ -115,7 +123,35 @@ class MyPage extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () => print('로그아웃 아이콘 클릭됨'),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('로그아웃'),
+                    content: const Text('로그아웃을 하시겠습니까?'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('취소'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text('로그아웃'),
+                        onPressed: () {
+                          UserInfoStatic.uid = "";
+                          UserInfoStatic.userId = "";
+                          UserInfoStatic.userNickname = "";
+                          Navigator.popUntil(context,
+                              ModalRoute.withName(Navigator.defaultRouteName));
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
           ),
         ],
       ),
@@ -151,23 +187,4 @@ class MyPage extends StatelessWidget {
       },
     );
   }
-
-  // // 유저 정보를 가져오는 함수
-  // Future<void> _getUserInfo() async {
-  //   // 현재 로그인된 사용자 정보 가져오기
-  //   final user = FirebaseAuth.instance.currentUser;
-  //   if (user != null) {
-  //     // Cloud Firestore의 "users" collection에서 현재 사용자 정보 가져오기
-  //     final userData = await FirebaseFirestore.instance
-  //         .collection('users')
-  //         .doc(user.uid)
-  //         .get();
-  //     if (userData.exists) {
-  //       // 유저 정보를 UserInfoStatic에 저장
-  //       UserInfoStatic.uid = userData['uid'];
-  //       UserInfoStatic.userNickname = userData['userNickname'];
-  //       UserInfoStatic.userId = userData['userId'];
-  //     }
-  //   }
-  // }
 }

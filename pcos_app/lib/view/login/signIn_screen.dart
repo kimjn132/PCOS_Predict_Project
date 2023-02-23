@@ -238,6 +238,7 @@ class _SignInScreenState extends State<SignInScreen> {
       String? userNickname = userData['userNickname'];
       UserInfoStatic.uid = uid!;
       UserInfoStatic.userNickname = userNickname!;
+      UserInfoStatic.userId = userId;
     }
   }
 } // --- End
