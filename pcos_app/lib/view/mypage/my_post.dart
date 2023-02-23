@@ -6,6 +6,7 @@ import 'package:pcos_app/model/login/userInfo.dart';
 import 'package:pcos_app/model/post/comments.dart';
 
 import '../../model/post/posts.dart';
+import '../post/post_detail_screen.dart';
 
 class MyPostList extends StatefulWidget {
   const MyPostList({super.key});
@@ -89,11 +90,14 @@ class _MyPostListState extends State<MyPostList>
                   if (snapshots.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   }
-                  if (snapshots.data == null) {
-                    return const Center(child: Text('데이터가 없습니다.'));
-                  }
 
                   final documents = snapshots.data!.docs;
+                  if (documents.isEmpty) {
+                    return const Center(
+                      child: Text('작성한 글이 없습니다.'),
+                    );
+                  }
+
                   return ListView(
                     children:
                         documents.map((e) => _buildItemWidget(e)).toList(),
@@ -115,14 +119,11 @@ class _MyPostListState extends State<MyPostList>
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   }
-                  if (snapshot.data == null) {
-                    return const Center(child: Text('데이터가 없습니다.'));
-                  }
 
                   final documents = snapshot.data!.docs;
                   if (documents.isEmpty) {
                     return const Center(
-                      child: Text('No comments found'),
+                      child: Text('작성한 댓글이 없습니다.'),
                     );
                   }
 
@@ -154,6 +155,7 @@ class _MyPostListState extends State<MyPostList>
     return InkWell(
       onTap: () {
         FirebaseFirestore.instance.collection('posts').where(doc.id);
+        toPostDetail(doc, postList);
       },
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -193,16 +195,22 @@ class _MyPostListState extends State<MyPostList>
 
   Widget _buildItemWidget2(QueryDocumentSnapshot doc) {
     final commentsList = Comments(
-        cNickname: doc['cNickname'],
-        cContent: doc['cContent'],
-        cLikeCount: doc['cLikeCount'],
-        cViewCount: doc['cViewCount'],
-        cCommentDate: doc['cCommentDate'],
-        cDeleteDate: doc['cDeleteDate'],
-        cUpdateDate: doc['cUpdateDate']);
+      cNickname: doc['cNickname'],
+      cContent: doc['cContent'],
+      cLikeCount: doc['cLikeCount'],
+      cViewCount: doc['cViewCount'],
+      cCommentDate: doc['cCommentDate'],
+      cDeleteDate: doc['cDeleteDate'],
+      cUpdateDate: doc['cUpdateDate'],
+      pid: doc['pid'],
+    );
     return InkWell(
       onTap: () {
-        // FirebaseFirestore.instance.collection('posts').where(doc.id);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => PostDetailScreen(pid: commentsList.pid)),
+        );
       },
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -236,6 +244,21 @@ class _MyPostListState extends State<MyPostList>
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> toPostDetail(DocumentSnapshot doc, final postList) async {
+    (postList.pNickname != UserInfoStatic.userNickname)
+        ? FirebaseFirestore.instance
+            .collection('posts')
+            .doc(doc.id)
+            .update({"pViewCount": doc['pViewCount'] + 1})
+        : false;
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PostDetailScreen(pid: doc.id),
       ),
     );
   }

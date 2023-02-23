@@ -3,10 +3,8 @@ import 'package:get/get.dart';
 import 'package:pcos_app/bottom_navigation.dart';
 import 'package:pcos_app/view/calendar/calendar.dart';
 import 'package:pcos_app/view/map/map.dart';
-
 import 'package:pcos_app/view/post/post_list_screen.dart';
 import 'package:pcos_app/view/mypage/my_page.dart';
-import 'package:pcos_app/view/post/postPage.dart';
 import 'package:pcos_app/view/survey/survey.dart';
 
 class Tabbar extends GetView<BottomNavController> {

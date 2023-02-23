@@ -6,6 +6,7 @@ class Comments {
   final String cCommentDate;
   final String cDeleteDate;
   final String cUpdateDate;
+  final String pid;
 
   Comments(
       {required this.cNickname,
@@ -14,5 +15,6 @@ class Comments {
       required this.cViewCount,
       required this.cCommentDate,
       required this.cDeleteDate,
-      required this.cUpdateDate});
+      required this.cUpdateDate,
+      required this.pid});
 }
