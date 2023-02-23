@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pcos_app/model/mypage/notice_model.dart';
+import 'package:pcos_app/view/mypage/notice_detail_page.dart';
 
 class NoticePage extends StatefulWidget {
   const NoticePage({super.key});
@@ -105,8 +106,10 @@ class _NoticePageState extends State<NoticePage>
 
     return InkWell(
       onTap: () {
-        // FirebaseFirestore.instance.collection('posts').where(doc.id);
-        // toPostDetail(doc, noticeList);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => NoticeDetail(nid: doc.id)),
+        );
       },
       child: Container(
         padding: const EdgeInsets.all(16),
