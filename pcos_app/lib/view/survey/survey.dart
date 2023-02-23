@@ -2,12 +2,11 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pcos_app/view/survey/pcos_answer.dart';
-import 'package:pcos_app/view/survey/pcos_result.dart';
-import 'package:pcos_app/view/survey/pcos_survey.dart';
-import 'package:pcos_app/view/survey/predict_view.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-
+import 'package:test1/pcos_answer.dart';
+import 'package:test1/pcos_result.dart';
+import 'package:test1/pcos_survey.dart';
+import 'package:test1/predict_view.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:convert';
@@ -62,68 +61,74 @@ class _SurveyState extends State<Survey> {
         itemBuilder: (BuildContext context, int index) {
           return SizedBox(
             width: double.infinity,
-            height: 300,
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
-                    width: double.infinity,
-                    height: 300,
-                    child: Column(
-                      children: <Widget>[
-                        //페이지 퍼센티지 보여주기(linear indicator)
-
-                        if (index < 8)
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                            child: LinearPercentIndicator(
-                              // width: double.infinity,
-                              lineHeight: 25.0,
-                              percent:
-                                  (index + 1) * 100 / (8).toDouble() * 0.01,
-                              center: Text(
-                                "${index + 1} / ${8}",
-                                style: const TextStyle(fontSize: 12.0),
-                              ),
-                              backgroundColor: Colors.grey,
-                              progressColor: Colors.pink,
+                  Column(
+                    children: <Widget>[
+                      //페이지 퍼센티지 보여주기(linear indicator)
+                  
+                      if (index < 8)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
+                          child: LinearPercentIndicator(
+                            barRadius: Radius.circular(15),
+                            width: MediaQuery.of(context).size.width - 50,
+                            lineHeight: 25.0,
+                            animation: true,
+                            animationDuration: 500,
+                            percent:
+                                (index + 1) * 100 / (8).toDouble() * 0.01,
+                            center: Text(
+                              "${index + 1} / ${8}",
+                              style: const TextStyle(fontSize: 12.0),
                             ),
+                            backgroundColor: Colors.grey,
+                            progressColor: Color(0xFFFBA5A8),
                           ),
-
-                        //질문 리스트
-                        if (index == 8)
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Text(
-                              '모든 질문이 완료 되었습니다.',
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                          )
-                        else
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Text(
-                              surveyList.questions.elementAt(index),
-                              style: const TextStyle(fontSize: 20),
-                            ),
+                        ),
+                  
+                      //질문 리스트
+                      if (index == 8)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
+                          child: Text(
+                            '모든 질문이 완료 되었습니다.',
+                            style: const TextStyle(fontSize: 20),
                           ),
-
-                        //답변 위젯 리스트
-                        if (index <= 2) //0~2 페이지는 주관식 숫자를 받아야함.
-                          SizedBox(
-                            height:
-                                MediaQuery.of(context).size.aspectRatio * 200,
-                            child: surveyAnswerList.pcosAnswerList
-                                .elementAt(index),
-                          )
-                        else if (index < 8) // 나머지는 Y or N 답안으로 클릭시 다음 페이지로 넘어감.
-                          SizedBox(
-                            height:
-                                MediaQuery.of(context).size.aspectRatio * 200,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                OutlinedButton.icon(
+                        )
+                      else
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
+                          child: Text(
+                            surveyList.questions.elementAt(index),
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                        ),
+                  
+                      //답변 위젯 리스트
+                      if (index <= 2) //0~2 페이지는 주관식 숫자를 받아야함.
+                        SizedBox(
+                          height:
+                              MediaQuery.of(context).size.aspectRatio * 200,
+                          child: surveyAnswerList.pcosAnswerList
+                              .elementAt(index),
+                        )
+                      else if (index < 8) // 나머지는 Y or N 답안으로 클릭시 다음 페이지로 넘어감.
+                        SizedBox(
+                          height:
+                              MediaQuery.of(context).size.aspectRatio * 200,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 350,
+                                height: 60,
+                                child: OutlinedButton.icon(
+                                  style: OutlinedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                  ),
+                                  
                                     onPressed: () {
                                       if (index == 3)
                                         pcosResult.hair_growthYN = 1;
@@ -135,12 +140,16 @@ class _SurveyState extends State<Survey> {
                                         pcosResult.fastfoodYN = 1;
                                       else if (index == 7)
                                         pcosResult.pimmplesYN = 1;
-
+                                    
                                       pageController.jumpToPage(index + 1);
                                     },
                                     icon: Icon(Icons.done_outlined),
-                                    label: Text("그렇다.")),
-                                OutlinedButton.icon(
+                                    label: Text("그렇다.", style: TextStyle(fontSize: 25),)),
+                              ),
+                              SizedBox(
+                                width: 350,
+                                height: 60,
+                                child: OutlinedButton.icon(
                                     onPressed: () {
                                       if (index == 3)
                                         pcosResult.hair_growthYN = 0;
@@ -152,19 +161,19 @@ class _SurveyState extends State<Survey> {
                                         pcosResult.fastfoodYN = 0;
                                       else if (index == 7)
                                         pcosResult.pimmplesYN = 0;
-
+                                    
                                       pageController.jumpToPage(index + 1);
                                     },
                                     icon: Icon(Icons.done_outlined),
-                                    label: Text("그렇지 않다."))
-                              ],
-                            ),
+                                    label: Text("그렇지 않다.", style: TextStyle(fontSize: 25))),
+                              )
+                            ],
                           ),
-                      ],
-                    ),
+                        ),
+                    ],
                   ),
                   //pageBtn(selectedPage)
-
+                  
                   // button widget
                   if (index <= 2)
                     pageBtn(index)
@@ -182,72 +191,108 @@ class _SurveyState extends State<Survey> {
   } // pages for survey
 
   Widget pageBtn(int index) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.7,
-      height: MediaQuery.of(context).size.height * 0.05,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-                onPressed: () {
-                  pageController.jumpToPage(index - 1);
-                },
-                child: const Text('이전')),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-                onPressed: () {
-                  pageController.jumpToPage(index + 1);
-                },
-                child: const Text('다음')),
-          ),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFFFBA5A8),
+              foregroundColor: Colors.black,
+              textStyle: TextStyle(fontSize: 15),
+    
+              
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15)
+              )
+            ),
+              onPressed: () {
+                pageController.jumpToPage(index - 1);
+              },
+              child: const Text('이전')),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFFFBA5A8),
+              foregroundColor: Colors.black,
+              textStyle: TextStyle(fontSize: 15),
+          
+              
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15)
+              )
+            ),
+              onPressed: () {
+                pageController.jumpToPage(index + 1);
+              },
+              child: const Text('다음')),
+        ),
+      ],
     );
   } // pageBtn
 
   Widget beforeBtn(int index) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.5,
-      height: MediaQuery.of(context).size.height * 0.5,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-                onPressed: () {
-                  pageController.jumpToPage(index - 1);
-                },
-                child: const Text('이전')),
-          ),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFFFBA5A8),
+              foregroundColor: Colors.black,
+              textStyle: TextStyle(fontSize: 15),
+    
+              
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15)
+              )
+            ),
+              onPressed: () {
+                pageController.jumpToPage(index - 1);
+              },
+              child: const Text('이전')),
+        ),
+      ],
     );
   } // pageBtn
 
   Widget resultBtn(int index) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.5,
-      height: MediaQuery.of(context).size.height * 0.5,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 200,
+          width: 200,
+          child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFFBA5A8),
+                foregroundColor: Colors.black,
+                textStyle: TextStyle(fontSize: 40),
+        
+                
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)
+                )
+              ),
                 onPressed: () {
                   //결과페이지롤 이동
                   getSJONData();
                 
                 },
-                child: const Text('예측해보기')),
+                child: const Text('예측하기')),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   } // pageBtn
 
@@ -309,24 +354,7 @@ class _SurveyState extends State<Survey> {
 
 
   }
-
-
-    // setState(() {
-    //   var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
-    //   result = dataConvertedJSON['result'];
-    //   pcosResult.predict = result;
-    // print('예측함수종료');
-    // addFirebase(height, weight, result);
-    
-    //               Navigator.push(
-    //                   context,
-    //                   MaterialPageRoute(
-    //                     builder: (context) => const PredictView(),
-    //                   ));
-    // print('페이지 이동종료');
-    // });
   }
-
 
   //firebase에 키,몸무게, 예측값을 저장하는 함수
   addFirebase(int height, int weight, double predict) {
