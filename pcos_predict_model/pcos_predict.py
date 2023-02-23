@@ -21,7 +21,7 @@ def pcos():
     pimmplesYN = float(request.args.get("pimmplesYN"))
 
     BMI = weight/ (height/100)**2
-
+    print(BMI)
     clf = joblib.load("PCOS_final_898.h5")
     pre = clf.predict_proba([[hair_growthYN,skin_darkeningYN,weight_gainYN,BMI,waist,fastfoodYN,pimmplesYN]])
     

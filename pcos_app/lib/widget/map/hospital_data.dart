@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HospitalData {
@@ -59,6 +61,13 @@ class HospitalData {
     }).toList();
 
     return markers;
+  }
+
+
+//clipboard에 복사하는 함수(미완성)
+  void copyClipboard(String txt) {
+    Clipboard.setData(ClipboardData(text: txt));
+    Get.snackbar('Message', '주소가 클립보드에 복사되었습니다.');
   }
 
 // gps 나의 위치로 지도 이동
