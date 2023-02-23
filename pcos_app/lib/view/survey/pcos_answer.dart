@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test1/pcos_result.dart';
+import 'package:pcos_app/view/survey/pcos_result.dart';
 
 class PCOSAnswerList {
   List<Widget> pcosAnswerList = const [
