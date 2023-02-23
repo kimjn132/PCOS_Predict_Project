@@ -51,8 +51,13 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Calendar'),
+        backgroundColor: Color(0xFFFBA5A8),
+        automaticallyImplyLeading: false,
+      ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+        padding: const EdgeInsets.all(8.0),
         child: HawkFabMenu(
           icon: AnimatedIcons.menu_close,
           fabColor: Colors.redAccent,
@@ -442,7 +447,10 @@ class _CalendarPageState extends State<CalendarPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('확인'),
+              child: Text('확인'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.redAccent,
+              ),
             ),
           ],
         );
