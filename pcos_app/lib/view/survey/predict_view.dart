@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test1/pcos_result.dart';
+import 'package:pcos_app/view/survey/pcos_result.dart';
 
 class PredictView extends StatefulWidget {
   const PredictView({super.key});
@@ -28,7 +28,7 @@ class _PredictViewState extends State<PredictView> {
                   width: MediaQuery.of(context).size.width * 0.8,
       height: MediaQuery.of(context).size.height * 0.3,
             
-            child: Text( pcosResult.predict.toString()+'% 입니다.', textAlign: TextAlign.center,style: TextStyle(fontSize: 20)))
+            child: Text(pcosResult.predict.toString()+'% 입니다.', textAlign: TextAlign.center,style: TextStyle(fontSize: 20)))
         ],
       ),
     );
