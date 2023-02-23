@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pcos_app/view/login/signUp_screen.dart';
+import 'package:pcos_app/model/login/userInfo.dart';
+import 'package:pcos_app/view/login/signup_screen.dart';
 
-import '../../model/login/userInfo.dart';
 import '../../tab_bar.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -16,8 +16,6 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   late TextEditingController emailTextController;
   late TextEditingController passwordTextController;
-
-  get test => null;
 
   @override
   void initState() {
@@ -35,19 +33,23 @@ class _SignInScreenState extends State<SignInScreen> {
             const SizedBox(
               height: 300,
             ),
-            TextField(
-              controller: emailTextController,
-              decoration: const InputDecoration(
-                label: Text(
-                  'Email',
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: emailTextController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Email',
                 ),
               ),
             ),
-            TextField(
-              controller: passwordTextController,
-              decoration: const InputDecoration(
-                label: Text(
-                  'PassWord',
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: passwordTextController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Password',
                 ),
               ),
             ),
@@ -136,7 +138,7 @@ class _SignInScreenState extends State<SignInScreen> {
   void signInAction() async {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (contexts) {
         return const Center(
           child: CircularProgressIndicator(),
         );
@@ -235,9 +237,12 @@ class _SignInScreenState extends State<SignInScreen> {
       DocumentSnapshot document = snapshot.docs[0];
       Map<String, dynamic> userData = document.data()! as Map<String, dynamic>;
       String? uid = userData['uid'];
+      String? userId = userData['userId'];
       String? userNickname = userData['userNickname'];
       UserInfoStatic.uid = uid!;
+      UserInfoStatic.userId = userId!;
       UserInfoStatic.userNickname = userNickname!;
     }
+    print(UserInfoStatic.uid);
   }
 } // --- End

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pcos_app/view/login/signUpSuccess_screen.dart';
+import 'package:pcos_app/view/login/signup_success_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -120,21 +120,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  signUpAction() {
+  signUpAction() async {
     try {
-      FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailTextController.text,
         password: passwordTextController.text,
       );
+      signUpToFireStore();
+      toSignUpSuccessScreen();
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'invalid-email':
-          emailDuplicationText = '이메일 형식이 틀렸습니다.';
+          setState(() {
+            emailDuplicationText = '이메일 형식이 틀렸습니다.';
+          });
           break;
+        case 'weak-password':
+          setState(() {
+            emailDuplicationText = 'sadf 형식이 틀렸습니다.';
+          });
+          break;
+        default:
+          emailDuplicationText = '이메일 형식이.';
       }
     }
-      signUpToFireStore();
-      toSignUpSuccessScreen();
   }
 
   nullCkeckErrorSnackBar(String nullMessage) {
@@ -165,13 +174,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   signUpToFireStore() {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser?.uid)
-        .set({
-      'uid': FirebaseAuth.instance.currentUser?.uid,
-      'userId': emailTextController.text,
-      'userNickname': nicknameTextController.text
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'uid': user.uid,
+          'userId': emailTextController.text,
+          'userNickname': nicknameTextController.text
+        });
+      }
     });
   }
 

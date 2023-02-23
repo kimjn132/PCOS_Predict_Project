@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pcos_app/bottom_navigation.dart';
 import 'package:pcos_app/firebase_options.dart';
-import 'package:pcos_app/tab_bar.dart';
-import 'package:pcos_app/view/login/signIn_screen.dart';
+import 'package:pcos_app/view/login/signin_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
