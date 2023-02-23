@@ -5,6 +5,7 @@ import 'package:pcos_app/view/mypage/version_manage_page.dart';
 
 import '../../model/login/userInfo.dart';
 import 'chart_page.dart';
+import 'notice_page.dart';
 
 class MyPage extends StatelessWidget {
   MyPage({Key? key}) : super(key: key);
@@ -59,12 +60,18 @@ class MyPage extends StatelessWidget {
                 _buildListTile({
                   'title': '건의 및 문의',
                   'icon': Icons.question_answer,
-                  'onTap': '건의 및 문의',
+                  'onTap': () => _buildDialog(context, '아직 준비중인 서비스입니다.'),
                 }),
                 _buildListTile({
                   'title': '공지사항',
                   'icon': Icons.notifications,
-                  'onTap': '공지사항',
+                  'onTap': () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NoticePage()),
+                    );
+                  },
                 }),
                 _buildListTile({
                   'title': '버전 관리',
