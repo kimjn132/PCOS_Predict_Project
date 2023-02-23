@@ -16,79 +16,91 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   late TextEditingController emailTextController;
   late TextEditingController passwordTextController;
+  late bool obscureTextBool;
 
   @override
   void initState() {
-    super.initState();
     emailTextController = TextEditingController();
     passwordTextController = TextEditingController();
+    obscureTextBool = true;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 300,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: emailTextController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Email',
-                ),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+          body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 300,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: passwordTextController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Password',
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                emptyCheck();
-              },
-              child: const Text(
-                'Sign in',
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const SignUpScreen();
-                    },
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: 250,
+                  child: TextField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: emailTextController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Email',
+                    ),
                   ),
-                );
-              },
-              child: const Text(
-                'Sign up',
+                ),
               ),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  getUserInfo();
-                });
-              },
-              child: const Text(
-                'Test',
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: 250,
+                  child: TextField(
+                    obscureText: obscureTextBool,
+                    controller: passwordTextController,
+                    decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        hintText: 'Password',
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                obscureTextBool = !obscureTextBool;
+                              });
+                            },
+                            icon: obscureTextBool
+                                ? const Icon(Icons.visibility)
+                                : const Icon(Icons.visibility_off))),
+                  ),
+                ),
               ),
-            ),
-          ],
+              TextButton(
+                onPressed: () {
+                  emptyCheck();
+                },
+                child: const Text(
+                  '로그인',
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const SignUpScreen();
+                      },
+                    ),
+                  );
+                },
+                child: const Text(
+                  '회원가입',
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
+      )),
     );
   }
 
@@ -216,7 +228,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void toMainScreen() {
-    Navigator.pop(context);
+    // Navigator.pop(context);
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -244,6 +256,7 @@ class _SignInScreenState extends State<SignInScreen> {
       UserInfoStatic.userNickname = userNickname!;
       UserInfoStatic.userId = userId;
     }
-    print(UserInfoStatic.uid);
   }
 } // --- End
+
+
