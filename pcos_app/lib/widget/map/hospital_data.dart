@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HospitalData {
@@ -10,6 +12,7 @@ class HospitalData {
     String data = await DefaultAssetBundle.of(context)
         .loadString('datas/hospital_json.json');
     List<dynamic> markersJson = json.decode(data);
+    // print(markersJson);
     List<Marker> markers = markersJson.map((marker) {
       return Marker(
         markerId: MarkerId(marker['name'].toString()),
@@ -18,7 +21,7 @@ class HospitalData {
         infoWindow: InfoWindow(
           title: marker['name'],
           snippet:
-              '${marker['name']}\n전화: ${marker['call']}\n주소: ${marker['address']}',
+              '전화: ${marker['call']}\n주소: ${marker['address']}',
           onTap: () {
             // Container(
             //   decoration: BoxDecoration(
@@ -58,6 +61,13 @@ class HospitalData {
     }).toList();
 
     return markers;
+  }
+
+
+//clipboard에 복사하는 함수(미완성)
+  void copyClipboard(String txt) {
+    Clipboard.setData(ClipboardData(text: txt));
+    Get.snackbar('Message', '주소가 클립보드에 복사되었습니다.');
   }
 
 // gps 나의 위치로 지도 이동
