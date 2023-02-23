@@ -14,7 +14,7 @@ void main() async {
   );
 
   await initializeDateFormatting();
-  // 탭바 연결 - anna
+
   Get.put(BottomNavController());
 
   runApp(const MyApp());
