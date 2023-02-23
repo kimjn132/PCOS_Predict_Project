@@ -18,7 +18,7 @@ class Tabbar extends GetView<BottomNavController> {
           index: controller.pageIndex.value, // 현재 페이지 확인
           children: [
             //여기에 페이지 추가
-            const SurveyPage(),
+            // const SurveyPage(),
             const MapPage(),
             const CalendarPage(),
             const PostListScreen(),
@@ -33,11 +33,11 @@ class Tabbar extends GetView<BottomNavController> {
           elevation: 0,
           onTap: controller.changeBottomNav,
           items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.content_paste),
-              activeIcon: Icon(Icons.content_paste),
-              label: 'PCOS 테스트',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.content_paste),
+            //   activeIcon: Icon(Icons.content_paste),
+            //   label: 'PCOS 테스트',
+            // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.map_outlined),
               activeIcon: Icon(Icons.map_outlined),
