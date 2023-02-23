@@ -18,7 +18,7 @@ class Tabbar extends GetView<BottomNavController> {
           index: controller.pageIndex.value, // 현재 페이지 확인
           children: [
             //여기에 페이지 추가
-            // const SurveyPage(),
+            const Survey(),
             const MapPage(),
             const CalendarPage(),
             const PostListScreen(),
