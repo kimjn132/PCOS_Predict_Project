@@ -6,7 +6,6 @@ import 'package:pcos_app/bottom_navigation.dart';
 import 'package:pcos_app/firebase_options.dart';
 import 'package:pcos_app/view/login/signin_screen.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

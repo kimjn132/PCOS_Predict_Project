@@ -43,15 +43,19 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(
-          primaryColor: Colors.blueGrey[800], // 앱바 색상 변경
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Color(0xFFFBA5A8), // 앱바 색상 변경
-            foregroundColor: Colors.white, // 앱바 텍스트 색상 변경
-            systemOverlayStyle: SystemUiOverlayStyle.light,
-          ),
+      theme: ThemeData(
+        primaryColor: Colors.blueGrey[800], // 앱바 색상 변경
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFFFBA5A8), // 앱바 색상 변경
+          foregroundColor: Colors.white, // 앱바 텍스트 색상 변경
+          systemOverlayStyle: SystemUiOverlayStyle.light,
         ),
-        home: Scaffold(
+      ),
+      home: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
             leading: IconButton(
@@ -64,166 +68,131 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             // ),
           ),
-          body: SingleChildScrollView(
-            child: FutureBuilder<Map<String, dynamic>>(
-              future: _postDataFuture,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final postData = snapshot.data!;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ListTile(
-                        leading: const Text('data'),
-                        // tileColor: Colors.black12,
-                        title: Text(
-                          postData['pNickname'],
-                          style: const TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: TimeCompare(date: postData['pPostDate']),
-                        trailing: DropdownButton(
-                          icon: const Icon(CupertinoIcons.ellipsis),
-                          underline: const SizedBox(),
-                          items: [
-                            DropdownMenuItem(
-                              value: 'edit',
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.edit),
-                                  Text('수정하기'),
-                                ],
-                              ),
-                            ),
-                            DropdownMenuItem(
-                              value: 'delete',
-                              child: Row(
-                                children: const [
-                                  Icon(
-                                    Icons.delete_forever,
-                                    color: Colors.red,
-                                  ),
-                                  Text('삭제하기',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            if (value == 'edit') {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PostUpdateScreen(
-                                      pid: widget.pid,
-                                      pTitle: postData['pTitle'],
-                                      pContent: postData['pContent']),
-                                ),
-                              ).then((value) {
-                                setState(() {
-                                  _postDataFuture = getPostData(widget.pid);
-                                });
-                              });
-                            } else if (value == 'delete') {
-                              deletePostCheckAlert(context, widget.pid);
-                            }
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          postData['pTitle'],
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+          body: Padding(
+            padding: const EdgeInsets.only(bottom: 70),
+            child: SingleChildScrollView(
+              child: FutureBuilder<Map<String, dynamic>>(
+                future: _postDataFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final postData = snapshot.data!;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListTile(
+                          leading: const CircleAvatar(
+                            radius: 20,
+                            backgroundImage:
+                                AssetImage('images/default_image.png'),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          postData['pContent'],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          child: Row(
-                            children: [
-                              const Icon(
-                                CupertinoIcons.eye_fill,
-                                size: 15,
-                                color: Colors.black45,
+                          title: Text(
+                            postData['pNickname'],
+                            style: const TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: TimeCompare(date: postData['pPostDate']),
+                          trailing: DropdownButton(
+                            icon: const Icon(CupertinoIcons.ellipsis),
+                            underline: const SizedBox(),
+                            items: [
+                              DropdownMenuItem(
+                                value: 'edit',
+                                child: Row(
+                                  children: const [
+                                    Icon(Icons.edit),
+                                    Text('수정하기'),
+                                  ],
+                                ),
                               ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                postData['pViewCount'].toString(),
-                              ),
-                              const SizedBox(
-                                width: 7,
-                              ),
-                              const Icon(
-                                CupertinoIcons.hand_thumbsup,
-                                size: 15,
-                                color: Colors.black45,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                postData['pLikeCount'].toString(),
+                              DropdownMenuItem(
+                                value: 'delete',
+                                child: Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.delete_forever,
+                                      color: Colors.red,
+                                    ),
+                                    Text('삭제하기',
+                                        style: TextStyle(color: Colors.red)),
+                                  ],
+                                ),
                               ),
                             ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 40,
-                              width: 320,
-                              child: TextField(
-                                textAlign: TextAlign.start,
-                                controller: contentTextController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  hintText: '댓글',
-                                ),
-                                textAlignVertical: TextAlignVertical.bottom,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            SizedBox(
-                              width: 45,
-                              child: TextButton(
-                                onPressed: () {
+                            onChanged: (value) {
+                              if (value == 'edit') {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PostUpdateScreen(
+                                        pid: widget.pid,
+                                        pTitle: postData['pTitle'],
+                                        pContent: postData['pContent']),
+                                  ),
+                                ).then((value) {
                                   setState(() {
-                                    commentInsert(
-                                        widget.pid, contentTextController.text);
-                                    contentTextController.text = '';
                                     _postDataFuture = getPostData(widget.pid);
                                   });
-                                },
-                                child: const Text('게시'),
-                              ),
-                            ),
-                          ],
+                                });
+                              } else if (value == 'delete') {
+                                deletePostCheckAlert(context, widget.pid);
+                              }
+                            },
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 510,
-                        child: ListView.builder(
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            postData['pTitle'],
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            postData['pContent'],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  CupertinoIcons.eye_fill,
+                                  size: 15,
+                                  color: Colors.black45,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  postData['pViewCount'].toString(),
+                                ),
+                                const SizedBox(
+                                  width: 7,
+                                ),
+                                const Icon(
+                                  CupertinoIcons.hand_thumbsup,
+                                  size: 15,
+                                  color: Colors.black45,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  postData['pLikeCount'].toString(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        ListView.builder(
                           controller: scrollController,
                           shrinkWrap: true,
-                          physics: const AlwaysScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: snapshot.data!['comments'].length,
                           itemBuilder: (context, index) {
                             final commentData =
@@ -359,22 +328,63 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                 : const SizedBox();
                           },
                         ),
-                      ),
-                    ],
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
-                  );
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
             ),
           ),
-        ));
+          bottomSheet: Padding(
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: TextField(
+                    minLines: 1,
+                    maxLines: 2,
+                    textAlign: TextAlign.start,
+                    controller: contentTextController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50)),
+                      hintText: '댓글',
+                    ),
+                    textAlignVertical: TextAlignVertical.center,
+                  ),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.15,
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        commentInsert(widget.pid, contentTextController.text);
+                        contentTextController.text = '';
+                        _postDataFuture = getPostData(widget.pid);
+                      });
+                    },
+                    child: const Text('게시'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
