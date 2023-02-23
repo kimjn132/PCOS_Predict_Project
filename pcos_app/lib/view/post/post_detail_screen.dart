@@ -91,53 +91,60 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                 fontSize: 17, fontWeight: FontWeight.bold),
                           ),
                           subtitle: TimeCompare(date: postData['pPostDate']),
-                          trailing: DropdownButton(
-                            icon: const Icon(CupertinoIcons.ellipsis),
-                            underline: const SizedBox(),
-                            items: [
-                              DropdownMenuItem(
-                                value: 'edit',
-                                child: Row(
-                                  children: const [
-                                    Icon(Icons.edit),
-                                    Text('수정하기'),
-                                  ],
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: 'delete',
-                                child: Row(
-                                  children: const [
-                                    Icon(
-                                      Icons.delete_forever,
-                                      color: Colors.red,
+                          trailing: postData['pNickname'] ==
+                                  UserInfoStatic.userNickname
+                              ? DropdownButton(
+                                  icon: const Icon(CupertinoIcons.ellipsis),
+                                  underline: const SizedBox(),
+                                  items: [
+                                    DropdownMenuItem(
+                                      value: 'edit',
+                                      child: Row(
+                                        children: const [
+                                          Icon(Icons.edit),
+                                          Text('수정하기'),
+                                        ],
+                                      ),
                                     ),
-                                    Text('삭제하기',
-                                        style: TextStyle(color: Colors.red)),
+                                    DropdownMenuItem(
+                                      value: 'delete',
+                                      child: Row(
+                                        children: const [
+                                          Icon(
+                                            Icons.delete_forever,
+                                            color: Colors.red,
+                                          ),
+                                          Text('삭제하기',
+                                              style:
+                                                  TextStyle(color: Colors.red)),
+                                        ],
+                                      ),
+                                    ),
                                   ],
-                                ),
-                              ),
-                            ],
-                            onChanged: (value) {
-                              if (value == 'edit') {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PostUpdateScreen(
-                                        pid: widget.pid,
-                                        pTitle: postData['pTitle'],
-                                        pContent: postData['pContent']),
-                                  ),
-                                ).then((value) {
-                                  setState(() {
-                                    _postDataFuture = getPostData(widget.pid);
-                                  });
-                                });
-                              } else if (value == 'delete') {
-                                deletePostCheckAlert(context, widget.pid);
-                              }
-                            },
-                          ),
+                                  onChanged: (value) {
+                                    if (value == 'edit') {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PostUpdateScreen(
+                                                  pid: widget.pid,
+                                                  pTitle: postData['pTitle'],
+                                                  pContent:
+                                                      postData['pContent']),
+                                        ),
+                                      ).then((value) {
+                                        setState(() {
+                                          _postDataFuture =
+                                              getPostData(widget.pid);
+                                        });
+                                      });
+                                    } else if (value == 'delete') {
+                                      deletePostCheckAlert(context, widget.pid);
+                                    }
+                                  },
+                                )
+                              : const SizedBox(),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),

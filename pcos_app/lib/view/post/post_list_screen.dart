@@ -56,6 +56,7 @@ class _PostListScreenState extends State<PostListScreen> {
               }),
         ),
         floatingActionButton: FloatingActionButton(
+          heroTag: 'postInsert',
           onPressed: () {
             Navigator.push(
               context,
