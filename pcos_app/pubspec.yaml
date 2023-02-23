@@ -38,12 +38,12 @@ dependencies:
   get: ^4.6.5
   table_calendar: ^3.0.8
   sqflite: ^2.2.2
-  intl: ^0.17.0
   hawk_fab_menu: ^1.2.0
   path: ^1.8.2
   firebase_core: ^2.6.1
   cloud_firestore: ^4.4.2
   fl_chart: ^0.61.0
+  intl: ^0.17.0
   package_info: ^2.0.2
   firebase_remote_config: ^3.0.13
   firebase_auth: ^4.2.8
