@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pcos_app/view/login/signIn_screen.dart';
+import 'package:pcos_app/view/mypage/contact_page.dart';
 import 'package:pcos_app/view/mypage/my_post.dart';
 import 'package:pcos_app/view/mypage/version_manage_page.dart';
 
@@ -60,7 +61,13 @@ class MyPage extends StatelessWidget {
                 _buildListTile({
                   'title': '건의 및 문의',
                   'icon': Icons.question_answer,
-                  'onTap': () => _buildDialog(context, '아직 준비중인 서비스입니다.'),
+                  'onTap': () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ContactPage()),
+                    );
+                  },
                 }),
                 _buildListTile({
                   'title': '공지사항',
