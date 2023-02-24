@@ -296,35 +296,35 @@ class _SurveyState extends State<Survey> {
 
 //-------------function---------
   Widget imageselect(int index) {
-  if (index == 3) {
-    return Container(
-        height: MediaQuery.of(context).size.height * 0.2,
-        child: Lottie.network(
-            'https://assets9.lottiefiles.com/private_files/lf30_nruc9E.json'));
-  } else if (index == 4) {
-    return Container(
-        height: MediaQuery.of(context).size.height * 0.2,
-        child:  Lottie.network(
-            'https://assets5.lottiefiles.com/packages/lf20_jpxsQh.json'));
-  } else if (index == 5) {
-    return Container(
-        height: MediaQuery.of(context).size.height * 0.3,
-        child: Lottie.network(
-            'https://assets1.lottiefiles.com/packages/lf20_gnhvwizz.json'));
-  } else if (index == 6) {
-    return Container(
-        height: MediaQuery.of(context).size.height * 0.2,
-        child: Lottie.network(
-            'https://assets7.lottiefiles.com/packages/lf20_GUQObWT5Mw.json'));
-  } else if (index == 7) {
-    return Container(
-        height: MediaQuery.of(context).size.height * 0.2,
-        child: Lottie.network(
-            'https://assets7.lottiefiles.com/packages/lf20_VfWq5Z.json'));
-  } else {
-    return Text('finish');
+    if (index == 3) {
+      return Container(
+          height: MediaQuery.of(context).size.height * 0.2,
+          child: Lottie.network(
+              'https://assets9.lottiefiles.com/private_files/lf30_nruc9E.json'));
+    } else if (index == 4) {
+      return Container(
+          height: MediaQuery.of(context).size.height * 0.2,
+          child: Lottie.network(
+              'https://assets5.lottiefiles.com/packages/lf20_jpxsQh.json'));
+    } else if (index == 5) {
+      return Container(
+          height: MediaQuery.of(context).size.height * 0.3,
+          child: Lottie.network(
+              'https://assets1.lottiefiles.com/packages/lf20_gnhvwizz.json'));
+    } else if (index == 6) {
+      return Container(
+          height: MediaQuery.of(context).size.height * 0.2,
+          child: Lottie.network(
+              'https://assets7.lottiefiles.com/packages/lf20_GUQObWT5Mw.json'));
+    } else if (index == 7) {
+      return Container(
+          height: MediaQuery.of(context).size.height * 0.2,
+          child: Lottie.network(
+              'https://assets7.lottiefiles.com/packages/lf20_VfWq5Z.json'));
+    } else {
+      return Text('finish');
+    }
   }
-}
 
   getSJONData() async {
     print('예측함수시작');
@@ -378,10 +378,11 @@ class _SurveyState extends State<Survey> {
           pcosResult.waist = 0;
         });
 
+        Navigator.pop(context);
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const PredictView(),
+              builder: (context) => const Loding(),
             ));
         print('페이지 이동종료');
       });
