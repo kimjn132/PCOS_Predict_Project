@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:hawk_fab_menu/hawk_fab_menu.dart';
 import 'package:intl/intl.dart';
 import 'package:pcos_app/controller/calendar_database_handler.dart';
@@ -40,9 +38,11 @@ class _CalendarPageState extends State<CalendarPage> {
     contentcontroller = TextEditingController();
     updatecontroller = TextEditingController();
     handler = DatabaseHandler();
-    getAll();
+    setState(() {
+      getAll();
+    });
     handler.initializeDB().whenComplete(
-      () async {
+      () {
         setState(() {});
       },
     );
@@ -59,6 +59,7 @@ class _CalendarPageState extends State<CalendarPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: HawkFabMenu(
+          heroTag: 'first',
           icon: AnimatedIcons.menu_close,
           fabColor: Colors.redAccent,
           iconColor: Colors.white,
@@ -85,6 +86,7 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
             HawkFabMenuItem(
               label: '생리 끝',
+              heroTag: 'second',
               ontap: () {
                 setState(() {
                   if (_rangeStart != null) {
@@ -111,6 +113,7 @@ class _CalendarPageState extends State<CalendarPage> {
               labelBackgroundColor: Colors.red[200],
             ),
             HawkFabMenuItem(
+              heroTag: 'third',
               label: '일정 등록',
               ontap: () {
                 contentcontroller.text = "";
@@ -137,12 +140,12 @@ class _CalendarPageState extends State<CalendarPage> {
                                       if (contentcontroller.text.trim() != "") {
                                         addSchedule(_selectedDay!,
                                             contentcontroller.text.trim());
-                                        mySchedule.clear();
+                                        // mySchedule.clear();
                                         setState(() {
                                           getAll();
                                         });
                                         contentcontroller.text = "";
-                                        Navigator.of(context).pop();
+                                        Navigator.pop(context);
                                       } else {
                                         showScheduleDialog(context);
                                       }
@@ -290,7 +293,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                             updateSchedule(
                                                 updatecontroller.text.trim(),
                                                 e['id']);
-                                            mySchedule.clear();
+                                            // mySchedule.clear();
                                             setState(() {
                                               getAll();
                                             });
@@ -334,6 +337,9 @@ class _CalendarPageState extends State<CalendarPage> {
                     },
                     onLongPress: () {
                       deleteAction(e['id']);
+                      setState(() {
+                        getAll();
+                      });
                     },
                     child: Container(
                       margin: const EdgeInsets.symmetric(
@@ -395,32 +401,31 @@ class _CalendarPageState extends State<CalendarPage> {
     await handler.deleteSchedule(id, today);
   }
 
-  void getAll() {
-    setState(() {
-      Future<List<Schedule>> dbSchedule;
-      dbSchedule = handler.querySchedule();
-      dbSchedule.then(
-        (value) {
-          for (var i in value) {
-            if (mySchedule[i.date] != null) {
-              mySchedule[i.date]?.add({
+  Future<void> getAll() async {
+    mySchedule.clear();
+    Future<List<Schedule>> dbSchedule = handler.querySchedule();
+    await dbSchedule.then(
+      (value) {
+        for (var i in value) {
+          if (mySchedule[i.date] != null) {
+            mySchedule[i.date]?.add({
+              "id": i.id,
+              "content": i.content,
+              "dropdate": i.dropdate,
+            });
+          } else {
+            mySchedule[i.date] = [
+              {
                 "id": i.id,
                 "content": i.content,
                 "dropdate": i.dropdate,
-              });
-            } else {
-              mySchedule[i.date] = [
-                {
-                  "id": i.id,
-                  "content": i.content,
-                  "dropdate": i.dropdate,
-                }
-              ];
-            }
+              }
+            ];
           }
-        },
-      );
-    });
+        }
+      },
+    );
+    setState(() {});
   }
 
   // Marker 찍기
@@ -479,7 +484,7 @@ class _CalendarPageState extends State<CalendarPage> {
             TextButton(
               onPressed: () {
                 deleteSchedule(id, DateTime.now().toString().split(" ")[0]);
-                mySchedule.clear();
+                // mySchedule.clear();
                 setState(() {
                   getAll();
                 });
