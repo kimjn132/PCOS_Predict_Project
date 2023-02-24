@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pcos_app/view/survey/pcos_answer.dart';
+import 'package:pcos_app/view/survey/pcos_loding.dart';
 import 'package:pcos_app/view/survey/pcos_result.dart';
 import 'package:pcos_app/view/survey/pcos_survey.dart';
 import 'package:pcos_app/view/survey/predict_view.dart';
@@ -40,6 +41,8 @@ class _SurveyState extends State<Survey> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('설문조사'),
+        backgroundColor: Color(0xFFFBA5A8),
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: <Widget>[pages()],
@@ -324,11 +327,11 @@ class _SurveyState extends State<Survey> {
       pcosResult.predict = result;
     print('예측함수종료');
     addFirebase(height, weight, result);
-    
+                  Navigator.pop(context);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const PredictView(),
+                        builder: (context) => const Loding(),
                       ));
     print('페이지 이동종료');
     });
