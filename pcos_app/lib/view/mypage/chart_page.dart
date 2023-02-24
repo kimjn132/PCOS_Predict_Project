@@ -35,67 +35,96 @@ class ChartPage extends StatelessWidget {
               horizontal: 16, vertical: 8), // 전체적인 패딩 조정
           child: ListView(
             children: [
-              Container(
-                color: Colors.grey[200],
-                padding: const EdgeInsets.all(12.0),
-                child: const Text(
-                  'PCOS 예측결과 (%)',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+              Card(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
                 ),
-              ),
-              Chart(
-                data: [
-                  Data(date: DateTime(2022, 2, 1), value: 20),
-                  Data(date: DateTime(2022, 2, 2), value: 30),
-                ],
-              ),
-              const SizedBox(height: 16), // 각 차트 사이에 간격 추가
-              Container(
+                elevation: 1.0,
                 color: Colors.grey[200],
-                padding: const EdgeInsets.all(12.0),
-                child: const Text(
-                  'BMI',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Chart(
-                data: [
-                  Data(date: DateTime(2022, 2, 3), value: 40),
-                  Data(date: DateTime(2022, 2, 4), value: 80),
-                  Data(date: DateTime(2022, 2, 5), value: 60),
-                  Data(date: DateTime(2022, 2, 6), value: 70),
-                  Data(date: DateTime(2022, 2, 7), value: 53),
-                  Data(date: DateTime(2022, 2, 8), value: 53),
-                  Data(date: DateTime(2022, 2, 9), value: 53),
-                  Data(date: DateTime(2022, 2, 10), value: 53),
-                ],
-              ),
-              Container(
-                color: const Color(0xFFD9D9D9),
                 child: const Padding(
-                  padding: EdgeInsets.all(12.0),
+                  padding: EdgeInsets.all(16.0),
                   child: Text(
-                    '몸무게 (Kg)',
+                    'PCOS 확률 (%)',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
-              Chart(
-                data: [
-                  Data(date: DateTime(2022, 2, 8), value: 53),
-                  Data(date: DateTime(2022, 2, 9), value: 53),
-                  Data(date: DateTime(2022, 2, 10), value: 53),
-                  Data(date: DateTime(2022, 2, 14), value: 55),
-                ],
+              Card(
+                child: Chart(
+                  data: [
+                    Data(date: DateTime(2022, 2, 1), value: 20),
+                    Data(date: DateTime(2022, 2, 2), value: 30),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16), // 각 차트 사이에 간격 추가
+              Card(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                ),
+                elevation: 1.0,
+                color: Colors.grey[200],
+                child: const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'BMI',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              Card(
+                child: Chart(
+                  data: [
+                    Data(date: DateTime(2022, 2, 3), value: 40),
+                    Data(date: DateTime(2022, 2, 4), value: 80),
+                    Data(date: DateTime(2022, 2, 5), value: 60),
+                    Data(date: DateTime(2022, 2, 6), value: 70),
+                    Data(date: DateTime(2022, 2, 7), value: 53),
+                    Data(date: DateTime(2022, 2, 8), value: 53),
+                    Data(date: DateTime(2022, 2, 9), value: 53),
+                    Data(date: DateTime(2022, 2, 10), value: 53),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Card(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                ),
+                elevation: 1.0,
+                color: Colors.grey[200],
+                child: const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    '몸무게 (Kg)',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              Card(
+                child: Chart(
+                  data: [
+                    Data(date: DateTime(2022, 2, 8), value: 53),
+                    Data(date: DateTime(2022, 2, 9), value: 53),
+                    Data(date: DateTime(2022, 2, 10), value: 53),
+                    Data(date: DateTime(2022, 2, 14), value: 55),
+                  ],
+                ),
               ),
             ],
           ),
