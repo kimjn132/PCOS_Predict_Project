@@ -37,15 +37,17 @@ class _PredictViewState extends State<PredictView> {
               GaugeRange(startValue: 0, endValue: 39.27, color: Colors.green),
               GaugeRange(
                   startValue: 39.27, endValue: 50.4, color: Colors.orange),
-                  
               GaugeRange(startValue: 50.4, endValue: 100, color: Colors.red)
             ], pointers: <GaugePointer>[
-              NeedlePointer(value: predict,
-              enableAnimation: true,
-              needleColor: Color(0xFFFBA5A8),
-              knobStyle: KnobStyle(color: Colors.white, borderColor: Color(0xFFFBA5A8),
-                       knobRadius: 0.06,
-                       borderWidth: 0.04),
+              NeedlePointer(
+                value: predict,
+                enableAnimation: true,
+                needleColor: Color(0xFFFBA5A8),
+                knobStyle: KnobStyle(
+                    color: Colors.white,
+                    borderColor: Color(0xFFFBA5A8),
+                    knobRadius: 0.06,
+                    borderWidth: 0.04),
               )
             ], annotations: <GaugeAnnotation>[
               GaugeAnnotation(
@@ -56,12 +58,13 @@ class _PredictViewState extends State<PredictView> {
                         Text(predict.toString() + '%',
                             style: TextStyle(
                                 fontSize: 25, fontWeight: FontWeight.bold)),
-                        Text(predict <= 30
-                            ? '안전합니다.'
-                            : predict <= 50
-                                ? '조심할 필요가 있습니다.'
-                                : '위험합니다. 병원에 방문하세요', style: TextStyle(
-                                fontSize: 15)),
+                        Text(
+                            predict <= 30
+                                ? '안전합니다.'
+                                : predict <= 50
+                                    ? '조심할 필요가 있습니다.'
+                                    : '위험합니다. 병원에 방문하세요',
+                            style: TextStyle(fontSize: 15)),
                       ],
                     ),
                   ),
@@ -69,16 +72,11 @@ class _PredictViewState extends State<PredictView> {
                   positionFactor: 0.5)
             ])
           ]),
-
-
-        backBtn()
-        
-        
+          backBtn()
         ],
       ),
     );
   }
-
 
   //---finction---
 
@@ -89,19 +87,15 @@ class _PredictViewState extends State<PredictView> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFFFBA5A8),
-              foregroundColor: Colors.black,
-              textStyle: TextStyle(fontSize: 20),
-        
-              
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15)
-              )
-            ),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFBA5A8),
+                  foregroundColor: Colors.black,
+                  textStyle: TextStyle(fontSize: 20),
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15))),
               onPressed: () {
-              Navigator.pop(context);
+                Navigator.pop(context);
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -112,7 +106,5 @@ class _PredictViewState extends State<PredictView> {
         ),
       ],
     );
-  } 
-
-
+  }
 }//end
