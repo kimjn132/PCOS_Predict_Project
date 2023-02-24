@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pcos_app/view/survey/predict_view.dart';
 
 class Loding extends StatefulWidget {
@@ -25,10 +26,17 @@ class _LodingState extends State<Loding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('예측률 계산중...'),
-        //로고 이미지 추가
+      appBar: AppBar(
+        title: const Text('설문조사'),
+        backgroundColor: Color(0xFFFBA5A8),
+        automaticallyImplyLeading: false,
       ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.network('https://assets1.lottiefiles.com/packages/lf20_nw19osms.json')
+        ],
+      )
     );
   }
 }
