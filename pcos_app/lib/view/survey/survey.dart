@@ -117,64 +117,69 @@ class _SurveyState extends State<Survey> {
                               surveyAnswerList.pcosAnswerList.elementAt(index),
                         )
                       else if (index < 8) // 나머지는 Y or N 답안으로 클릭시 다음 페이지로 넘어감.
-                        SizedBox(
-                          height: MediaQuery.of(context).size.aspectRatio * 200,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: 350,
-                                height: 60,
-                                child: OutlinedButton.icon(
-                                    style: OutlinedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                    ),
-                                    onPressed: () {
-                                      if (index == 3)
-                                        pcosResult.hair_growthYN = 1;
-                                      else if (index == 4)
-                                        pcosResult.skin_darkeningYN = 1;
-                                      else if (index == 5)
-                                        pcosResult.weight_gainYN = 1;
-                                      else if (index == 6)
-                                        pcosResult.fastfoodYN = 1;
-                                      else if (index == 7)
-                                        pcosResult.pimmplesYN = 1;
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              height: MediaQuery.of(context).size.height * 0.08,
+                              child: OutlinedButton.icon(
+                                  style: OutlinedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                  ),
+                                  onPressed: () {
+                                    if (index == 3)
+                                      pcosResult.hair_growthYN = 1;
+                                    else if (index == 4)
+                                      pcosResult.skin_darkeningYN = 1;
+                                    else if (index == 5)
+                                      pcosResult.weight_gainYN = 1;
+                                    else if (index == 6)
+                                      pcosResult.fastfoodYN = 1;
+                                    else if (index == 7)
+                                      pcosResult.pimmplesYN = 1;
 
-                                      pageController.jumpToPage(index + 1);
-                                    },
-                                    icon: Icon(Icons.done_outlined),
-                                    label: Text(
-                                      "그렇다.",
-                                      style: TextStyle(fontSize: 25),
-                                    )),
-                              ),
-                              SizedBox(
-                                width: 350,
-                                height: 60,
-                                child: OutlinedButton.icon(
-                                    onPressed: () {
-                                      if (index == 3)
-                                        pcosResult.hair_growthYN = 0;
-                                      else if (index == 4)
-                                        pcosResult.skin_darkeningYN = 0;
-                                      else if (index == 5)
-                                        pcosResult.weight_gainYN = 0;
-                                      else if (index == 6)
-                                        pcosResult.fastfoodYN = 0;
-                                      else if (index == 7)
-                                        pcosResult.pimmplesYN = 0;
+                                    pageController.jumpToPage(index + 1);
+                                  },
+                                  icon: Icon(Icons.done_outlined),
+                                  label: Text(
+                                    "그렇다.",
+                                    style: TextStyle(fontSize: 25),
+                                  )),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.02,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              height: MediaQuery.of(context).size.height * 0.08,
+                              child: OutlinedButton.icon(
+                                  style: OutlinedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                  ),
+                                  onPressed: () {
+                                    if (index == 3)
+                                      pcosResult.hair_growthYN = 0;
+                                    else if (index == 4)
+                                      pcosResult.skin_darkeningYN = 0;
+                                    else if (index == 5)
+                                      pcosResult.weight_gainYN = 0;
+                                    else if (index == 6)
+                                      pcosResult.fastfoodYN = 0;
+                                    else if (index == 7)
+                                      pcosResult.pimmplesYN = 0;
 
-                                      pageController.jumpToPage(index + 1);
-                                    },
-                                    icon: Icon(Icons.done_outlined),
-                                    label: Text("그렇지 않다.",
-                                        style: TextStyle(fontSize: 25))),
-                              )
-                            ],
-                          ),
+                                    pageController.jumpToPage(index + 1);
+                                  },
+                                  icon: Icon(Icons.done_outlined),
+                                  label: Text("그렇지 않다.",
+                                      style: TextStyle(fontSize: 25))),
+                            )
+                          ],
                         ),
                     ],
                   ),
