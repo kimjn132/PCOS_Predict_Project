@@ -71,7 +71,7 @@ class _SurveyState extends State<Survey> {
                   Column(
                     children: <Widget>[
                       //페이지 퍼센티지 보여주기(linear indicator)
-                  
+
                       if (index < 8)
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
@@ -81,8 +81,7 @@ class _SurveyState extends State<Survey> {
                             lineHeight: 25.0,
                             animation: true,
                             animationDuration: 500,
-                            percent:
-                                (index + 1) * 100 / (8).toDouble() * 0.01,
+                            percent: (index + 1) * 100 / (8).toDouble() * 0.01,
                             center: Text(
                               "${index + 1} / ${8}",
                               style: const TextStyle(fontSize: 12.0),
@@ -91,7 +90,7 @@ class _SurveyState extends State<Survey> {
                             progressColor: Color(0xFFFBA5A8),
                           ),
                         ),
-                  
+
                       //질문 리스트
                       if (index == 8)
                         Padding(
@@ -109,19 +108,17 @@ class _SurveyState extends State<Survey> {
                             style: const TextStyle(fontSize: 20),
                           ),
                         ),
-                  
+
                       //답변 위젯 리스트
                       if (index <= 2) //0~2 페이지는 주관식 숫자를 받아야함.
                         SizedBox(
-                          height:
-                              MediaQuery.of(context).size.aspectRatio * 200,
-                          child: surveyAnswerList.pcosAnswerList
-                              .elementAt(index),
+                          height: MediaQuery.of(context).size.aspectRatio * 200,
+                          child:
+                              surveyAnswerList.pcosAnswerList.elementAt(index),
                         )
                       else if (index < 8) // 나머지는 Y or N 답안으로 클릭시 다음 페이지로 넘어감.
                         SizedBox(
-                          height:
-                              MediaQuery.of(context).size.aspectRatio * 200,
+                          height: MediaQuery.of(context).size.aspectRatio * 200,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -129,10 +126,11 @@ class _SurveyState extends State<Survey> {
                                 width: 350,
                                 height: 60,
                                 child: OutlinedButton.icon(
-                                  style: OutlinedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                                  ),
-                                  
+                                    style: OutlinedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                    ),
                                     onPressed: () {
                                       if (index == 3)
                                         pcosResult.hair_growthYN = 1;
@@ -144,11 +142,14 @@ class _SurveyState extends State<Survey> {
                                         pcosResult.fastfoodYN = 1;
                                       else if (index == 7)
                                         pcosResult.pimmplesYN = 1;
-                                    
+
                                       pageController.jumpToPage(index + 1);
                                     },
                                     icon: Icon(Icons.done_outlined),
-                                    label: Text("그렇다.", style: TextStyle(fontSize: 25),)),
+                                    label: Text(
+                                      "그렇다.",
+                                      style: TextStyle(fontSize: 25),
+                                    )),
                               ),
                               SizedBox(
                                 width: 350,
@@ -165,11 +166,12 @@ class _SurveyState extends State<Survey> {
                                         pcosResult.fastfoodYN = 0;
                                       else if (index == 7)
                                         pcosResult.pimmplesYN = 0;
-                                    
+
                                       pageController.jumpToPage(index + 1);
                                     },
                                     icon: Icon(Icons.done_outlined),
-                                    label: Text("그렇지 않다.", style: TextStyle(fontSize: 25))),
+                                    label: Text("그렇지 않다.",
+                                        style: TextStyle(fontSize: 25))),
                               )
                             ],
                           ),
@@ -177,7 +179,7 @@ class _SurveyState extends State<Survey> {
                     ],
                   ),
                   //pageBtn(selectedPage)
-                  
+
                   // button widget
                   if (index <= 2)
                     pageBtn(index)
@@ -201,17 +203,13 @@ class _SurveyState extends State<Survey> {
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFFFBA5A8),
-              foregroundColor: Colors.black,
-              textStyle: TextStyle(fontSize: 15),
-    
-              
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15)
-              )
-            ),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFBA5A8),
+                  foregroundColor: Colors.black,
+                  textStyle: TextStyle(fontSize: 15),
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15))),
               onPressed: () {
                 pageController.jumpToPage(index - 1);
               },
@@ -220,19 +218,23 @@ class _SurveyState extends State<Survey> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFFFBA5A8),
-              foregroundColor: Colors.black,
-              textStyle: TextStyle(fontSize: 15),
-          
-              
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15)
-              )
-            ),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFBA5A8),
+                  foregroundColor: Colors.black,
+                  textStyle: TextStyle(fontSize: 15),
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15))),
               onPressed: () {
-                pageController.jumpToPage(index + 1);
+                if (index == 0 && pcosResult.height == 0) {
+                  heightEmptySnackBar();
+                } else if (index == 1 && pcosResult.weight == 0) {
+                  weightEmptySnackBar();
+                } else if (index == 2 && pcosResult.waist == 0) {
+                  waistEmptySnackBar();
+                } else {
+                  pageController.jumpToPage(index + 1);
+                }
               },
               child: const Text('다음')),
         ),
@@ -247,17 +249,13 @@ class _SurveyState extends State<Survey> {
         Padding(
           padding: const EdgeInsets.all(15.0),
           child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFFFBA5A8),
-              foregroundColor: Colors.black,
-              textStyle: TextStyle(fontSize: 15),
-    
-              
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15)
-              )
-            ),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFBA5A8),
+                  foregroundColor: Colors.black,
+                  textStyle: TextStyle(fontSize: 15),
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15))),
               onPressed: () {
                 pageController.jumpToPage(index - 1);
               },
@@ -277,21 +275,16 @@ class _SurveyState extends State<Survey> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFFBA5A8),
-                foregroundColor: Colors.black,
-                textStyle: TextStyle(fontSize: 40),
-        
-                
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)
-                )
-              ),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFFFBA5A8),
+                    foregroundColor: Colors.black,
+                    textStyle: TextStyle(fontSize: 40),
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15))),
                 onPressed: () {
                   //결과페이지롤 이동
                   getSJONData();
-                
                 },
                 child: const Text('예측하기')),
           ),
@@ -302,8 +295,6 @@ class _SurveyState extends State<Survey> {
 
 //-------------function---------
 
-
-
   getSJONData() async {
     print('예측함수시작');
     int height = pcosResult.height;
@@ -312,52 +303,52 @@ class _SurveyState extends State<Survey> {
     int hair_growthYN = pcosResult.hair_growthYN;
     int skin_darkeningYN = pcosResult.skin_darkeningYN;
     int weight_gainYN = pcosResult.weight_gainYN;
-    int fastfoodYN= pcosResult.fastfoodYN;
+    int fastfoodYN = pcosResult.fastfoodYN;
     int pimmplesYN = pcosResult.pimmplesYN;
 
+    if (Platform.isAndroid) {
+      var url = Uri.parse(
+          'http://10.0.2.2:5000/pcospredict?height=$height&weight=$weight&waist=$waist&hair_growthYN=$hair_growthYN&skin_darkeningYN=$skin_darkeningYN&weight_gainYN=$weight_gainYN&fastfoodYN=$fastfoodYN&pimmplesYN=$pimmplesYN');
+      var response = await http.get(url);
+      setState(() {
+        var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
+        result = dataConvertedJSON['result'];
+        pcosResult.predict = result;
+        print('예측함수종료');
+        addFirebase(height, weight, result);
+        Navigator.pop(context);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Loding(),
+            ));
+        print('페이지 이동종료');
+      });
+    } else if (Platform.isIOS) {
+      var url = Uri.parse(
+          'http://127.0.0.1:5000/pcospredict?height=$height&weight=$weight&waist=$waist&hair_growthYN=$hair_growthYN&skin_darkeningYN=$skin_darkeningYN&weight_gainYN=$weight_gainYN&fastfoodYN=$fastfoodYN&pimmplesYN=$pimmplesYN');
+      var response = await http.get(url);
+      setState(() {
+        var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
+        result = dataConvertedJSON['result'];
+        pcosResult.predict = result;
+        print('예측함수종료');
+        addFirebase(height, weight, result);
 
-    
-  if (Platform.isAndroid) {
-     var url = Uri.parse(
-        'http://10.0.2.2:5000/pcospredict?height=$height&weight=$weight&waist=$waist&hair_growthYN=$hair_growthYN&skin_darkeningYN=$skin_darkeningYN&weight_gainYN=$weight_gainYN&fastfoodYN=$fastfoodYN&pimmplesYN=$pimmplesYN');
-          var response = await http.get(url);
-              setState(() {
-      var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
-      result = dataConvertedJSON['result'];
-      pcosResult.predict = result;
-    print('예측함수종료');
-    addFirebase(height, weight, result);
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Loding(),
-                      ));
-    print('페이지 이동종료');
-    });
+        setState(() {
+          pcosResult.height = 0;
+          pcosResult.weight = 0;
+          pcosResult.waist = 0;
+        });
 
-
-  } else if (Platform.isIOS) {
-     var url = Uri.parse(
-        'http://127.0.0.1:5000/pcospredict?height=$height&weight=$weight&waist=$waist&hair_growthYN=$hair_growthYN&skin_darkeningYN=$skin_darkeningYN&weight_gainYN=$weight_gainYN&fastfoodYN=$fastfoodYN&pimmplesYN=$pimmplesYN');
-        var response = await http.get(url);
-            setState(() {
-      var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
-      result = dataConvertedJSON['result'];
-      pcosResult.predict = result;
-    print('예측함수종료');
-    addFirebase(height, weight, result);
-    
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PredictView(),
-                      ));
-    print('페이지 이동종료');
-    });
-
-
-  }
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const PredictView(),
+            ));
+        print('페이지 이동종료');
+      });
+    }
   }
 
   //firebase에 키,몸무게, 예측값을 저장하는 함수
@@ -369,4 +360,33 @@ class _SurveyState extends State<Survey> {
     print('파이어베이스 입력종료');
   }
 
+  heightEmptySnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('키를 입력해주세요.'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  weightEmptySnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('몸무게를 입력해주세요.'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  waistEmptySnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('허리 사이즈를 입력해주세요.'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
 } //END
