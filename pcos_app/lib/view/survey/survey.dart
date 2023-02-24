@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pcos_app/view/survey/pcos_answer.dart';
+import 'package:pcos_app/view/survey/pcos_loding.dart';
 import 'package:pcos_app/view/survey/pcos_result.dart';
 import 'package:pcos_app/view/survey/pcos_survey.dart';
 import 'package:pcos_app/view/survey/predict_view.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+
 import 'package:http/http.dart' as http;
 
 import 'dart:convert';
@@ -39,6 +41,8 @@ class _SurveyState extends State<Survey> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('설문조사'),
+        backgroundColor: Color(0xFFFBA5A8),
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: <Widget>[pages()],
@@ -222,7 +226,15 @@ class _SurveyState extends State<Survey> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15))),
               onPressed: () {
-                pageController.jumpToPage(index + 1);
+                if (index == 0 && pcosResult.height == 0) {
+                  heightEmptySnackBar();
+                } else if (index == 1 && pcosResult.weight == 0) {
+                  weightEmptySnackBar();
+                } else if (index == 2 && pcosResult.waist == 0) {
+                  waistEmptySnackBar();
+                } else {
+                  pageController.jumpToPage(index + 1);
+                }
               },
               child: const Text('다음')),
         ),
@@ -304,11 +316,11 @@ class _SurveyState extends State<Survey> {
         pcosResult.predict = result;
         print('예측함수종료');
         addFirebase(height, weight, result);
-
+        Navigator.pop(context);
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const PredictView(),
+              builder: (context) => const Loding(),
             ));
         print('페이지 이동종료');
       });
@@ -322,6 +334,12 @@ class _SurveyState extends State<Survey> {
         pcosResult.predict = result;
         print('예측함수종료');
         addFirebase(height, weight, result);
+
+        setState(() {
+          pcosResult.height = 0;
+          pcosResult.weight = 0;
+          pcosResult.waist = 0;
+        });
 
         Navigator.push(
             context,
@@ -340,5 +358,35 @@ class _SurveyState extends State<Survey> {
         .collection('survey_result')
         .add({'height': height, 'weight': weight, 'predict': predict});
     print('파이어베이스 입력종료');
+  }
+
+  heightEmptySnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('키를 입력해주세요.'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  weightEmptySnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('몸무게를 입력해주세요.'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  waistEmptySnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('허리 사이즈를 입력해주세요.'),
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
 } //END

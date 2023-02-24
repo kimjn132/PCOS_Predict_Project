@@ -52,6 +52,7 @@ dependencies:
   google_maps_flutter: ^2.2.4
   geolocator: ^9.0.2
   url_launcher: ^6.1.10
+  syncfusion_flutter_gauges: ^20.4.51
 
 
 dev_dependencies:
