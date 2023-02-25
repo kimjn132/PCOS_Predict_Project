@@ -155,9 +155,9 @@ class MyPage extends StatelessWidget {
                       TextButton(
                         child: const Text('로그아웃'),
                         onPressed: () async {
-                          // UserInfoStatic.uid = "";
-                          // UserInfoStatic.userId = "";
-                          // UserInfoStatic.userNickname = "";
+                          UserInfoStatic.uid = "";
+                          UserInfoStatic.userId = "";
+                          UserInfoStatic.userNickname = "";
                           await FirebaseAuth.instance.signOut();
                           Navigator.popUntil(context,
                               ModalRoute.withName(Navigator.defaultRouteName));

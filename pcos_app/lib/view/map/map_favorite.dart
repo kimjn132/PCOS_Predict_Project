@@ -1,14 +1,12 @@
-
 import 'package:flutter/material.dart';
-import 'package:pcos_app/controller/map_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../../controller/map_favorite_provider.dart';
 
 class MapFavorite extends StatelessWidget {
   final String name;
 
   const MapFavorite({super.key, required this.name});
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -32,5 +30,3 @@ class MapFavorite extends StatelessWidget {
     );
   }
 }
-
-
