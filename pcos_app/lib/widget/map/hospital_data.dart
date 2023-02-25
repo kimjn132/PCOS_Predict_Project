@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:core';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -20,49 +23,13 @@ class HospitalData {
 
         infoWindow: InfoWindow(
           title: marker['name'],
-          snippet:
-              '전화: ${marker['call']}\n주소: ${marker['address']}',
-          onTap: () {
-            // Container(
-            //   decoration: BoxDecoration(
-            //     color: Colors.white,
-            //     borderRadius: const BorderRadius.only(
-            //       topLeft: Radius.circular(16.0),
-            //       topRight: Radius.circular(16.0),
-            //     ),
-            //     boxShadow: [
-            //       BoxShadow(
-            //         color: Colors.black.withOpacity(0.2),
-            //         blurRadius: 6.0,
-            //         spreadRadius: 2.0,
-            //       ),
-            //     ],
-            //   ),
-            //   child: ListView.builder(
-            //     itemCount: marker.length,
-            //     itemBuilder: (BuildContext context, int index) {
-            //       return Card(
-            //         child: ListTile(
-            //           title: Text(marker.title[index]),
-            //           subtitle: Text(marker.snippet[index]),
-            //           onTap: () {
-            //             // Handle marker tap
-            //           },
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // );
-          },
+          snippet: '전화: ${marker['call']}\n주소: ${marker['address']}',
         ),
-
-        //icon: BitmapDescriptor.defaultMarker,
       );
     }).toList();
 
     return markers;
   }
-
 
 //clipboard에 복사하는 함수(미완성)
   void copyClipboard(String txt) {
@@ -99,54 +66,30 @@ class HospitalData {
 
     return position;
   } //getCurrentLocation
+
+  // Get a Firestore instance
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String uId = FirebaseAuth.instance.currentUser!.uid;
+
+  
+
+  checkIfIsFavorite(String title) async {
+   
+      // final bool check;
+      final snapshot = await FirebaseFirestore.instance
+          .collection('hospital')
+          .where('hospital', isEqualTo: title)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        // check = true;
+        await firestore.collection('hopital').firestore.doc(title).delete();
+      } else {
+          // check = false;
+          await firestore
+          .collection('hospital')
+          .add({'uId': uId, 'hospital': title});
+      }
+
+  }
 }
-
-
-
-// class MarkerListSheet extends StatefulWidget {
-//   final String title;
-//   final String snippet;
-
-//   const MarkerListSheet(
-//       {super.key, required this.title, required this.snippet});
-
-//   @override
-//   // ignore: library_private_types_in_public_api
-//   _MarkerListSheetState createState() => _MarkerListSheetState();
-// }
-
-// class _MarkerListSheetState extends State<MarkerListSheet> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: const BorderRadius.only(
-//           topLeft: Radius.circular(16.0),
-//           topRight: Radius.circular(16.0),
-//         ),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.black.withOpacity(0.2),
-//             blurRadius: 6.0,
-//             spreadRadius: 2.0,
-//           ),
-//         ],
-//       ),
-//       child: ListView.builder(
-//         itemCount: widget.title.length,
-//         itemBuilder: (BuildContext context, int index) {
-//           return Card(
-//             child: ListTile(
-//               title: Text(widget.title[index]),
-//               subtitle: Text(widget.snippet[index]),
-//               onTap: () {
-//                 // Handle marker tap
-//               },
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }

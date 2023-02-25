@@ -1,11 +1,13 @@
 import 'dart:async';
+import 'dart:core';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pcos_app/view/map/map_favorite.dart';
 import 'package:pcos_app/widget/map/hospital_data.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -40,6 +42,9 @@ class _MapPageState extends State<MapPage> {
   // 병원 마커 데이터값 변환을 위한 변수
   List<Marker> allMarkers = [];
   List<Marker> _markers = [];
+
+  bool check = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +102,7 @@ class _MapPageState extends State<MapPage> {
             itemBuilder: (BuildContext context, int index) {
               Marker marker = _markers[index];
               //print(_markers[0]);
+
               String markerTitle = marker.infoWindow.title!;
               String markerSnippet = marker.infoWindow.snippet!;
               // print(markerSnippet);
@@ -114,89 +120,81 @@ class _MapPageState extends State<MapPage> {
 
 //1-1. 리스트 뷰 디자인
   Widget _boxes(String title, String snippet) {
-  return Container(
-    child: FittedBox(
-      child: Material(
-        color: const Color(0xFFF16A6E),
-        elevation: 0.0,
-        borderRadius: BorderRadius.circular(24.0),
-        // shadowColor: const Color(0xFFE45256),
-        child: Row(
-          children: [
-            
-            Container(
-              width: 400,
-              height: 260,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24.0),
-                  bottomLeft: Radius.circular(24.0),
-                ),
+  return FittedBox(
+    child: Material(
+      color: const Color(0xFFF16A6E),
+      elevation: 0.0,
+      borderRadius: BorderRadius.circular(24.0),
+      // shadowColor: const Color(0xFFE45256),
+      child: Row(
+        children: [
+          Container(
+            width: 400,
+            height: 260,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24.0),
+                bottomLeft: Radius.circular(24.0),
               ),
-              child: ClipRect(
-                child: Stack(
-                  children: [
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                title,
-                                style: const TextStyle(
-                                  fontSize: 28.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFF16A6E),
-                                ),
+            ),
+            child: ClipRect(
+              child: Stack(
+                children: [
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: const TextStyle(
+                                fontSize: 35.0,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFF16A6E),
                               ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 16.0),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            snippet,
-                            style: const TextStyle(
-                              fontSize: 18.0,
-                              color: Color.fromARGB(255, 149, 141, 141),
                             ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16.0),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          snippet,
+                          style: const TextStyle(
+                            fontSize: 30.0,
+                            color: Color.fromARGB(255, 149, 141, 141),
                           ),
                         ),
-                      ],
-                    ),
-                    Positioned(
-                      top: 0.0,
-                      right: 0.0,
-                      child: IconButton(
-                        onPressed: () {
-                          //
-                        },
-                        icon: const Icon(Icons.favorite_border_outlined),
-                        iconSize: 40,
-                        color: Color(0xFFF16A6E),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                  Positioned(
+                    top: 0.0,
+                    right: 0.0,
+                    child: 
+                    
+                    MapFavorite(name: title)
+                  ),
+                ],
               ),
             ),
-            Container(
-              width: 20.0,
-              height: 200.0,
-              decoration: const BoxDecoration(
-                color: Color(0xFFFB5A5A),
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(24.0),
-                  bottomRight: Radius.circular(24.0),
-                ),
+          ),
+          Container(
+            width: 20.0,
+            height: 200.0,
+            decoration: const BoxDecoration(
+              color: Color(0xFFFB5A5A),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(24.0),
+                bottomRight: Radius.circular(24.0),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     ),
   );
@@ -207,7 +205,7 @@ class _MapPageState extends State<MapPage> {
   LatLngBounds _getVisibleRegion() {
     try {
       LatLng center = LatLng(latitude, longitude);
-      double radius = 500; // 500m radius
+      double radius = 5000; // 500m radius
 
       // Earth's radius in meters
       const earthRadius = 6378137.0;
@@ -253,6 +251,8 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
+
+
 //clipboard에 복사하는 함수(미완성)
   void copyClipboard(String txt) {
     Clipboard.setData(ClipboardData(text: txt));
@@ -280,15 +280,20 @@ class _MapPageState extends State<MapPage> {
     return // floatingActionButton을 누르게 되면 _goToTheLake 실행된다.
         FloatingActionButton(
       onPressed: () async {
-        var gps = await csvdata.getCurrentLocation();
-        mapController.animateCamera(
-          CameraUpdate.newLatLng(
-            LatLng(gps.latitude, gps.longitude),
-          ),
-        );
+        // var gps = await csvdata.getCurrentLocation();
+        // mapController.animateCamera(
+        //   CameraUpdate.newLatLng(
+        //     LatLng(gps.latitude, gps.longitude),
+        //   ),
+        // );
+        // //실제 gps
+        // longitude = gps.longitude;
+        // latitude = gps.latitude;
 
-        longitude = gps.longitude;
-        latitude = gps.latitude;
+
+        // 임시 테스트용
+        longitude = 127.1238;
+        latitude = 37.5301;
 
         bounds = _getVisibleRegion();
         //버튼 누르면 실행할 함수
@@ -320,5 +325,7 @@ class _MapPageState extends State<MapPage> {
   //     child: const Icon(Icons.zoom_in),
   //   );
   // } //zoomin
+
+  
 } //End
 

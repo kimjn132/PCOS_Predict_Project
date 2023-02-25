@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -9,9 +8,7 @@ import 'package:pcos_app/view/survey/pcos_result.dart';
 import 'package:pcos_app/view/survey/pcos_survey.dart';
 import 'package:pcos_app/view/survey/predict_view.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-
 import 'package:http/http.dart' as http;
-
 import 'dart:convert';
 
 class Survey extends StatefulWidget {
