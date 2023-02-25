@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:pcos_app/bottom_navigation.dart';
-import 'package:pcos_app/controller/map_provider.dart';
 import 'package:pcos_app/firebase_options.dart';
 import 'package:pcos_app/view/login/signin_screen.dart';
 import 'package:provider/provider.dart';
+
+import 'controller/map_favorite_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
