@@ -12,9 +12,9 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    //options: DefaultFirebaseOptions.currentPlatform,
+    name: "PCOS",
+    options: DefaultFirebaseOptions.currentPlatform,
   );
-
   await initializeDateFormatting();
 
   Get.put(BottomNavController());
