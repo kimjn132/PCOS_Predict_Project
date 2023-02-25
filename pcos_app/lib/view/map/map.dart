@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pcos_app/view/map/map_favorite.dart';
 import 'package:pcos_app/widget/map/hospital_data.dart';
@@ -254,10 +252,10 @@ class _MapPageState extends State<MapPage> {
 
 
 //clipboard에 복사하는 함수(미완성)
-  void copyClipboard(String txt) {
-    Clipboard.setData(ClipboardData(text: txt));
-    Get.snackbar('Message', '주소가 클립보드에 복사되었습니다.');
-  }
+  // void copyClipboard(String txt) {
+  //   Clipboard.setData(ClipboardData(text: txt));
+  //   Get.snackbar('Message', '주소가 클립보드에 복사되었습니다.');
+  // }
 
   //전화거는 함수
   // void makePhoneCall(String url) async {
