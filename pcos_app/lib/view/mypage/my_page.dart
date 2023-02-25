@@ -104,7 +104,7 @@ class MyPage extends StatelessWidget {
                 _buildListTile({
                   'title': '회원 탈퇴',
                   'icon': Icons.exit_to_app,
-                  'onTap': '회원 탈퇴',
+                  'onTap': () => _singOut(context),
                 }),
               ],
             )),
@@ -163,7 +163,7 @@ class MyPage extends StatelessWidget {
                       ),
                       TextButton(
                         child: const Text('로그아웃'),
-                        onPressed: () {
+                        onPressed: () async {
                           UserInfoStatic.uid = "";
                           UserInfoStatic.userId = "";
                           UserInfoStatic.userNickname = "";
@@ -190,8 +190,7 @@ class MyPage extends StatelessWidget {
       leading: Icon(data['icon']),
       title: Text(data['title']),
       trailing: const Icon(Icons.chevron_right),
-      onTap:
-          data['onTap'] is String ? () => print(data['onTap']) : data['onTap'],
+      onTap: data['onTap'],
     );
   }
 
@@ -207,6 +206,44 @@ class MyPage extends StatelessWidget {
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: const Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // '회원 탈퇴' 버튼이 눌렸을 때 호출되는 함수
+  void _singOut(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("회원 탈퇴"),
+          content: const Text("정말로 탈퇴 하시겠습니까?"),
+          actions: [
+            TextButton(
+              child: const Text("취소"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text("확인"),
+              onPressed: () async {
+                try {
+                  User user = FirebaseAuth.instance.currentUser!;
+                  await user.delete();
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                        builder: (context) => const SignInScreen()),
+                  );
+                } catch (e) {
+                  print('회원 탈퇴 에러: $e');
+                  _buildDialog(context, '회원 탈퇴 도중 오류가 발생했습니다.');
+                }
+              },
             ),
           ],
         );

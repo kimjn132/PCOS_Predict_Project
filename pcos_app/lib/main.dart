@@ -8,6 +8,7 @@ import 'package:pcos_app/firebase_options.dart';
 import 'package:pcos_app/view/login/signin_screen.dart';
 import 'package:provider/provider.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -24,13 +25,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => FavoriteProvider(),
       child: GetMaterialApp(
-        title: 'Flutter Demo',
+        debugShowMaterialGrid: false,
+        title: 'PCOS',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           bottomNavigationBarTheme: const BottomNavigationBarThemeData(

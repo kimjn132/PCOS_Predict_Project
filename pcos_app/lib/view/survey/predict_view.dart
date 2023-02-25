@@ -3,7 +3,6 @@ import 'package:pcos_app/tab_bar.dart';
 import 'package:pcos_app/view/survey/pcos_result.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-
 class PredictView extends StatefulWidget {
   const PredictView({super.key});
 
