@@ -264,6 +264,8 @@ class _SignInScreenState extends State<SignInScreen> {
       emailTextController.text = '';
       passwordTextController.text = '';
     } on FirebaseAuthException catch (e) {
+      print(e);
+
       switch (e.code) {
         case 'invalid-email':
           Navigator.pop(context);
