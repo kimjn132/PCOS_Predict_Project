@@ -9,14 +9,19 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HospitalData {
+  String data = "";
+  late List<dynamic> markersJson;
+  late List<Marker> markers;
+  
+  
   //병원 마커 찍기
-
   Future<List<Marker>> loadMarkers(BuildContext context) async {
-    String data = await DefaultAssetBundle.of(context)
+    data = await DefaultAssetBundle.of(context)
         .loadString('datas/hospital_json.json');
-    List<dynamic> markersJson = json.decode(data);
+    markersJson = json.decode(data);
+    
     // print(markersJson);
-    List<Marker> markers = markersJson.map((marker) {
+    markers = markersJson.map((marker) {
       return Marker(
         markerId: MarkerId(marker['name'].toString()),
         position: LatLng(marker['latitude'], marker['longitude']),
@@ -33,6 +38,7 @@ class HospitalData {
 
 //clipboard에 복사하는 함수(미완성)
   void copyClipboard(String txt) {
+    // txt = markers.
     Clipboard.setData(ClipboardData(text: txt));
     Get.snackbar('Message', '주소가 클립보드에 복사되었습니다.');
   }
