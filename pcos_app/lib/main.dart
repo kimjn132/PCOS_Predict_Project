@@ -7,15 +7,18 @@ import 'package:pcos_app/view/login/signin_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'controller/map_favorite_provider.dart';
+import 'firebase_options.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Firebase.apps.isEmpty) {
-    await Firebase.initializeApp();
-  }
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   await initializeDateFormatting();
 
   Get.put(BottomNavController());
+
   runApp(const MyApp());
 }
 
