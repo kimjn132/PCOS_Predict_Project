@@ -47,7 +47,7 @@ class _MyPostListState extends State<MyPostList>
           ),
           elevation: 0,
           title: const Text(
-            '내가 쓴 글',
+            '글 목록',
           ),
           bottom: TabBar(
             indicatorColor: Colors.redAccent,
@@ -81,6 +81,7 @@ class _MyPostListState extends State<MyPostList>
                 stream: FirebaseFirestore.instance
                     .collection('posts')
                     .where('pNickname', isEqualTo: UserInfoStatic.userNickname)
+                    .where('pDeleteDate', isEqualTo: '0')
                     .snapshots(),
                 builder: (context, snapshots) {
                   if (snapshots.hasError) {
@@ -110,6 +111,7 @@ class _MyPostListState extends State<MyPostList>
                 stream: FirebaseFirestore.instance
                     .collectionGroup('comments')
                     .where('cNickname', isEqualTo: UserInfoStatic.userNickname)
+                    .where('cDeleteDate', isEqualTo: '0')
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {

@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:core';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pcos_app/view/map/map_favorite.dart';
 import 'package:pcos_app/widget/map/hospital_data.dart';
+
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -40,11 +43,13 @@ class _MapPageState extends State<MapPage> {
   List<Marker> allMarkers = [];
   List<Marker> _markers = [];
 
+  bool check = false;
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body: Stack(
+      body: Stack(
         children: [
           GoogleMap(
             myLocationButtonEnabled: false,
@@ -55,7 +60,6 @@ class _MapPageState extends State<MapPage> {
             zoomGesturesEnabled: true,
             onMapCreated: (GoogleMapController controller) {
               mapController = controller;
-              print("object");
             },
             // 마커 찍어주기 (_markers 는 gps 위치 중심으로 반경 500m에 있는 마커 only)
             markers: Set<Marker>.from(_markers),
@@ -84,7 +88,6 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-
 // 1. 찍은 마커 정보 리스트뷰로 정보 제공
   Widget _buildcontainer() {
     return Padding(
@@ -98,12 +101,14 @@ class _MapPageState extends State<MapPage> {
             itemCount: _markers.length,
             itemBuilder: (BuildContext context, int index) {
               Marker marker = _markers[index];
-              String markerFinal = marker.infoWindow.title!;
-              String markersnippet = marker.infoWindow.snippet!;
-              print(marker.infoWindow.snippet!);
+              //print(_markers[0]);
+
+              String markerTitle = marker.infoWindow.title!;
+              String markerSnippet = marker.infoWindow.snippet!;
+              // print(markerSnippet);
               return Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: _boxes(markerFinal, markersnippet),
+                child: _boxes(markerTitle, markerSnippet),
               );
             },
             scrollDirection: Axis.horizontal,
@@ -115,35 +120,43 @@ class _MapPageState extends State<MapPage> {
 
 //1-1. 리스트 뷰 디자인
   Widget _boxes(String title, String snippet) {
-    return Container(
-      child: FittedBox(
-        child: Material(
-          color: const Color(0xFFF16A6E),
-          elevation: 14.0,
-          borderRadius: BorderRadius.circular(24.0),
-          shadowColor: const Color(0xFFE45256),
-          child: Row(
-            children: [
-              Container(
-                width: 270,
-                height: 220,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24.0),
-                    bottomLeft: Radius.circular(24.0),
-                  ),
-                ),
-                child: ClipRect(
-                  child: Column(
+  return FittedBox(
+    child: Material(
+      color: const Color(0xFFF16A6E),
+      elevation: 0.0,
+      borderRadius: BorderRadius.circular(24.0),
+      // shadowColor: const Color(0xFFE45256),
+      child: Row(
+        children: [
+          Container(
+            width: 400,
+            height: 260,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24.0),
+                bottomLeft: Radius.circular(24.0),
+              ),
+            ),
+            child: ClipRect(
+              child: Stack(
+                children: [
+                  Column(
                     children: [
-                      const SizedBox(height: 16.0),
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 28.0,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFF16A6E),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: const TextStyle(
+                                fontSize: 35.0,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFF16A6E),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 16.0),
@@ -152,38 +165,47 @@ class _MapPageState extends State<MapPage> {
                         child: Text(
                           snippet,
                           style: const TextStyle(
-                            fontSize: 18.0,
+                            fontSize: 30.0,
                             color: Color.fromARGB(255, 149, 141, 141),
                           ),
                         ),
                       ),
                     ],
                   ),
-                ),
-              ),
-              Container(
-                width: 20.0,
-                height: 200.0,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFFB5A5A),
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(24.0),
-                    bottomRight: Radius.circular(24.0),
+                  Positioned(
+                    top: 0.0,
+                    right: 0.0,
+                    child: 
+                    
+                    MapFavorite(name: title)
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          Container(
+            width: 20.0,
+            height: 200.0,
+            decoration: const BoxDecoration(
+              color: Color(0xFFFB5A5A),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(24.0),
+                bottomRight: Radius.circular(24.0),
+              ),
+            ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   // 지역 내 검색 바운더리 만들기
   LatLngBounds _getVisibleRegion() {
     try {
       LatLng center = LatLng(latitude, longitude);
-      double radius = 500; // 500m radius
+      double radius = 5000; // 500m radius
 
       // Earth's radius in meters
       const earthRadius = 6378137.0;
@@ -192,7 +214,6 @@ class _MapPageState extends State<MapPage> {
       double lng = center.longitude;
       double dLat = radius / earthRadius;
       double dLng = radius / (earthRadius * cos(pi / 180.0 * lat));
-      
 
       double swLat = lat - dLat * 180.0 / pi;
       double swLng = lng - dLng * 180.0 / pi;
@@ -231,8 +252,9 @@ class _MapPageState extends State<MapPage> {
   }
 
 
+
 //clipboard에 복사하는 함수(미완성)
-  void copyClipboard(String txt){
+  void copyClipboard(String txt) {
     Clipboard.setData(ClipboardData(text: txt));
     Get.snackbar('Message', '주소가 클립보드에 복사되었습니다.');
   }
@@ -251,7 +273,6 @@ class _MapPageState extends State<MapPage> {
   //   }
   // }
 
-
   //-----widget for floating buttong---------
 
 // gps값 잡기
@@ -259,15 +280,20 @@ class _MapPageState extends State<MapPage> {
     return // floatingActionButton을 누르게 되면 _goToTheLake 실행된다.
         FloatingActionButton(
       onPressed: () async {
-        var gps = await csvdata.getCurrentLocation();
-        mapController.animateCamera(
-          CameraUpdate.newLatLng(
-            LatLng(gps.latitude, gps.longitude),
-          ),
-        );
+        // var gps = await csvdata.getCurrentLocation();
+        // mapController.animateCamera(
+        //   CameraUpdate.newLatLng(
+        //     LatLng(gps.latitude, gps.longitude),
+        //   ),
+        // );
+        // //실제 gps
+        // longitude = gps.longitude;
+        // latitude = gps.latitude;
 
-        longitude = gps.longitude;
-        latitude = gps.latitude;
+
+        // 임시 테스트용
+        longitude = 127.1238;
+        latitude = 37.5301;
 
         bounds = _getVisibleRegion();
         //버튼 누르면 실행할 함수
@@ -280,7 +306,6 @@ class _MapPageState extends State<MapPage> {
       ),
     );
   } // gps floating button
-
 
 // 지도 줌인 줌아웃 - 만들어 놨으나 사용할 지 말지 미정
   // Widget zoomout() {
@@ -300,5 +325,7 @@ class _MapPageState extends State<MapPage> {
   //     child: const Icon(Icons.zoom_in),
   //   );
   // } //zoomin
+
+  
 } //End
 

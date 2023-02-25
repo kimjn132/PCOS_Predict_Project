@@ -32,11 +32,19 @@ class DatabaseHandler {
         'update schedule set content = ? where id = ?', [content, id]);
   }
 
+  // Future<void> deleteSchedule(int id, String today) async {
+  //   final Database db = await initializeDB(); // 해당 위치가 어딘지
+  //   await db.rawUpdate(
+  //     'update schedule set dropdate = ? where id = ?',
+  //     [today, id],
+  //   );
+  // }
+
   Future<void> deleteSchedule(int id, String today) async {
     final Database db = await initializeDB(); // 해당 위치가 어딘지
-    await db.rawUpdate(
-      'update schedule set dropdate = ? where id = ?',
-      [today, id],
+    await db.rawDelete(
+      'delete from schedule where id = ?',
+      [id],
     );
   }
 

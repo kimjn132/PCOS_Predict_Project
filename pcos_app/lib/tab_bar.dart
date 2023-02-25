@@ -5,7 +5,7 @@ import 'package:pcos_app/view/calendar/calendar.dart';
 import 'package:pcos_app/view/map/map.dart';
 import 'package:pcos_app/view/post/post_list_screen.dart';
 import 'package:pcos_app/view/mypage/my_page.dart';
-import 'package:pcos_app/view/survey/survey.dart';
+import 'package:pcos_app/view/survey/homeview.dart';
 
 class Tabbar extends GetView<BottomNavController> {
   const Tabbar({super.key});
@@ -18,7 +18,7 @@ class Tabbar extends GetView<BottomNavController> {
           index: controller.pageIndex.value, // 현재 페이지 확인
           children: [
             //여기에 페이지 추가
-            const Survey(),
+            const Homeview(),
             const MapPage(),
             const CalendarPage(),
             const PostListScreen(),
