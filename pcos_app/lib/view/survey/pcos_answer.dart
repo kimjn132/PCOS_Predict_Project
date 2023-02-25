@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pcos_app/view/survey/pcos_result.dart';
 
 class PCOSAnswerList {
@@ -21,20 +22,26 @@ class _AListState extends State<AList> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: Column(
-        children: [
-          TextField(
+    return Column(
+      children: [
+        Container(
+            height: MediaQuery.of(context).size.height * 0.2,
+            child: Lottie.network(
+                'https://assets5.lottiefiles.com/packages/lf20_zf6raviy.json')),
+        Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          width: MediaQuery.of(context).size.width * 0.8,
+          child: TextField(
+            textAlign: TextAlign.center,
             controller: heightController,
-            decoration: const InputDecoration(hintText: '키를 입력해주세요.'),
+            decoration: const InputDecoration(hintText: '키를 입력해주세요.(cm)'),
             keyboardType: TextInputType.number,
             onChanged: (value) {
               pcosResult.height = int.parse(heightController.text);
             },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 } //AList
@@ -51,20 +58,26 @@ class _BListState extends State<BList> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: Column(
-        children: [
-          TextField(
+    return Column(
+      children: [
+        Container(
+            height: MediaQuery.of(context).size.height * 0.2,
+            child: Lottie.network(
+                'https://assets5.lottiefiles.com/packages/lf20_t97bchh7.json')),
+        Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          width: MediaQuery.of(context).size.width * 0.8,
+          child: TextField(
+            textAlign: TextAlign.center,
             controller: weightController,
-            decoration: const InputDecoration(hintText: '몸무게를 입력해주세요.'),
+            decoration: const InputDecoration(hintText: '몸무게를 입력해주세요.(kg)'),
             keyboardType: TextInputType.number,
             onChanged: (value) {
               pcosResult.weight = int.parse(weightController.text);
             },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 } //BList
@@ -81,23 +94,31 @@ class _CListState extends State<CList> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: Column(
-        children: [
-          TextField(
+    return Column(
+      children: [
+        Container(
+            height: MediaQuery.of(context).size.height * 0.2,
+            child: Lottie.network(
+                'https://assets5.lottiefiles.com/packages/lf20_b4bzucqa.json')),
+        Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+            width: MediaQuery.of(context).size.width * 0.8,
+          child: TextField(
+            textAlign: TextAlign.center,
             controller: waistController,
-            decoration: const InputDecoration(hintText: '허리사이즈를 입력해주세요.'),
+            decoration: const InputDecoration(hintText: '허리사이즈를 입력해주세요.(inch)'),
             keyboardType: TextInputType.number,
             onChanged: (value) {
               pcosResult.waist = int.parse(waistController.text);
             },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 } //CList
+
+
 
 
 
