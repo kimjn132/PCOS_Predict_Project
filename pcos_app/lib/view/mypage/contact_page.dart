@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
@@ -223,11 +224,21 @@ class _ContactPageState extends State<ContactPage> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (!tecEmail.text.isEmail) {
+                          _showSnackBar('이메일');
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFFBA5A8),
                       ),
-                      child: const Text('보내기'),
+                      child: const Text(
+                        '보내기',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -235,6 +246,22 @@ class _ContactPageState extends State<ContactPage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void _showSnackBar(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '$text를 확인해주세요!',
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+          ),
+        ),
+        backgroundColor: Colors.green,
+        duration: const Duration(seconds: 2),
       ),
     );
   }
