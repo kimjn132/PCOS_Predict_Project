@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pcos_app/controller/map_favorite_provider.dart';
 import 'package:pcos_app/view/login/signIn_screen.dart';
+import 'package:pcos_app/view/map/map_favorite_example.dart';
 import 'package:pcos_app/view/mypage/contact_page.dart';
 import 'package:pcos_app/view/mypage/my_post.dart';
 import 'package:pcos_app/view/mypage/version_manage_page.dart';
+import 'package:provider/provider.dart';
 
 import '../../model/login/userInfo.dart';
 import 'chart_page.dart';
@@ -46,7 +49,13 @@ class MyPage extends StatelessWidget {
                 _buildListTile({
                   'title': '내가 좋아요한 병원',
                   'icon': Icons.favorite,
-                  'onTap': () => _buildDialog(context, '아직 준비중인 서비스입니다.'),
+                  'onTap': () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MapLikeExample()),
+                    );
+                  },
                 }),
                 _buildListTile({
                   'title': '내가 쓴 글',
@@ -158,7 +167,8 @@ class MyPage extends StatelessWidget {
                           UserInfoStatic.uid = "";
                           UserInfoStatic.userId = "";
                           UserInfoStatic.userNickname = "";
-                          await FirebaseAuth.instance.signOut();
+                          FirebaseAuth.instance.signOut();
+                          Provider.of<FavoriteProvider>(context, listen: false).clearFavorites();
                           Navigator.popUntil(context,
                               ModalRoute.withName(Navigator.defaultRouteName));
                         },
