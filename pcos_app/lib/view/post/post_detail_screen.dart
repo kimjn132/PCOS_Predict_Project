@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,10 +61,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               onPressed: () => Navigator.of(context).pop(),
             ),
             elevation: 0,
-            // title: const Text(
-            //   '검사 결과',
-            //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            // ),
           ),
           body: Padding(
             padding: const EdgeInsets.only(bottom: 70),
@@ -342,195 +336,216 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       child: Text('Error: ${snapshot.error}'),
                     );
                   } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                    return Center(
+                      child: Column(
+                        children: const [
+                          SizedBox(
+                            height: 300,
+                          ),
+                          CircularProgressIndicator(),
+                        ],
+                      ),
                     );
                   }
                 },
               ),
             ),
           ),
-          bottomSheet: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  child: TextField(
-                    minLines: 1,
-                    maxLines: 2,
-                    textAlign: TextAlign.start,
-                    controller: contentTextController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50)),
-                      hintText: '댓글',
+          bottomSheet: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: TextField(
+                      minLines: 1,
+                      maxLines: 2,
+                      textAlign: TextAlign.start,
+                      controller: contentTextController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50)),
+                        hintText: '댓글',
+                      ),
+                      textAlignVertical: TextAlignVertical.center,
                     ),
-                    textAlignVertical: TextAlignVertical.center,
                   ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.15,
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        commentInsert(widget.pid, contentTextController.text);
-                        contentTextController.text = '';
-                        _postDataFuture = getPostData(widget.pid);
-                      });
-                    },
-                    child: const Text('게시'),
+                  const SizedBox(
+                    width: 5,
                   ),
-                ),
-              ],
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.15,
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          commentInsert(widget.pid, contentTextController.text);
+                          contentTextController.text = '';
+                          _postDataFuture = getPostData(widget.pid);
+                        });
+                      },
+                      child: const Text('게시'),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
   }
-}
 
-Future<Map<String, dynamic>> getPostData(String pid) async {
-  final DocumentSnapshot documentSnapshot =
-      await FirebaseFirestore.instance.collection('posts').doc(pid).get();
-  final postData = documentSnapshot.data() as Map<String, dynamic>;
+  Future<Map<String, dynamic>> getPostData(String pid) async {
+    final DocumentSnapshot documentSnapshot =
+        await FirebaseFirestore.instance.collection('posts').doc(pid).get();
+    final postData = documentSnapshot.data() as Map<String, dynamic>;
 
-  // Retrieve the comments for the post
-  final commentsQuerySnapshot = await FirebaseFirestore.instance
-      .collection('posts')
-      .doc(pid)
-      .collection('comments')
-      .orderBy('cCommentDate')
-      .get();
-  final commentsData =
-      commentsQuerySnapshot.docs.map((doc) => doc.data()).toList();
+    // Retrieve the comments for the post
+    final commentsQuerySnapshot = await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(pid)
+        .collection('comments')
+        .orderBy('cCommentDate')
+        .get();
+    final commentsData =
+        commentsQuerySnapshot.docs.map((doc) => doc.data()).toList();
 
-  final snapshot = await FirebaseFirestore.instance
-      .collection('posts')
-      .doc(pid)
-      .collection('comments')
-      .orderBy('cCommentDate')
-      .get();
-  final docs = snapshot.docs;
-  final commentIds = docs.map((doc) => doc.id).toList();
-  postData['comments'] = commentsData;
-  postData['cid'] = commentIds;
+    final snapshot = await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(pid)
+        .collection('comments')
+        .orderBy('cCommentDate')
+        .get();
+    final docs = snapshot.docs;
+    final commentIds = docs.map((doc) => doc.id).toList();
+    postData['comments'] = commentsData;
+    postData['cid'] = commentIds;
 
-  return postData;
-}
+    return postData;
+  }
 
-deletePostCheckAlert(context, String pid) {
-  showDialog(
-      context: context,
-      barrierDismissible: false, // user must tap the button
-      builder: (BuildContext ctx) {
-        return AlertDialog(
-          title: const Text('삭제하기'),
-          content: const Text('정말로 삭제하시겠습니까?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(ctx).pop();
-                Navigator.pop(context);
-                deletePost(pid);
-                deleteCompleteSnackBar(context);
-              },
-              child: const Text(
-                '네',
-                style: TextStyle(color: Colors.red),
+  deletePostCheckAlert(context, String pid) {
+    showDialog(
+        context: context,
+        barrierDismissible: false, // user must tap the button
+        builder: (BuildContext ctx) {
+          return AlertDialog(
+            title: const Text('삭제하기'),
+            content: const Text('정말로 삭제하시겠습니까?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                  Navigator.pop(context);
+                  deletePost(pid);
+                  deleteCompleteSnackBar(context);
+                },
+                child: const Text(
+                  '네',
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('아니요'),
-            ),
-          ],
-        );
-      });
-}
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(),
+                child: const Text('아니요'),
+              ),
+            ],
+          );
+        });
+  }
 
-deletePost(String pid) {
-  FirebaseFirestore.instance
-      .collection('posts')
-      .doc(pid)
-      .update({'pDeleteDate': DateTime.now().toString().substring(0, 19)});
-}
+  deletePost(String pid) {
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(pid)
+        .update({'pDeleteDate': DateTime.now().toString().substring(0, 19)});
+  }
 
-deleteCompleteSnackBar(context) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(
-      content: Text('삭제되었습니다.'),
-      duration: Duration(seconds: 2),
-      backgroundColor: Colors.red,
-    ),
-  );
-}
+  deleteCompleteSnackBar(context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('삭제되었습니다.'),
+        duration: Duration(seconds: 2),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
 
-commentInsert(String pid, String content) {
-  FirebaseFirestore.instance
-      .collection('posts')
-      .doc(pid)
-      .collection('comments')
-      .add(
-    {
-      'pid': pid,
-      'cNickname': UserInfoStatic.userNickname,
-      'cContent': content,
-      'cViewCount': 0,
-      'cLikeCount': 0,
-      'cCommentDate': DateTime.now().toString().substring(0, 19),
-      'cUpdateDate': '0',
-      'cDeleteDate': '0',
-    },
-  );
-}
+  commentInsert(String pid, String content) {
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(pid)
+        .collection('comments')
+        .add(
+      {
+        'pid': pid,
+        'cNickname': UserInfoStatic.userNickname,
+        'cContent': content,
+        'cViewCount': 0,
+        'cLikeCount': 0,
+        'cCommentDate': DateTime.now().toString().substring(0, 19),
+        'cUpdateDate': '0',
+        'cDeleteDate': '0',
+      },
+    );
+  }
 
-updateComment(String pid, String cid, String cContent) {
-  FirebaseFirestore.instance
-      .collection('posts')
-      .doc(pid)
-      .collection('comments')
-      .doc(cid)
-      .update({
-    'cContent': cContent,
-    'cUpdateDate': DateTime.now().toString().substring(0, 19)
-  });
-}
+  updateComment(String pid, String cid, String cContent) {
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(pid)
+        .collection('comments')
+        .doc(cid)
+        .update({
+      'cContent': cContent,
+      'cUpdateDate': DateTime.now().toString().substring(0, 19)
+    });
+  }
 
-deleteCommentCheckAlert(ctx, context, pid, cid) {
-  return AlertDialog(
-    title: const Text('삭제하기'),
-    content: const Text('정말로 삭제하시겠습니까?'),
-    actions: [
-      TextButton(
-        onPressed: () {
-          Navigator.of(ctx).pop();
-          deleteComment(pid, cid);
-          deleteCompleteSnackBar(context);
-        },
-        child: const Text(
-          '네',
-          style: TextStyle(color: Colors.red),
+  deleteCommentCheckAlert(ctx, context, pid, cid) {
+    return AlertDialog(
+      title: const Text('삭제하기'),
+      content: const Text('정말로 삭제하시겠습니까?'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(ctx).pop();
+            deleteComment(pid, cid);
+            deleteCompleteSnackBar(context);
+          },
+          child: const Text(
+            '네',
+            style: TextStyle(color: Colors.red),
+          ),
         ),
-      ),
-      TextButton(
-        onPressed: () => Navigator.of(ctx).pop(),
-        child: const Text('아니요'),
-      ),
-    ],
-  );
-}
+        TextButton(
+          onPressed: () => Navigator.of(ctx).pop(),
+          child: const Text('아니요'),
+        ),
+      ],
+    );
+  }
 
-deleteComment(String pid, String cid) {
-  FirebaseFirestore.instance
-      .collection('posts')
-      .doc(pid)
-      .collection('comments')
-      .doc(cid)
-      .update({'cDeleteDate': DateTime.now().toString().substring(0, 19)});
+  deleteComment(String pid, String cid) {
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(pid)
+        .collection('comments')
+        .doc(cid)
+        .update({'cDeleteDate': DateTime.now().toString().substring(0, 19)});
+  }
+
+  sadf() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
 }
