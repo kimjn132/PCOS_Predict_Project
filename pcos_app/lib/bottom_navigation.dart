@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-enum PageName { survey, map, calendar, post, mypage }
+enum PageName {survey, map, calendar, post, mypage}
 
 class BottomNavController extends GetxController {
   static BottomNavController get to => Get.find();
   // 현재 페이지 기본 0번
-  RxInt pageIndex = 0.obs;
+  RxInt pageIndex = PageName.survey.index.obs;
   GlobalKey<NavigatorState> searchPageNaviationKey =
       GlobalKey<NavigatorState>();
   List<int> bottomHistory = [0];

@@ -12,7 +12,7 @@ class MapLikeExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hospitals = Provider.of<FavoriteProvider>(context).hospitalList;
-    final String userId = UserInfoStatic.userId;
+    final String userNickname = UserInfoStatic.userNickname;
 
     return MaterialApp(
       theme: ThemeData(
@@ -32,37 +32,89 @@ class MapLikeExample extends StatelessWidget {
             ),
             elevation: 0,
             title: const Text(
-              '좋아요 한 병원',
+              '방문한 병원',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
-          body: ListView.builder(
-            key: const ValueKey('hospital_list'),
-            itemCount: hospitals.length,
-            itemBuilder: (BuildContext context, int index) {
-              final record = hospitals[index];
-              final isFavorite =
-                  Provider.of<FavoriteProvider>(context).isFavorite(record);
-              return ListTile(
-                title: Text(record),
-                trailing: IconButton(
-                  icon: isFavorite
-                      ? const Icon(Icons.favorite)
-                      : const Icon(Icons.favorite_border),
-                  onPressed: () {
-                    if (isFavorite) {
-                      Provider.of<FavoriteProvider>(context, listen: false)
-                          .removeFavorite(record, userId);
-                    } else {
-                      Provider.of<FavoriteProvider>(context, listen: false)
-                          .addFavorite(record);
-                    }
-                  },
-                  color: const Color(0xFFF16A6E),
-                ),
-              );
-            },
-          )),
+
+          
+          body: 
+          Center(
+  child: StreamBuilder<List<String>>(
+    stream: Provider.of<FavoriteProvider>(context).hospitalListStream,
+    builder: (BuildContext context, AsyncSnapshot<List<String>> snapshots) {
+      if (snapshots.hasError) {
+        return const Center(
+            child: Text('데이터를 불러오는 중 오류가 발생하였습니다.'));
+      }
+      if (snapshots.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      final List<String> hospitalList = snapshots.data!;
+      if (hospitalList.isEmpty) {
+        return const Center(
+          child: Text('추가한 병원이 없습니다'),
+        );
+
+      
+      }
+
+      return ListView(
+        children: hospitalList.map((hospital) => ListTile(
+          title: Text(hospital),
+          trailing: IconButton(
+          icon:  Provider.of<FavoriteProvider>(context, listen: false).isFavorite(hospital)
+              ? const Icon(Icons.favorite)
+              : const Icon(Icons.favorite_border),
+          onPressed: () {
+            if (Provider.of<FavoriteProvider>(context, listen: false).isFavorite(hospital)) {
+              Provider.of<FavoriteProvider>(context, listen: false)
+                  .removeFavorite(hospital);
+            } else {
+              Provider.of<FavoriteProvider>(context, listen: false)
+                  .addFavorite(hospital);
+            }
+          },
+          color: const Color(0xFFF16A6E),
+        ),
+          )).toList(),
+      );
+    },
+  ),
+),
+
+
+
+          
+          // ListView.builder(
+          //   key: const ValueKey('hospital_list'),
+          //   itemCount: hospitals.length,
+          //   itemBuilder: (BuildContext context, int index) {
+          //     final record = hospitals[index];
+          //     final isFavorite =
+          //         Provider.of<FavoriteProvider>(context).isFavorite(record);
+          //     return ListTile(
+          //       title: Text(record),
+                // trailing: IconButton(
+                //   icon: isFavorite
+                //       ? const Icon(Icons.favorite)
+                //       : const Icon(Icons.favorite_border),
+                //   onPressed: () {
+                //     if (isFavorite) {
+                //       Provider.of<FavoriteProvider>(context, listen: false)
+                //           .removeFavorite(record);
+                //     } else {
+                //       Provider.of<FavoriteProvider>(context, listen: false)
+                //           .addFavorite(record);
+                //     }
+                //   },
+                //   color: const Color(0xFFF16A6E),
+                // ),
+          //     );
+          //   },
+          // )
+          ),
     );
   }
 }
