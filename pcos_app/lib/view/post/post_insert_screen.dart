@@ -73,13 +73,20 @@ class _PostInsertScreenState extends State<PostInsertScreen> {
                       maxLines: 15,
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      postingAction();
-                      Navigator.pop(context);
-                    },
-                    child: const Text(
-                      '완료',
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(40, 0, 40, 20),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(500, 50),
+                        backgroundColor: const Color(0xFFFBA5A8),
+                      ),
+                      onPressed: () {
+                        postingAction();
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        '작성',
+                      ),
                     ),
                   ),
                 ],
@@ -90,7 +97,6 @@ class _PostInsertScreenState extends State<PostInsertScreen> {
   }
 
   postingAction() {
-    print(UserInfoStatic.userNickname);
     FirebaseFirestore.instance.collection('posts').add(
       {
         'pNickname': UserInfoStatic.userNickname,

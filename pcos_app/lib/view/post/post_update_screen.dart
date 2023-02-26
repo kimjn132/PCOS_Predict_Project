@@ -81,16 +81,23 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
                       maxLines: 15,
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        Navigator.pop(context);
-                        updatePost(widget.pid, titleTextController.text,
-                            contentTextController.text);
-                      });
-                    },
-                    child: const Text(
-                      '완료',
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(40, 0, 40, 20),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(500, 50),
+                        backgroundColor: const Color(0xFFFBA5A8),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          Navigator.pop(context);
+                          updatePost(widget.pid, titleTextController.text,
+                              contentTextController.text);
+                        });
+                      },
+                      child: const Text(
+                        '수정',
+                      ),
                     ),
                   ),
                 ],
