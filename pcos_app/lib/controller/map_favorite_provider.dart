@@ -12,12 +12,7 @@ class FavoriteProvider extends ChangeNotifier {
 
   FavoriteProvider() {
     _favorites = [];
-    // _firestore.collection('hospital').where('userId', isEqualTo: userId).get().then((snapshot) {
-    //   for (var doc in snapshot.docs) {
-    //     _favorites.add(doc.data()['hospital']);
-    //   }
-    //   notifyListeners();
-    // });
+    
      _favoritesStream = _firestore.collection('hospital').where('userId', isEqualTo: userId).snapshots().map(
       (snapshot) => snapshot.docs.map((doc) => doc.data()['hospital'] as String).toList());
 
