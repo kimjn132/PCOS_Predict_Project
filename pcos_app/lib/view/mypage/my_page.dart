@@ -33,11 +33,6 @@ class MyPage extends StatelessWidget {
             Expanded(
                 child: ListView(
               children: [
-                // _buildListTile({
-                //   'title': '내 정보',
-                //   'icon': Icons.person,
-                //   'onTap': '내 정보',
-                // }),
                 _buildListTile({
                   'title': '검사 결과',
                   'icon': Icons.bar_chart,
