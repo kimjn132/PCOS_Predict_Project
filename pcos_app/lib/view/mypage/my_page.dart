@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pcos_app/bottom_navigation.dart';
 import 'package:pcos_app/controller/map_favorite_provider.dart';
 import 'package:pcos_app/view/login/signIn_screen.dart';
 import 'package:pcos_app/view/map/map_favorite_example.dart';
@@ -168,9 +170,11 @@ class MyPage extends StatelessWidget {
                           UserInfoStatic.userId = "";
                           UserInfoStatic.userNickname = "";
                           FirebaseAuth.instance.signOut();
-                          Provider.of<FavoriteProvider>(context, listen: false).clearFavorites();
+                          Provider.of<FavoriteProvider>(context, listen: false)
+                              .clearFavorites();
                           Navigator.popUntil(context,
                               ModalRoute.withName(Navigator.defaultRouteName));
+                          Get.reset();
                         },
                       ),
                     ],
