@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pcos_app/model/login/userInfo.dart';
 import 'package:pcos_app/view/login/sign_in_google_screen.dart';
 import 'package:pcos_app/view/login/signup_screen.dart';
 
+import '../../bottom_navigation.dart';
 import '../../tab_bar.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -32,23 +34,33 @@ class _SignInScreenState extends State<SignInScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+          backgroundColor: Colors.white,
           body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30, 100, 30, 30),
-                child: Image.asset('./images/pokemon.png'),
+            child: Center(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 100, 30, 0),
+                    child: Image.asset(
+                      './images/logo.png',
+                      width: 200,
+                    ),
+                  ),
+                  const Text('PCOS',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 40,
+                        color: Color(0xFFFBA5A8),
+                      )),
+                  emailTextField(),
+                  passwordTextField(),
+                  signInButton(),
+                  findAndSignUpButtonGruop(),
+                  signInwithGoogleButton(),
+                ],
               ),
-              emailTextField(),
-              passwordTextField(),
-              signInButton(),
-              findAndSignUpButtonGruop(),
-              signInwithGoogleButton(),
-            ],
-          ),
-        ),
-      )),
+            ),
+          )),
     );
   }
 
@@ -264,8 +276,6 @@ class _SignInScreenState extends State<SignInScreen> {
       emailTextController.text = '';
       passwordTextController.text = '';
     } on FirebaseAuthException catch (e) {
-      print(e);
-
       switch (e.code) {
         case 'invalid-email':
           Navigator.pop(context);
@@ -331,7 +341,8 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void toMainScreen() {
-    // Navigator.pop(context);
+    BottomNavController bottomNavController = BottomNavController();
+    Get.put(bottomNavController);
     Navigator.push(
       context,
       MaterialPageRoute(

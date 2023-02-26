@@ -8,7 +8,6 @@ import 'package:pcos_app/firebase_options.dart';
 import 'package:pcos_app/view/login/signin_screen.dart';
 import 'package:provider/provider.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -33,11 +32,9 @@ class MyApp extends StatelessWidget {
         debugShowMaterialGrid: false,
         title: 'PCOS',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-            selectedItemColor: Color(0xFFF16A6E)
-          )
-        ),
+            primarySwatch: Colors.blue,
+            bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+                selectedItemColor: Color(0xFFF16A6E))),
         debugShowCheckedModeBanner: false,
         home: const SignInScreen(),
       ),
