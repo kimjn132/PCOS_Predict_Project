@@ -26,7 +26,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late FocusNode passwordCheckFocusNode;
   late FocusNode nicknameFocusNode;
 
-  late String emailDuplicationText = "";
+  late String emailText = "";
   late String passwordText = "";
   late String passwordCheckText = "";
   late String nicknameText = "";
@@ -56,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     focustListener();
 
     // text for email duplication check
-    emailDuplicationText = '';
+    emailText = '';
     passwordText = '';
     passwordCheckText = '';
     nicknameText = '';
@@ -85,221 +85,204 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             elevation: 0,
           ),
-          body: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.fromLTRB(40, 30, 40, 0),
-                child: Text(
-                  '앱이름?',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(40, 30, 40, 0),
+                  child: Text(
+                    '앱이름?',
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(40, 30, 40, 10),
-                child: SizedBox(
-                  width: 500,
+                emailTextField(),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 50),
+                      child: Text(
+                        emailText,
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: emailColor ? Colors.blue : Colors.red),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                   child: TextField(
-                    controller: emailTextController,
+                    controller: passwordTextController,
                     decoration: InputDecoration(
                       label: Text(
-                        '이메일',
+                        '비밀번호',
                         style: TextStyle(
-                            color: emailColor ? Colors.blue : Colors.red),
+                            color: passwordColor ? Colors.blue : Colors.red),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             width: 1,
-                            color: emailColor ? Colors.blue : Colors.red),
+                            color: passwordColor ? Colors.blue : Colors.red),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           width: 1,
-                          color: emailColor ? Colors.blue : Colors.red,
+                          color: passwordColor ? Colors.blue : Colors.red,
                         ),
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                    focusNode: emailFocusNode,
+                    focusNode: passwordFocusNode,
                   ),
                 ),
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 50),
-                    child: Text(
-                      emailDuplicationText,
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: emailColor ? Colors.blue : Colors.red),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 50),
+                      child: Text(
+                        passwordText,
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: passwordColor ? Colors.blue : Colors.red),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                child: TextField(
-                  controller: passwordTextController,
-                  decoration: InputDecoration(
-                    label: Text(
-                      '비밀번호',
-                      style: TextStyle(
-                          color: passwordColor ? Colors.blue : Colors.red),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                  child: TextField(
+                    controller: passwordCheckTextController,
+                    decoration: InputDecoration(
+                      label: Text(
+                        '비밀번호 재확인',
+                        style: TextStyle(
+                            color: passwordCheckColor ? Colors.blue : Colors.red),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: passwordCheckColor ? Colors.blue : Colors.red),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
                           width: 1,
-                          color: passwordColor ? Colors.blue : Colors.red),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 1,
-                        color: passwordColor ? Colors.blue : Colors.red,
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  focusNode: passwordFocusNode,
-                ),
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 50),
-                    child: Text(
-                      passwordText,
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: passwordColor ? Colors.blue : Colors.red),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                child: TextField(
-                  controller: passwordCheckTextController,
-                  decoration: InputDecoration(
-                    label: Text(
-                      '비밀번호 재확인',
-                      style: TextStyle(
-                          color: passwordCheckColor ? Colors.blue : Colors.red),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 1,
-                          color: passwordCheckColor ? Colors.blue : Colors.red),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 1,
-                        color: passwordCheckColor ? Colors.blue : Colors.red,
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  focusNode: passwordCheckFocusNode,
-                ),
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 50),
-                    child: Text(
-                      passwordCheckText,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: passwordCheckColor ? Colors.blue : Colors.red,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                child: TextField(
-                  controller: nicknameTextController,
-                  decoration: InputDecoration(
-                    label: Text(
-                      '닉네임',
-                      style: TextStyle(
-                          color: nicknameColor ? Colors.blue : Colors.red),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 1,
-                          color: nicknameColor ? Colors.blue : Colors.red),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 1,
-                        color: nicknameColor ? Colors.blue : Colors.red,
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  focusNode: nicknameFocusNode,
-                ),
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 50),
-                    child: Text(
-                      nicknameText,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: nicknameColor ? Colors.blue : Colors.red,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(500, 50),
-                    backgroundColor: const Color(0xFFFBA5A8),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      signUpNullCheck();
-                    });
-                  },
-                  child: const Text(
-                    '회원가입',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'nullMessage',
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
+                          color: passwordCheckColor ? Colors.blue : Colors.red,
                         ),
-                        duration: Duration(seconds: 2),
-                        backgroundColor: Colors.red,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    );
-                  });
-                },
-                child: const Text(
-                  'Test',
+                    ),
+                    focusNode: passwordCheckFocusNode,
+                  ),
                 ),
-              ),
-            ],
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 50),
+                      child: Text(
+                        passwordCheckText,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: passwordCheckColor ? Colors.blue : Colors.red,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                  child: TextField(
+                    controller: nicknameTextController,
+                    decoration: InputDecoration(
+                      label: Text(
+                        '닉네임',
+                        style: TextStyle(
+                            color: nicknameColor ? Colors.blue : Colors.red),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: nicknameColor ? Colors.blue : Colors.red),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: nicknameColor ? Colors.blue : Colors.red,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    focusNode: nicknameFocusNode,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 50),
+                      child: Text(
+                        nicknameText,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: nicknameColor ? Colors.blue : Colors.red,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(500, 50),
+                      backgroundColor: const Color(0xFFFBA5A8),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        signUpNullCheck();
+                      });
+                    },
+                    child: const Text(
+                      '회원가입',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
+        ),
+      ),
+    );
+  }
+
+  emailTextField() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(40, 30, 40, 10),
+      child: SizedBox(
+        width: 500,
+        child: TextField(
+          controller: emailTextController,
+          decoration: InputDecoration(
+            label: Text(
+              '이메일',
+              style: TextStyle(color: emailColor ? Colors.blue : Colors.red),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  width: 1, color: emailColor ? Colors.blue : Colors.red),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 1,
+                color: emailColor ? Colors.blue : Colors.red,
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          focusNode: emailFocusNode,
         ),
       ),
     );
@@ -318,18 +301,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         case 'invalid-email':
           setState(() {
             emailColor = false;
-            emailDuplicationText = '이메일 형식이 틀렸습니다.';
+            emailText = '이메일 형식이 틀렸습니다.';
           });
           break;
         case 'weak-password':
           setState(() {
             emailColor = false;
-            emailDuplicationText = 'sadf 형식이 틀렸습니다.';
+            emailText = '비밀번호를 6자 이상 입력해주세요.';
           });
           break;
         default:
           emailColor = false;
-          emailDuplicationText = '이메일 형식이.';
+          emailText = '오류가 발생했습니다. 고객센터에 문의해 주시기 바랍니다.';
       }
     }
   }
@@ -389,13 +372,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       // emailCheck = querySnapshot.docs.isEmpty;
       setState(() {
         emailColor = true;
-        emailDuplicationText = "사용가능한 이메일 입니다.";
+        emailText = "사용가능한 이메일 입니다.";
       });
     } else {
       // emailCheck = querySnapshot.docs.isEmpty;
       setState(() {
         emailColor = false;
-        emailDuplicationText = "이미 존재하는 이메일 입니다.";
+        emailText = "이미 존재하는 이메일 입니다.";
       });
     }
   }
@@ -418,7 +401,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (emailTextController.text.trim().isEmpty) {
           setState(() {
             emailColor = false;
-            emailDuplicationText = '이메일을 입력하세요.';
+            emailText = '이메일을 입력하세요.';
           });
         }
         if (emailTextController.text.trim().isNotEmpty) {
@@ -474,18 +457,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
             nicknameColor = false;
             nicknameText = '닉네임을 입력하세요.';
           });
-        } else if (nicknameTextController.text.trim().length < 10) {
-          setState(() {
-            nicknameColor = false;
-            nicknameText = '중복검사 해야한다';
-          });
         } else {
-          setState(() {
-            nicknameColor = true;
-            nicknameText = '사용가능한 닉네임입니다.';
-          });
+          nicknameDuplicationCheck();
         }
       }
     });
+  }
+
+  Future<void> nicknameDuplicationCheck() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('userNickname', isEqualTo: nicknameTextController.text)
+        .get();
+    if (querySnapshot.docs.isEmpty) {
+      setState(() {
+        nicknameColor = true;
+        nicknameText = "사용가능한 닉네임 입니다.";
+      });
+    } else {
+      setState(() {
+        nicknameColor = false;
+        nicknameText = "이미 존재하는 닉네임 입니다.";
+      });
+    }
   }
 }
