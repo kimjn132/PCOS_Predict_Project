@@ -15,6 +15,7 @@ class MapLikeExample extends StatelessWidget {
     final String userNickname = UserInfoStatic.userNickname;
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.blueGrey[800], // 앱바 색상 변경
         appBarTheme: const AppBarTheme(
@@ -64,7 +65,7 @@ class MapLikeExample extends StatelessWidget {
         children: hospitalList.map((hospital) => ListTile(
           title: Text(hospital),
           trailing: IconButton(
-          icon:  Provider.of<FavoriteProvider>(context, listen: false).isFavorite(hospital)
+          icon:  Provider.of<FavoriteProvider>(context).isFavorite(hospital)
               ? const Icon(Icons.favorite)
               : const Icon(Icons.favorite_border),
           onPressed: () {
