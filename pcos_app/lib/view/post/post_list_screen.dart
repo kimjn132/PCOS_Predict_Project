@@ -4,8 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:pcos_app/bottom_navigation.dart';
 import 'package:pcos_app/model/login/userinfo.dart';
 
 import 'package:pcos_app/view/post/post_detail_screen.dart';
@@ -141,7 +139,6 @@ class _PostListScreenState extends State<PostListScreen> {
                 ),
                 TimeCompare(date: postList.pPostDate),
               ]),
-              trailing: const Text('data'),
             ),
           )
         : const SizedBox();

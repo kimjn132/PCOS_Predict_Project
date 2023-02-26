@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pcos_app/view/login/signup_success_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -13,6 +14,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   late TextEditingController emailTextController;
   late TextEditingController passwordTextController;
+  late TextEditingController passwordCheckTextController;
   late TextEditingController nicknameTextController;
 
   // // boolean for email duplication check
@@ -20,18 +22,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   // FocusNode for email duplication check
   late FocusNode emailFocusNode;
+  late FocusNode passwordFocusNode;
+  late FocusNode passwordCheckFocusNode;
+  late FocusNode nicknameFocusNode;
 
-  // text for email duplication check
-  String emailDuplicationText = "";
+  late String emailText = "";
+  late String passwordText = "";
+  late String passwordCheckText = "";
+  late String nicknameText = "";
 
-  // email duplication check text color
-  Color testColor = Colors.blue;
+  bool emailColor = true;
+  bool passwordColor = true;
+  bool passwordCheckColor = true;
+  bool nicknameColor = true;
 
   @override
   void initState() {
     super.initState();
     emailTextController = TextEditingController();
     passwordTextController = TextEditingController();
+    passwordCheckTextController = TextEditingController();
     nicknameTextController = TextEditingController();
 
     // // boolean for email duplication check
@@ -39,83 +49,241 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     // email duplication
     emailFocusNode = FocusNode();
-    emailFocusNode.addListener(() {
-      if (!emailFocusNode.hasFocus) {
-        if (emailTextController.text.isEmpty) {
-          emailNullCheck();
-        }
-        if (emailTextController.text.isNotEmpty) {
-          emailDuplicationCheck();
-        }
-      }
-    });
+    passwordFocusNode = FocusNode();
+    passwordCheckFocusNode = FocusNode();
+    nicknameFocusNode = FocusNode();
+
+    focustListener();
 
     // text for email duplication check
-    emailDuplicationText = '';
+    emailText = '';
+    passwordText = '';
+    passwordCheckText = '';
+    nicknameText = '';
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 100,
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.blueGrey[800], // 앱바 색상 변경
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFFFBA5A8), // 앱바 색상 변경
+          foregroundColor: Colors.white, // 앱바 텍스트 색상 변경
+          systemOverlayStyle: SystemUiOverlayStyle.light,
+        ),
+      ),
+      home: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            elevation: 0,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 200,
-                child: TextField(
-                  controller: emailTextController,
-                  decoration: const InputDecoration(
-                    label: Text('Email'),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(40, 30, 40, 0),
+                  child: Text(
+                    '앱이름?',
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                  focusNode: emailFocusNode,
                 ),
+                emailTextField(),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 50),
+                      child: Text(
+                        emailText,
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: emailColor ? Colors.blue : Colors.red),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                  child: TextField(
+                    controller: passwordTextController,
+                    decoration: InputDecoration(
+                      label: Text(
+                        '비밀번호',
+                        style: TextStyle(
+                            color: passwordColor ? Colors.blue : Colors.red),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: passwordColor ? Colors.blue : Colors.red),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: passwordColor ? Colors.blue : Colors.red,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    focusNode: passwordFocusNode,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 50),
+                      child: Text(
+                        passwordText,
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: passwordColor ? Colors.blue : Colors.red),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                  child: TextField(
+                    controller: passwordCheckTextController,
+                    decoration: InputDecoration(
+                      label: Text(
+                        '비밀번호 재확인',
+                        style: TextStyle(
+                            color: passwordCheckColor ? Colors.blue : Colors.red),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: passwordCheckColor ? Colors.blue : Colors.red),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: passwordCheckColor ? Colors.blue : Colors.red,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    focusNode: passwordCheckFocusNode,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 50),
+                      child: Text(
+                        passwordCheckText,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: passwordCheckColor ? Colors.blue : Colors.red,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                  child: TextField(
+                    controller: nicknameTextController,
+                    decoration: InputDecoration(
+                      label: Text(
+                        '닉네임',
+                        style: TextStyle(
+                            color: nicknameColor ? Colors.blue : Colors.red),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: nicknameColor ? Colors.blue : Colors.red),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: nicknameColor ? Colors.blue : Colors.red,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    focusNode: nicknameFocusNode,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 50),
+                      child: Text(
+                        nicknameText,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: nicknameColor ? Colors.blue : Colors.red,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(500, 50),
+                      backgroundColor: const Color(0xFFFBA5A8),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        signUpNullCheck();
+                      });
+                    },
+                    child: const Text(
+                      '회원가입',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  emailTextField() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(40, 30, 40, 10),
+      child: SizedBox(
+        width: 500,
+        child: TextField(
+          controller: emailTextController,
+          decoration: InputDecoration(
+            label: Text(
+              '이메일',
+              style: TextStyle(color: emailColor ? Colors.blue : Colors.red),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  width: 1, color: emailColor ? Colors.blue : Colors.red),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 1,
+                color: emailColor ? Colors.blue : Colors.red,
               ),
-              TextButton(
-                onPressed: () {
-                  emailDuplicationCheck();
-                },
-                child: const Text('data'),
-              ),
-            ],
-          ),
-          Text(
-            emailDuplicationText,
-          ),
-          TextField(
-            controller: passwordTextController,
-            decoration: const InputDecoration(
-              label: Text('PassWord'),
+              borderRadius: BorderRadius.circular(20),
             ),
           ),
-          TextField(
-            controller: nicknameTextController,
-            decoration: const InputDecoration(
-              label: Text('Nickname'),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              signUpNullCheck();
-            },
-            child: const Text(
-              'Sign Up',
-            ),
-          ),
-          const Text('비밀번호는 6자(영문 기준) 이상이어야 합니다.'),
-          TextButton(
-            onPressed: () {
-              emailDuplicationCheck();
-            },
-            child: const Text(
-              'Test',
-            ),
-          ),
-        ],
+          focusNode: emailFocusNode,
+        ),
       ),
     );
   }
@@ -132,16 +300,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
       switch (e.code) {
         case 'invalid-email':
           setState(() {
-            emailDuplicationText = '이메일 형식이 틀렸습니다.';
+            emailColor = false;
+            emailText = '이메일 형식이 틀렸습니다.';
           });
           break;
         case 'weak-password':
           setState(() {
-            emailDuplicationText = 'sadf 형식이 틀렸습니다.';
+            emailColor = false;
+            emailText = '비밀번호를 6자 이상 입력해주세요.';
           });
           break;
         default:
-          emailDuplicationText = '이메일 형식이.';
+          emailColor = false;
+          emailText = '오류가 발생했습니다. 고객센터에 문의해 주시기 바랍니다.';
       }
     }
   }
@@ -163,10 +334,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   signUpNullCheck() {
     if (emailTextController.text.trim().isEmpty) {
-      nullCkeckErrorSnackBar('이메일을 입력하세요.');
+      setState(() {
+        emailColor = false;
+        nullCkeckErrorSnackBar('이메일을 입력하세요.');
+      });
     } else if (passwordTextController.text.trim().isEmpty) {
+      passwordColor = false;
       nullCkeckErrorSnackBar('비밀번호를 입력하세요.');
-    } else if (nicknameTextController.text.isEmpty) {
+    } else if (passwordCheckTextController.text.trim().isEmpty) {
+      passwordCheckColor = false;
+      nullCkeckErrorSnackBar('비밀번호를 확인해주세요.');
+    } else if (nicknameTextController.text.trim().isEmpty) {
       nullCkeckErrorSnackBar('닉네임을 입력하세요.');
     } else {
       signUpAction();
@@ -185,12 +363,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
   }
 
-  emailNullCheck() {
-    setState(() {
-      emailDuplicationText = '이메일을 입력하세요.';
-    });
-  }
-
   Future<void> emailDuplicationCheck() async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('users')
@@ -199,12 +371,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (querySnapshot.docs.isEmpty) {
       // emailCheck = querySnapshot.docs.isEmpty;
       setState(() {
-        emailDuplicationText = "사용가능한 이메일 입니다.";
+        emailColor = true;
+        emailText = "사용가능한 이메일 입니다.";
       });
     } else {
       // emailCheck = querySnapshot.docs.isEmpty;
       setState(() {
-        emailDuplicationText = "이미 존재하는 이메일 입니다.";
+        emailColor = false;
+        emailText = "이미 존재하는 이메일 입니다.";
       });
     }
   }
@@ -219,5 +393,92 @@ class _SignUpScreenState extends State<SignUpScreen> {
         },
       ),
     );
+  }
+
+  focustListener() {
+    emailFocusNode.addListener(() {
+      if (!emailFocusNode.hasFocus) {
+        if (emailTextController.text.trim().isEmpty) {
+          setState(() {
+            emailColor = false;
+            emailText = '이메일을 입력하세요.';
+          });
+        }
+        if (emailTextController.text.trim().isNotEmpty) {
+          emailDuplicationCheck();
+        }
+      }
+    });
+    passwordFocusNode.addListener(() {
+      if (!passwordFocusNode.hasFocus) {
+        if (passwordTextController.text.trim().isEmpty) {
+          setState(() {
+            passwordColor = false;
+            passwordText = '비밀번호를 입력하세요';
+          });
+        } else if (passwordTextController.text.trim().length < 6) {
+          setState(() {
+            passwordColor = false;
+            passwordText = '비밀번호는 6자 이상 입력해야 합니다.';
+          });
+        } else {
+          setState(() {
+            passwordColor = true;
+            passwordText = '사용가능합니다.';
+          });
+        }
+      }
+    });
+    passwordCheckFocusNode.addListener(() {
+      if (!passwordCheckFocusNode.hasFocus) {
+        if (passwordCheckTextController.text.trim().isEmpty) {
+          setState(() {
+            passwordCheckColor = false;
+            passwordCheckText = '비밀번호를 입력하세요';
+          });
+        } else if (passwordCheckTextController.text.trim() !=
+            passwordTextController.text.trim()) {
+          setState(() {
+            passwordCheckColor = false;
+            passwordCheckText = '비밀번호가 일치하지 않습니다.';
+          });
+        } else {
+          setState(() {
+            passwordCheckColor = true;
+            passwordCheckText = '비밀번호가 일치합니다.';
+          });
+        }
+      }
+    });
+    nicknameFocusNode.addListener(() {
+      if (!nicknameFocusNode.hasFocus) {
+        if (nicknameTextController.text.trim().isEmpty) {
+          setState(() {
+            nicknameColor = false;
+            nicknameText = '닉네임을 입력하세요.';
+          });
+        } else {
+          nicknameDuplicationCheck();
+        }
+      }
+    });
+  }
+
+  Future<void> nicknameDuplicationCheck() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('userNickname', isEqualTo: nicknameTextController.text)
+        .get();
+    if (querySnapshot.docs.isEmpty) {
+      setState(() {
+        nicknameColor = true;
+        nicknameText = "사용가능한 닉네임 입니다.";
+      });
+    } else {
+      setState(() {
+        nicknameColor = false;
+        nicknameText = "이미 존재하는 닉네임 입니다.";
+      });
+    }
   }
 }

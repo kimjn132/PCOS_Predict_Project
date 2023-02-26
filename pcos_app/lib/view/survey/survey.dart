@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pcos_app/model/login/userInfo.dart';
 import 'package:pcos_app/view/survey/pcos_answer.dart';
 import 'package:pcos_app/view/survey/pcos_loding.dart';
 import 'package:pcos_app/view/survey/pcos_result.dart';
@@ -36,14 +37,18 @@ class _SurveyState extends State<Survey> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('설문조사'),
-        backgroundColor: Color(0xFFFBA5A8),
-        automaticallyImplyLeading: false,
-      ),
-      body: Column(
-        children: <Widget>[pages()],
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },child: Scaffold(
+        appBar: AppBar(
+          title: const Text('설문조사'),
+          backgroundColor: Color(0xFFFBA5A8),
+          automaticallyImplyLeading: false,
+        ),
+        body: Column(
+          children: <Widget>[pages()],
+        ),
       ),
     );
   }
@@ -389,9 +394,10 @@ class _SurveyState extends State<Survey> {
   //firebase에 키,몸무게, 예측값을 저장하는 함수
   addFirebase(int height, int weight, double predict) {
     print('파이어베이스 입력시작');
+    print(UserInfoStatic.userNickname);
     FirebaseFirestore.instance
         .collection('survey_result')
-        .add({'height': height, 'weight': weight, 'predict': predict});
+        .add({'height': height, 'weight': weight, 'predict': predict,'userNickname': UserInfoStatic.userNickname, 'date': DateTime.now().toString().substring(0, 19)});
     print('파이어베이스 입력종료');
   }
 

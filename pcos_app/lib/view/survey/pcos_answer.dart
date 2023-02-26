@@ -17,9 +17,28 @@ class AList extends StatefulWidget {
   State<AList> createState() => _AListState();
 }
 
+
 class _AListState extends State<AList> {
   TextEditingController heightController = TextEditingController();
 
+    late int height;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    height = pcosResult.height;
+    heightController.text = '';
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    heightController.dispose();
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,8 +55,14 @@ class _AListState extends State<AList> {
             controller: heightController,
             decoration: const InputDecoration(hintText: '키를 입력해주세요.(cm)'),
             keyboardType: TextInputType.number,
-            onChanged: (value) {
-              pcosResult.height = int.parse(heightController.text);
+            onChanged: (value) {if (value.isEmpty) {
+                heightController.text = '';
+              } else {
+                height = int.parse(value);
+              }
+              setState(() {
+                pcosResult.height = height;
+              });
             },
           ),
         ),
@@ -56,6 +81,23 @@ class BList extends StatefulWidget {
 class _BListState extends State<BList> {
   TextEditingController weightController = TextEditingController();
 
+  late int weight;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    weight = pcosResult.weight;
+    weightController.text = '';
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    weightController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -72,8 +114,14 @@ class _BListState extends State<BList> {
             controller: weightController,
             decoration: const InputDecoration(hintText: '몸무게를 입력해주세요.(kg)'),
             keyboardType: TextInputType.number,
-            onChanged: (value) {
-              pcosResult.weight = int.parse(weightController.text);
+            onChanged: (value) {if (value.isEmpty) {
+                weightController.text = '';
+              } else {
+                weight = int.parse(value);
+              }
+              setState(() {
+                pcosResult.weight = weight;
+              });
             },
           ),
         ),
@@ -92,6 +140,23 @@ class CList extends StatefulWidget {
 class _CListState extends State<CList> {
   TextEditingController waistController = TextEditingController();
 
+      late int waist;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    waist = pcosResult.waist;
+    waistController.text = '';
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    waistController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -108,8 +173,14 @@ class _CListState extends State<CList> {
             controller: waistController,
             decoration: const InputDecoration(hintText: '허리사이즈를 입력해주세요.(inch)'),
             keyboardType: TextInputType.number,
-            onChanged: (value) {
-              pcosResult.waist = int.parse(waistController.text);
+            onChanged: (value) {if (value.isEmpty) {
+                waistController.text = '';
+              } else {
+                waist = int.parse(value);
+              }
+              setState(() {
+                pcosResult.waist = waist;
+              });
             },
           ),
         ),

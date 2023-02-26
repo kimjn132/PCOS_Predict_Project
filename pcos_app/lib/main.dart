@@ -11,9 +11,9 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: "PCOS",
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   await initializeDateFormatting();
 
   Get.put(BottomNavController());
@@ -24,13 +24,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => FavoriteProvider(),
       child: GetMaterialApp(
-        title: 'Flutter Demo',
+        debugShowMaterialGrid: false,
+        title: 'PCOS',
         theme: ThemeData(
             primarySwatch: Colors.blue,
             bottomNavigationBarTheme: const BottomNavigationBarThemeData(

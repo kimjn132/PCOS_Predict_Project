@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
@@ -12,6 +14,7 @@ class _ContactPageState extends State<ContactPage> {
   late TextEditingController tecEmail;
   late TextEditingController tecContent;
   late bool _isChecked;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   String dropdownValue = '질문 유형을 선택해 주세요.';
   String? _selectedType;
@@ -223,11 +226,29 @@ class _ContactPageState extends State<ContactPage> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (!(tecEmail.text.isEmail)) {
+                          _showSnackBar('이메일');
+                        } else if (_selectedType == null) {
+                          _showSnackBar('문의 유형');
+                        } else if (tecContent.text.isEmpty) {
+                          _showSnackBar('문의 내용');
+                        } else if (_isChecked == false) {
+                          _showSnackBar('이메일 정보 제공 동의');
+                        } else {
+                          _saveData();
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFFBA5A8),
                       ),
-                      child: const Text('보내기'),
+                      child: const Text(
+                        '보내기',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -236,6 +257,57 @@ class _ContactPageState extends State<ContactPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showSnackBar(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '$text를 확인해주세요!',
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+          ),
+        ),
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _saveData() async {
+    try {
+      await _firestore.collection('questions').add({
+        'email': tecEmail.text,
+        'type': _selectedType,
+        'content': tecContent.text,
+        'date': FieldValue.serverTimestamp(),
+      });
+      _buildDialog(context, '작성하신 문의저장이 완료되었습니다.', '저장 완료');
+    } catch (e) {
+      _buildDialog(context, '작성하신 문의저장중 에러가 발생했습니다.', '저장 실패');
+    }
+  }
+
+  void _buildDialog(BuildContext context, String content, String title) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('확인'),
+              onPressed: () {
+                Navigator.pop(context); // 다이얼로그 닫기
+                Navigator.pop(context); // 전 페이지로 이동
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
