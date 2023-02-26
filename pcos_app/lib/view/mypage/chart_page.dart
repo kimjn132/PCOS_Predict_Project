@@ -1,14 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../model/login/userInfo.dart';
+import '../../model/mypage/chart_model.dart';
 import 'chart.dart';
 
-class ChartPage extends StatelessWidget {
+class ChartPage extends StatefulWidget {
   const ChartPage({Key? key}) : super(key: key);
+
+  @override
+  State<ChartPage> createState() => _ChartPageState();
+}
+
+class _ChartPageState extends State<ChartPage> {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowMaterialGrid: false,
       theme: ThemeData(
         primaryColor: Colors.blueGrey[800], // 앱바 색상 변경
         appBarTheme: const AppBarTheme(
@@ -55,11 +66,28 @@ class ChartPage extends StatelessWidget {
                 ),
               ),
               Card(
-                child: Chart(
-                  data: [
-                    Data(date: DateTime(2022, 2, 1), value: 20),
-                    Data(date: DateTime(2022, 2, 2), value: 30),
-                  ],
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: firestore
+                      .collection('survey_result')
+                      .where('userNickname',
+                          isEqualTo: UserInfoStatic.userNickname)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    }
+                    final chartModels = chartModelsFromSnapshot(snapshot.data!);
+                    return Card(
+                      child: Chart(
+                        data: chartModels
+                            .map((chartModel) => Data(
+                                  date: chartModel.date,
+                                  value: chartModel.predict,
+                                ))
+                            .toList(),
+                      ),
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 16), // 각 차트 사이에 간격 추가
@@ -83,17 +111,33 @@ class ChartPage extends StatelessWidget {
                 ),
               ),
               Card(
-                child: Chart(
-                  data: [
-                    Data(date: DateTime(2022, 2, 3), value: 40),
-                    Data(date: DateTime(2022, 2, 4), value: 80),
-                    Data(date: DateTime(2022, 2, 5), value: 60),
-                    Data(date: DateTime(2022, 2, 6), value: 70),
-                    Data(date: DateTime(2022, 2, 7), value: 53),
-                    Data(date: DateTime(2022, 2, 8), value: 53),
-                    Data(date: DateTime(2022, 2, 9), value: 53),
-                    Data(date: DateTime(2022, 2, 10), value: 53),
-                  ],
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: firestore
+                      .collection('survey_result')
+                      .where('userNickname',
+                          isEqualTo: UserInfoStatic.userNickname)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    }
+                    final chartModels = chartModelsFromSnapshot(snapshot.data!);
+                    return Card(
+                      child: Chart(
+                        data: chartModels
+                            .map((chartModel) => Data(
+                                  date: chartModel.date,
+                                  value: double.parse((chartModel.weight /
+                                          (chartModel.height /
+                                              100 *
+                                              chartModel.height /
+                                              100))
+                                      .toStringAsFixed(2)),
+                                ))
+                            .toList(),
+                      ),
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 16),
@@ -117,13 +161,28 @@ class ChartPage extends StatelessWidget {
                 ),
               ),
               Card(
-                child: Chart(
-                  data: [
-                    Data(date: DateTime(2022, 2, 8), value: 53),
-                    Data(date: DateTime(2022, 2, 9), value: 53),
-                    Data(date: DateTime(2022, 2, 10), value: 53),
-                    Data(date: DateTime(2022, 2, 14), value: 55),
-                  ],
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: firestore
+                      .collection('survey_result')
+                      .where('userNickname',
+                          isEqualTo: UserInfoStatic.userNickname)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    }
+                    final chartModels = chartModelsFromSnapshot(snapshot.data!);
+                    return Card(
+                      child: Chart(
+                        data: chartModels
+                            .map((chartModel) => Data(
+                                  date: chartModel.date,
+                                  value: chartModel.weight,
+                                ))
+                            .toList(),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
@@ -131,5 +190,17 @@ class ChartPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<ChartModel> chartModelsFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      return ChartModel(
+        date: DateTime.parse(data['date']),
+        height: (data['height'] as num).toDouble(),
+        weight: (data['weight'] as num).toDouble(),
+        predict: (data['predict'] as num).toDouble(),
+      );
+    }).toList();
   }
 }
