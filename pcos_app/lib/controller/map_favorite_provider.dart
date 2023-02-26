@@ -6,42 +6,39 @@ import 'package:pcos_app/model/login/userInfo.dart';
 class FavoriteProvider extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late List<String> _favorites;
-  final String userId = UserInfoStatic.userNickname;
-  late Stream<List<String>> _favoritesStream;
 
 
   FavoriteProvider() {
     _favorites = [];
-    
-     _favoritesStream = _firestore.collection('hospital').where('userId', isEqualTo: userId).snapshots().map(
-      (snapshot) => snapshot.docs.map((doc) => doc.data()['hospital'] as String).toList());
-
-    
   }
+
 
  Stream<List<String>> get hospitalListStream {
     return _firestore
         .collection('hospital')
-        .where('userId', isEqualTo: userId)
+        .where('userId', isEqualTo: UserInfoStatic.userNickname)
         .snapshots()
         .map((snapshot) =>
-            snapshot.docs.map((doc) => doc.data()['hospital'] as String).toList());
+            snapshot.docs.map((doc) => doc.data()['name'] as String).toList());
   }
 
+
   bool isFavorite(String name) {
+    
     return _favorites.contains(name);
   }
 
+
   void addFavorite(String name) {
     _favorites.add(name);
-    _firestore.collection('hospital').doc().set({'userId': userId, 'hospital':name});
+    _firestore.collection('hospital').doc().set({'userId': UserInfoStatic.userNickname, 'name':name});
     notifyListeners();
   }
 
 
   void removeFavorite(String hospital) {
     _favorites.remove(hospital);
-    _firestore.collection('hospital').where('userId', isEqualTo: userId).where('hospital', isEqualTo: hospital).get().then((snapshot) {
+    _firestore.collection('hospital').where('userId', isEqualTo: UserInfoStatic.userNickname).where('name', isEqualTo: hospital).get().then((snapshot) {
       for (var doc in snapshot.docs) {
         _firestore.collection('hospital').doc(doc.id).delete().then((value) {
           notifyListeners();
@@ -51,6 +48,7 @@ class FavoriteProvider extends ChangeNotifier {
       }
     });
   }
+
 
   List<String> get hospitalList => _favorites;
 //Stream<List<String>> get hospitalListStream => _favoritesStream;
