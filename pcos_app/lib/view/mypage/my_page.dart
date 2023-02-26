@@ -166,7 +166,7 @@ class MyPage extends StatelessWidget {
                           UserInfoStatic.userId = "";
                           UserInfoStatic.userNickname = "";
                           FirebaseAuth.instance.signOut();
-                          //계속 버그남 (clearPersistence)
+                          // 계속 버그남 (clearPersistence)
                           // FirebaseFirestore.instance.clearPersistence();
                           Navigator.popUntil(context,
                               ModalRoute.withName(Navigator.defaultRouteName));

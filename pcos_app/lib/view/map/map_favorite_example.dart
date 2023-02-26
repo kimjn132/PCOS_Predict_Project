@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pcos_app/controller/map_favorite_provider.dart';
-import 'package:pcos_app/model/login/userInfo.dart';
 import 'package:provider/provider.dart';
 
 class MapLikeExample extends StatelessWidget {
@@ -11,8 +10,7 @@ class MapLikeExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hospitals = Provider.of<FavoriteProvider>(context).hospitalList;
-    final String userNickname = UserInfoStatic.userNickname;
+    final hospitals = Provider.of<FavoriteProvider>(context).hospitalListStream;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -25,97 +23,92 @@ class MapLikeExample extends StatelessWidget {
         ),
       ),
       home: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            elevation: 0,
-            title: const Text(
-              '방문한 병원',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
           ),
-
-          
-          body: 
-          Center(
-  child: StreamBuilder<List<String>>(
-    stream: Provider.of<FavoriteProvider>(context).hospitalListStream,
-    builder: (BuildContext context, AsyncSnapshot<List<String>> snapshots) {
-      if (snapshots.hasError) {
-        return const Center(
-            child: Text('데이터를 불러오는 중 오류가 발생하였습니다.'));
-      }
-      if (snapshots.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
-      }
-
-      final List<String> hospitalList = snapshots.data!;
-      if (hospitalList.isEmpty) {
-        return const Center(
-          child: Text('추가한 병원이 없습니다'),
-        );
-
-      
-      }
-
-      return ListView(
-        children: hospitalList.map((hospital) => ListTile(
-          title: Text(hospital),
-          trailing: IconButton(
-          icon:  Provider.of<FavoriteProvider>(context).isFavorite(hospital)
-              ? const Icon(Icons.favorite)
-              : const Icon(Icons.favorite_border),
-          onPressed: () {
-            if (Provider.of<FavoriteProvider>(context, listen: false).isFavorite(hospital)) {
-              Provider.of<FavoriteProvider>(context, listen: false)
-                  .removeFavorite(hospital);
-            } else {
-              Provider.of<FavoriteProvider>(context, listen: false)
-                  .addFavorite(hospital);
-            }
-          },
-          color: const Color(0xFFF16A6E),
+          elevation: 0,
+          title: const Text(
+            '방문한 병원',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
         ),
-          )).toList(),
-      );
-    },
-  ),
-),
-
-
-
-          
-          // ListView.builder(
-          //   key: const ValueKey('hospital_list'),
-          //   itemCount: hospitals.length,
-          //   itemBuilder: (BuildContext context, int index) {
-          //     final record = hospitals[index];
-          //     final isFavorite =
-          //         Provider.of<FavoriteProvider>(context).isFavorite(record);
-          //     return ListTile(
-          //       title: Text(record),
-                // trailing: IconButton(
-                //   icon: isFavorite
-                //       ? const Icon(Icons.favorite)
-                //       : const Icon(Icons.favorite_border),
-                //   onPressed: () {
-                //     if (isFavorite) {
-                //       Provider.of<FavoriteProvider>(context, listen: false)
-                //           .removeFavorite(record);
-                //     } else {
-                //       Provider.of<FavoriteProvider>(context, listen: false)
-                //           .addFavorite(record);
-                //     }
-                //   },
-                //   color: const Color(0xFFF16A6E),
-                // ),
-          //     );
-          //   },
-          // )
+        body: Center(
+          child: StreamBuilder<List<String>>(
+            stream: hospitals,
+            builder:
+                (BuildContext context, AsyncSnapshot<List<String>> snapshots) {
+              if (snapshots.hasError) {
+                return const Center(child: Text('데이터를 불러오는 중 오류가 발생하였습니다.'));
+              }
+              if (snapshots.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              final List<String> hospitalList = snapshots.data!;
+              if (hospitalList.isEmpty) {
+                return const Center(
+                  child: Text('추가한 병원이 없습니다'),
+                );
+              }
+              return ListView(
+                children: hospitalList
+                    .map((hospital) => ListTile(
+                          title: Text(hospital),
+                          trailing: IconButton(
+                            icon: Provider.of<FavoriteProvider>(context)
+                                    .isFavorite(hospital)
+                                ? const Icon(Icons.favorite)
+                                : const Icon(Icons.favorite),
+                            onPressed: () {
+                              Provider.of<FavoriteProvider>(context,
+                                          listen: false)
+                                      .isFavorite(hospital)
+                                  ? Provider.of<FavoriteProvider>(context,
+                                          listen: false)
+                                      .removeFavorite(hospital)
+                                  : Provider.of<FavoriteProvider>(context,
+                                          listen: false)
+                                      .addFavorite(hospital);
+                            },
+                            color: const Color(0xFFF16A6E),
+                          ),
+                        ))
+                    .toList(),
+              );
+            },
           ),
+        ),
+
+        // ListView.builder(
+        //   key: const ValueKey('hospital_list'),
+        //   itemCount: hospitals.length,
+        //   itemBuilder: (BuildContext context, int index) {
+        //     final record = hospitals[index];
+        //     final isFavorite =
+        //         Provider.of<FavoriteProvider>(context).isFavorite(record);
+        //     return ListTile(
+        //       title: Text(record),
+        //       trailing: IconButton(
+        //         icon: isFavorite
+        //             ? const Icon(Icons.favorite)
+        //             : const Icon(Icons.favorite_border),
+        //         onPressed: () {
+        //           if (isFavorite) {
+        //             Provider.of<FavoriteProvider>(context, listen: false)
+        //                 .removeFavorite(record);
+        //           } else {
+        //             Provider.of<FavoriteProvider>(context, listen: false)
+        //                 .addFavorite(record);
+        //           }
+        //         },
+        //         color: const Color(0xFFF16A6E),
+        //       ),
+        //     );
+        //   },
+        // )
+      ),
     );
   }
 }

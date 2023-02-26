@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'dart:core';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 
 class HospitalData {
   String data = "";
@@ -25,7 +24,6 @@ class HospitalData {
       return Marker(
         markerId: MarkerId(marker['name'].toString()),
         position: LatLng(marker['latitude'], marker['longitude']),
-
         infoWindow: InfoWindow(
           title: marker['name'],
           snippet: '전화: ${marker['call']}\n주소: ${marker['address']}',
@@ -74,28 +72,25 @@ class HospitalData {
   } //getCurrentLocation
 
   // Get a Firestore instance
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  String uId = FirebaseAuth.instance.currentUser!.uid;
+  // FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   
 
-  checkIfIsFavorite(String title) async {
-   
-      // final bool check;
-      final snapshot = await FirebaseFirestore.instance
-          .collection('hospital')
-          .where('hospital', isEqualTo: title)
-          .get();
+  // checkIfIsFavorite(String title) async {
+  //     final bool check;
+  //     final snapshot = await FirebaseFirestore.instance
+  //         .collection('hospital')
+  //         .where('name', isEqualTo: title)
+  //         .get();
+  //     if (snapshot.docs.isNotEmpty) {
+  //       check = true;
+  //       await firestore.collection('hopital').firestore.doc(title).delete();
+  //     } else {
+  //         check = false;
+  //         await firestore
+  //         .collection('hospital')
+  //         .add({'userId': UserInfoStatic.userNickname, 'name': title});
+  //     }
+  // }
 
-      if (snapshot.docs.isNotEmpty) {
-        // check = true;
-        await firestore.collection('hopital').firestore.doc(title).delete();
-      } else {
-          // check = false;
-          await firestore
-          .collection('hospital')
-          .add({'uId': uId, 'hospital': title});
-      }
-
-  }
 }
