@@ -37,14 +37,18 @@ class _SurveyState extends State<Survey> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('설문조사'),
-        backgroundColor: Color(0xFFFBA5A8),
-        automaticallyImplyLeading: false,
-      ),
-      body: Column(
-        children: <Widget>[pages()],
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },child: Scaffold(
+        appBar: AppBar(
+          title: const Text('설문조사'),
+          backgroundColor: Color(0xFFFBA5A8),
+          automaticallyImplyLeading: false,
+        ),
+        body: Column(
+          children: <Widget>[pages()],
+        ),
       ),
     );
   }
@@ -393,7 +397,7 @@ class _SurveyState extends State<Survey> {
     print(UserInfoStatic.userNickname);
     FirebaseFirestore.instance
         .collection('survey_result')
-        .add({'height': height, 'weight': weight, 'predict': predict,'userNickname': UserInfoStatic.userNickname});
+        .add({'height': height, 'weight': weight, 'predict': predict,'userNickname': UserInfoStatic.userNickname, 'date': DateTime.now().toString().substring(0, 19)});
     print('파이어베이스 입력종료');
   }
 
