@@ -37,6 +37,7 @@ class _PostUpdateScreenState extends State<PostUpdateScreen> {
         FocusScope.of(context).unfocus();
       },
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: Colors.blueGrey[800], // 앱바 색상 변경
           appBarTheme: const AppBarTheme(
