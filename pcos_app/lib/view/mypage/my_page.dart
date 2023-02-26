@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -165,13 +166,13 @@ class MyPage extends StatelessWidget {
                       ),
                       TextButton(
                         child: const Text('로그아웃'),
-                        onPressed: () async {
+                        onPressed: () {
                           UserInfoStatic.uid = "";
                           UserInfoStatic.userId = "";
                           UserInfoStatic.userNickname = "";
                           FirebaseAuth.instance.signOut();
-                          Provider.of<FavoriteProvider>(context, listen: false)
-                              .clearFavorites();
+                          //계속 버그남 (clearPersistence)
+                          // FirebaseFirestore.instance.clearPersistence();
                           Navigator.popUntil(context,
                               ModalRoute.withName(Navigator.defaultRouteName));
                           Get.reset();

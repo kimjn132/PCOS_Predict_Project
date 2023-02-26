@@ -52,7 +52,6 @@ class _MapPageState extends State<MapPage> {
           GoogleMap(
             myLocationButtonEnabled: false,
             mapType: MapType.normal,
-            // myLocationButtonEnabled: true,
             initialCameraPosition: _kGooglePlex, // 초기 카메라 위치
             zoomControlsEnabled: true,
             zoomGesturesEnabled: true,
@@ -233,6 +232,8 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
+
+
 // json으로 가져온 병원 정보 마커 리스트로 변환 후(HospitalData class에서 처리) 해당 바운더리 마커만 변수에 담아줌
   Future<void> _loadMarkers() async {
     // Load the markers from your data source
@@ -251,25 +252,25 @@ class _MapPageState extends State<MapPage> {
 
 
 
-//clipboard에 복사하는 함수(미완성)
-  // void copyClipboard(String txt) {
-  //   Clipboard.setData(ClipboardData(text: txt));
-  //   Get.snackbar('Message', '주소가 클립보드에 복사되었습니다.');
-  // }
+// //clipboard에 복사하는 함수(미완성)
+//   void copyClipboard(String txt) {
+//     Clipboard.setData(ClipboardData(text: txt));
+//     Get.snackbar('Message', '주소가 클립보드에 복사되었습니다.');
+//   }
 
-  //전화거는 함수
-  // void makePhoneCall(String url) async {
-  //    var telUrl = 'tel:' + url;
-  //    if (GetPlatform.isIOS) {
-  //      telUrl =
-  //          telUrl.replaceAll((new RegExp(r'-')), '');
-  //    }
-  //   if (await canLaunchUrl(url)) {
-  //     await launchUrl(url);
-  //   } else {
-  //     printError(info: '연결이 되지 않습니다.');
-  //   }
-  // }
+//   // 전화거는 함수
+//   void makePhoneCall(String url) async {
+//      var telUrl = 'tel:' + url;
+//      if (GetPlatform.isIOS) {
+//        telUrl =
+//            telUrl.replaceAll((new RegExp(r'-')), '');
+//      }
+//     if (await canLaunchUrl(url)) {
+//       await launchUrl(url);
+//     } else {
+//       printError(info: '연결이 되지 않습니다.');
+//     }
+//   }
 
   //-----widget for floating buttong---------
 
@@ -288,10 +289,10 @@ class _MapPageState extends State<MapPage> {
         // longitude = gps.longitude;
         // latitude = gps.latitude;
 
-
+        
         // 임시 테스트용
-        longitude = 127.1238;
-        latitude = 37.5301;
+        longitude = 126.8495;
+        latitude = 37.5510;
 
         bounds = _getVisibleRegion();
         //버튼 누르면 실행할 함수
