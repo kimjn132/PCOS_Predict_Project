@@ -366,7 +366,7 @@ class _SurveyState extends State<Survey> {
       });
     } else if (Platform.isIOS) {
       var url = Uri.parse(
-          'http://192.168.10.47:5000/pcospredict?height=$height&weight=$weight&waist=$waist&hair_growthYN=$hair_growthYN&skin_darkeningYN=$skin_darkeningYN&weight_gainYN=$weight_gainYN&fastfoodYN=$fastfoodYN&pimmplesYN=$pimmplesYN');
+          'http://127.0.0.1:5000/pcospredict?height=$height&weight=$weight&waist=$waist&hair_growthYN=$hair_growthYN&skin_darkeningYN=$skin_darkeningYN&weight_gainYN=$weight_gainYN&fastfoodYN=$fastfoodYN&pimmplesYN=$pimmplesYN');
       var response = await http.get(url);
       setState(() {
         var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
