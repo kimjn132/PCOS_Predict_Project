@@ -232,13 +232,16 @@ class MyPage extends StatelessWidget {
               child: const Text("확인"),
               onPressed: () async {
                 try {
+                  UserInfoStatic.uid = "";
+                  UserInfoStatic.userId = "";
+                  UserInfoStatic.userNickname = "";
                   User user = FirebaseAuth.instance.currentUser!;
                   await user.delete();
                   await FirebaseAuth.instance.signOut();
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                        builder: (context) => const SignInScreen()),
-                  );
+                  Navigator.popUntil(
+                      context, ModalRoute.withName(Navigator.defaultRouteName));
+                  Get.reset();
+                  Get.put(BottomNavController());
                 } catch (e) {
                   print('회원 탈퇴 에러: $e');
                   _buildDialog(context, '회원 탈퇴 도중 오류가 발생했습니다.');
