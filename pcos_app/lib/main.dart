@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:pcos_app/bottom_navigation.dart';
-import 'package:pcos_app/controller/map_clipboard.dart';
 import 'package:pcos_app/controller/map_favorite_provider.dart';
 import 'package:pcos_app/firebase_options.dart';
 import 'package:pcos_app/model/login/userInfo.dart';
