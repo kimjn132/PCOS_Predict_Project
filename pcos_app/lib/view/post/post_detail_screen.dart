@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pcos_app/tab_bar.dart';
 import 'package:pcos_app/view/post/post_list_screen.dart';
 import 'package:pcos_app/view/post/post_update_screen.dart';
 
@@ -156,7 +157,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             postData['pContent'],
-                            style: const TextStyle(fontSize: 15),
                           ),
                         ),
                         Padding(
@@ -212,13 +212,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 5),
-                                          child: TimeCompare(
-                                              date:
-                                                  commentData['cCommentDate']),
-                                        ),
+                                        TimeCompare(
+                                            date: commentData['cCommentDate']),
                                       ],
                                     ),
                                     subtitle: Column(
@@ -449,7 +444,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   Navigator.of(ctx).pop();
                   Navigator.push(context, MaterialPageRoute(
                     builder: (context) {
-                      return const PostListScreen();
+                      return const Tabbar();
                     },
                   ));
                   deletePost(pid);
