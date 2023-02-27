@@ -37,7 +37,7 @@ FutureBuilder<Duration> dateTimeCompareResult(postDate) {
             );
           } else {
             return Text(
-              postDate,
+              postDate.substring(0, 10),
               style: const TextStyle(fontSize: 14, color: Colors.grey),
             );
           }
