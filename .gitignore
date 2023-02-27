@@ -595,11 +595,11 @@ $RECYCLE.BIN/
 *.lnk
 
 # Google API Key
-GoogleService-Info.plist
+# GoogleService-Info.plist
 
 # Google Map API Key
-AndroidManifest.xml
-AppDelegate.swift
+# AndroidManifest.xml
+# AppDelegate.swift
 
 #Java Class
 .classpath
