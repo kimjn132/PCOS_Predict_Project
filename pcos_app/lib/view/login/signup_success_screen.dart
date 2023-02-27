@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pcos_app/tab_bar.dart';
 import 'package:pcos_app/view/login/signin_screen.dart';
 
 class SignUpSuccessScreen extends StatefulWidget {
@@ -17,7 +18,7 @@ class _SignUpSuccessScreenState extends State<SignUpSuccessScreen> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return const SignInScreen();
+              return const Tabbar();
             },
           ),
         );
@@ -54,7 +55,7 @@ class _SignUpSuccessScreenState extends State<SignUpSuccessScreen> {
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
-                  '화면을 탭하여 로그인하기',
+                  '화면을 탭하여 시작하기',
                   style: TextStyle(
                     fontSize: 15,
                   ),
