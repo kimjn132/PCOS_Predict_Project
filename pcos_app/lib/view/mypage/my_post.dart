@@ -83,6 +83,7 @@ class _MyPostListState extends State<MyPostList>
                     .collection('posts')
                     .where('pNickname', isEqualTo: UserInfoStatic.userNickname)
                     .where('pDeleteDate', isEqualTo: '0')
+                    .orderBy('pPostDate', descending: true)
                     .snapshots(),
                 builder: (context, snapshots) {
                   if (snapshots.hasError) {
@@ -113,6 +114,7 @@ class _MyPostListState extends State<MyPostList>
                     .collectionGroup('comments')
                     .where('cNickname', isEqualTo: UserInfoStatic.userNickname)
                     .where('cDeleteDate', isEqualTo: '0')
+                    .orderBy('cCommentDate', descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
