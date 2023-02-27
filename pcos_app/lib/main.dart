@@ -9,7 +9,7 @@ import 'package:pcos_app/controller/map_favorite_provider.dart';
 import 'package:pcos_app/firebase_options.dart';
 import 'package:pcos_app/model/login/userInfo.dart';
 import 'package:pcos_app/tab_bar.dart';
-import 'package:pcos_app/view/login/signin_screen.dart';
+import 'package:pcos_app/view/login/signIn_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
