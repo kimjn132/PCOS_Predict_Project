@@ -343,14 +343,7 @@ class _SignInScreenState extends State<SignInScreen> {
   void toMainScreen() {
     BottomNavController bottomNavController = BottomNavController();
     Get.put(bottomNavController);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return const Tabbar();
-        },
-      ),
-    );
+    Get.to(() => const Tabbar());
   }
 
   Future<void> getUserInfo() async {
