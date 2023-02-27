@@ -2,9 +2,15 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pcos_app/controller/map_clipboard.dart';
 import 'package:pcos_app/view/map/map_favorite.dart';
 import 'package:pcos_app/widget/map/hospital_data.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 
 class MapPage extends StatefulWidget {
@@ -39,10 +45,12 @@ class _MapPageState extends State<MapPage> {
 
   // 병원 마커 데이터값 변환을 위한 변수
   List<Marker> allMarkers = [];
+  // List<dynamic> allMarkers = [];
   List<Marker> _markers = [];
-
+  // List<dynamic> _markers = [];
   bool check = false;
-
+  List<dynamic> markersJson = [];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -97,15 +105,19 @@ class _MapPageState extends State<MapPage> {
           child: ListView.builder(
             itemCount: _markers.length,
             itemBuilder: (BuildContext context, int index) {
-              Marker marker = _markers[index];
+              // Marker marker = _markers[index];
               //print(_markers[0]);
+              // String markerTitle = marker.infoWindow.title!;
+              // String markerSnippet = marker.infoWindow.snippet!;
+              
 
-              String markerTitle = marker.infoWindow.title!;
-              String markerSnippet = marker.infoWindow.snippet!;
+            String title = markersJson.map((e) => e['name']).toList()[index];
+            String address = markersJson.map((e) => e['address']).toList()[index];
+            String call = markersJson.map((e) => e['call']).toList()[index];
               // print(markerSnippet);
               return Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: _boxes(markerTitle, markerSnippet),
+                child: _boxes(title, call, address),
               );
             },
             scrollDirection: Axis.horizontal,
@@ -116,7 +128,8 @@ class _MapPageState extends State<MapPage> {
   }
 
 //1-1. 리스트 뷰 디자인
-  Widget _boxes(String title, String snippet) {
+  Widget _boxes(String title, String call, String address) {
+    // final clipboard = Provider.of<MapClipboard>(context);
   return FittedBox(
     child: Material(
       color: const Color(0xFFF16A6E),
@@ -147,6 +160,7 @@ class _MapPageState extends State<MapPage> {
                           children: [
                             Text(
                               title,
+                              
                               style: const TextStyle(
                                 fontSize: 35.0,
                                 fontWeight: FontWeight.bold,
@@ -157,24 +171,59 @@ class _MapPageState extends State<MapPage> {
                         ),
                       ),
                       const SizedBox(height: 16.0),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
+                      Row(
+                        children: [
+
+                      const Padding(
+                        padding: EdgeInsets.all(10.0),
                         child: Text(
-                          snippet,
-                          style: const TextStyle(
+                          //copyClipboard(snippet),
+                          '전화:',
+                          style: TextStyle(
                             fontSize: 30.0,
                             color: Color.fromARGB(255, 149, 141, 141),
                           ),
                         ),
                       ),
+                      GestureDetector(
+                        onTap: () => makePhoneCall(call),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            
+                            call,
+                            style: const TextStyle(
+                              fontSize: 30.0,
+                              color: Color.fromARGB(255, 149, 141, 141),
+                            ),
+                          ),
+                        ),
+                      ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () => copyClipboard(address),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            //copyClipboard(snippet),
+                            address,
+                            style: const TextStyle(
+                              fontSize: 30.0,
+                              color: Color.fromARGB(255, 149, 141, 141),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => makePhoneCall("02-111-1111"),
+                        child: const Text("02-111-1111"))
                     ],
                   ),
                   Positioned(
                     top: 0.0,
                     right: 0.0,
-                    child: 
-                    
-                    MapFavorite(name: title)
+                    child: MapFavorite(name: title)
                   ),
                 ],
               ),
@@ -238,43 +287,50 @@ class _MapPageState extends State<MapPage> {
   Future<void> _loadMarkers() async {
     // Load the markers from your data source
     allMarkers = await csvdata.loadMarkers(context);
+    // ignore: use_build_context_synchronously
+    markersJson = await csvdata.loadDetails(context);
 
     // Filter the markers to show only the ones that are inside the visible region
     List<Marker> visibleMarkers =
         allMarkers.where((marker) => bounds.contains(marker.position)).toList();
-
+    // allMarkers = await csvdata.loadDetails(context);
+    // List<dynamic> visibleMarkers = allMarkers.where((element) => bounds.contains(element.position)).toList();
     // Update the state to show the visible markers
     setState(() {
       _markers = visibleMarkers;
       //print(_markers);
     });
+
   }
 
 
 
-// //clipboard에 복사하는 함수(미완성)
-//   void copyClipboard(String txt) {
-//     Clipboard.setData(ClipboardData(text: txt));
-//     Get.snackbar('Message', '주소가 클립보드에 복사되었습니다.');
-//   }
+  
 
-//   // 전화거는 함수
-//   void makePhoneCall(String url) async {
-//      var telUrl = 'tel:' + url;
-//      if (GetPlatform.isIOS) {
-//        telUrl =
-//            telUrl.replaceAll((new RegExp(r'-')), '');
-//      }
-//     if (await canLaunchUrl(url)) {
-//       await launchUrl(url);
-//     } else {
-//       printError(info: '연결이 되지 않습니다.');
-//     }
-//   }
+
+//clipboard에 복사하는 함수(미완성)
+  copyClipboard(String txt) {
+    Clipboard.setData(ClipboardData(text: txt));
+    Get.snackbar('Message', '클립보드에 복사되었습니다.', 
+    duration: const Duration(seconds: 2),
+    backgroundColor: Colors.pinkAccent
+    );
+  }
+
+  // 전화거는 함수
+  void makePhoneCall(String phoneNumber) async {
+   String telUrl = 'tel:$phoneNumber';
+  if (await canLaunchUrlString(telUrl)) {
+    await launchUrlString(telUrl);
+  } else {
+    throw 'Could not launch $telUrl';
+  }
+}
+
 
   //-----widget for floating buttong---------
 
-// gps값 잡기
+// // gps값 잡기
   Widget gps() {
     return // floatingActionButton을 누르게 되면 _goToTheLake 실행된다.
         FloatingActionButton(
