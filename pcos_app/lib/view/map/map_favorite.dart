@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pcos_app/controller/map_favorite_provider.dart';
-import 'package:pcos_app/model/login/userInfo.dart';
 import 'package:provider/provider.dart';
 
 
@@ -12,7 +11,6 @@ class MapFavorite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final favoriteProvider = Provider.of<FavoriteProvider>(context);
-    final String userId = UserInfoStatic.userNickname;
     
     return IconButton(
       icon: Icon(

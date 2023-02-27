@@ -13,7 +13,7 @@ class FavoriteProvider extends ChangeNotifier {
   }
 
 
- Stream<List<String>> get hospitalListStream {
+  Stream<List<String>> get hospitalListStream {
     return _firestore
         .collection('hospital')
         .where('userId', isEqualTo: UserInfoStatic.userNickname)
@@ -24,7 +24,6 @@ class FavoriteProvider extends ChangeNotifier {
 
 
   bool isFavorite(String name) {
-    
     return _favorites.contains(name);
   }
 
@@ -56,9 +55,9 @@ class FavoriteProvider extends ChangeNotifier {
 
   // logout 하고 다시 다른 계정으로 로그인 했을 때 새롭게 해당 유저의 병원 리스트만 불러오기 위함 (안 그러면 이전 유저의 리스트를 불러옴) = 캐시 삭제 
   // 추후 로그아웃에 반영 예정
-  void clearFavorites() {
-    _favorites = [];
-    notifyListeners();
-  }
+  // void clearFavorites() {
+  //   _favorites = [];
+  //   notifyListeners();
+  // }
 
 }
