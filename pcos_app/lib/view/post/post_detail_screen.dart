@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pcos_app/tab_bar.dart';
+import 'package:pcos_app/view/post/post_list_screen.dart';
 import 'package:pcos_app/view/post/post_update_screen.dart';
 
 import '../../model/login/userInfo.dart';
@@ -210,8 +212,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        TimeCompare(
-                                            date: commentData['cCommentDate']),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                                          child: TimeCompare(
+                                              date: commentData['cCommentDate']),
+                                        ),
                                       ],
                                     ),
                                     subtitle: Column(
@@ -440,7 +445,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               TextButton(
                 onPressed: () {
                   Navigator.of(ctx).pop();
-                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return const Tabbar();
+                    },
+                  ));
                   deletePost(pid);
                   deleteCompleteSnackBar(context);
                 },
