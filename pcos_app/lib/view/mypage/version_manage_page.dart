@@ -31,6 +31,7 @@ class _VersionManagementPageState extends State<VersionManagementPage> {
         _remoteConfig.getString('latest_version'); // 원격 구성 값에서 최신 버전 가져오기
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.blueGrey[800], // 앱바 색상 변경
         appBarTheme: const AppBarTheme(

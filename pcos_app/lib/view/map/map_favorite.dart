@@ -12,7 +12,7 @@ class MapFavorite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final favoriteProvider = Provider.of<FavoriteProvider>(context);
-    final String userId = UserInfoStatic.userId;
+    final String userId = UserInfoStatic.userNickname;
     
     return IconButton(
       icon: Icon(
@@ -22,7 +22,7 @@ class MapFavorite extends StatelessWidget {
       ),
       onPressed: () {
         if (favoriteProvider.isFavorite(name)) {
-          favoriteProvider.removeFavorite(name, userId);
+          favoriteProvider.removeFavorite(name);
         } else {
           favoriteProvider.addFavorite(name);
         }

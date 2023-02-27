@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pcos_app/bottom_navigation.dart';
 import 'package:pcos_app/controller/map_favorite_provider.dart';
 import 'package:pcos_app/view/login/signIn_screen.dart';
 import 'package:pcos_app/view/map/map_favorite_example.dart';
@@ -32,11 +34,6 @@ class MyPage extends StatelessWidget {
             Expanded(
                 child: ListView(
               children: [
-                // _buildListTile({
-                //   'title': '내 정보',
-                //   'icon': Icons.person,
-                //   'onTap': '내 정보',
-                // }),
                 _buildListTile({
                   'title': '검사 결과',
                   'icon': Icons.bar_chart,

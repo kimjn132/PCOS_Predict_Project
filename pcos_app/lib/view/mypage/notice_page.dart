@@ -22,6 +22,7 @@ class _NoticePageState extends State<NoticePage>
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.blueGrey[800], // 앱바 색상 변경
         appBarTheme: const AppBarTheme(
