@@ -71,6 +71,7 @@ class _ChartPageState extends State<ChartPage> {
                       .collection('survey_result')
                       .where('userNickname',
                           isEqualTo: UserInfoStatic.userNickname)
+                      .orderBy('date', descending: false)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
@@ -116,6 +117,7 @@ class _ChartPageState extends State<ChartPage> {
                       .collection('survey_result')
                       .where('userNickname',
                           isEqualTo: UserInfoStatic.userNickname)
+                      .orderBy('date', descending: false)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
@@ -166,6 +168,7 @@ class _ChartPageState extends State<ChartPage> {
                       .collection('survey_result')
                       .where('userNickname',
                           isEqualTo: UserInfoStatic.userNickname)
+                      .orderBy('date', descending: false)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
