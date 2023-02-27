@@ -212,8 +212,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        TimeCompare(
-                                            date: commentData['cCommentDate']),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                                          child: TimeCompare(
+                                              date: commentData['cCommentDate']),
+                                        ),
                                       ],
                                     ),
                                     subtitle: Column(
