@@ -156,7 +156,11 @@ class _PostListScreenState extends State<PostListScreen> {
       MaterialPageRoute(
         builder: (context) => PostDetailScreen(pid: doc.id),
       ),
-    );
+    ).then((value) {
+      // setState(() {
+      //   //
+      // });
+    });
   }
 
   Future<void> signOut() async {
