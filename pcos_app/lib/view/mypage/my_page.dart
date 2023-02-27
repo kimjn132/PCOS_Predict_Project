@@ -1,17 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pcos_app/bottom_navigation.dart';
-import 'package:pcos_app/controller/map_favorite_provider.dart';
 import 'package:pcos_app/view/login/signIn_screen.dart';
 import 'package:pcos_app/view/map/map_favorite_example.dart';
 import 'package:pcos_app/view/mypage/contact_page.dart';
 import 'package:pcos_app/view/mypage/my_post.dart';
 import 'package:pcos_app/view/mypage/version_manage_page.dart';
-import 'package:provider/provider.dart';
-
-import '../../bottom_navigation.dart';
 import '../../model/login/userInfo.dart';
 import 'chart_page.dart';
 import 'notice_page.dart';
