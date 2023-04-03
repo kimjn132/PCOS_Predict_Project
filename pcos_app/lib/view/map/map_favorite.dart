@@ -5,8 +5,10 @@ import 'package:provider/provider.dart';
 
 class MapFavorite extends StatelessWidget {
   final String name;
+  final String phone;
+  final String address;
 
-  const MapFavorite({super.key, required this.name});
+  const MapFavorite({super.key, required this.name, required this.phone, required this.address});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class MapFavorite extends StatelessWidget {
         if (favoriteProvider.isFavorite(name)) {
           favoriteProvider.removeFavorite(name);
         } else {
-          favoriteProvider.addFavorite(name);
+          favoriteProvider.addFavorite(name, phone, address);
         }
       },
       iconSize: 50,

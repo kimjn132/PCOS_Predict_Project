@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pcos_app/bottom_navigation.dart';
 import 'package:pcos_app/view/login/signIn_screen.dart';
-import 'package:pcos_app/view/map/map_favorite_example.dart';
+import 'package:pcos_app/view/map/map_mylike.dart';
 import 'package:pcos_app/view/mypage/contact_page.dart';
 import 'package:pcos_app/view/mypage/my_post.dart';
 import 'package:pcos_app/view/mypage/version_manage_page.dart';
@@ -47,7 +47,7 @@ class MyPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MapLikeExample()),
+                          builder: (context) => const MapMyLike()),
                     );
                   },
                 }),

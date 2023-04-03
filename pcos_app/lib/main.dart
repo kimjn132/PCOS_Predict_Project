@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:pcos_app/bottom_navigation.dart';
+import 'package:pcos_app/controller/map_clipboard.dart';
 import 'package:pcos_app/controller/map_favorite_provider.dart';
 import 'package:pcos_app/firebase_options.dart';
 import 'package:pcos_app/model/login/userInfo.dart';
@@ -56,8 +57,11 @@ class MyApp extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, AsyncSnapshot<User?> user) {
         if (user.hasData) {
-          return ChangeNotifierProvider(
-            create: (_) => FavoriteProvider(),
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) => FavoriteProvider()),
+              ChangeNotifierProvider(create: (_) => MapClipboard()),
+            ],
             child: GetMaterialApp(
               debugShowMaterialGrid: false,
               title: 'PCOS',
@@ -70,8 +74,11 @@ class MyApp extends StatelessWidget {
             ),
           );
         } else {
-          return ChangeNotifierProvider(
-            create: (_) => FavoriteProvider(),
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) => FavoriteProvider()),
+              ChangeNotifierProvider(create: (_) => MapClipboard()),
+            ],
             child: GetMaterialApp(
               debugShowMaterialGrid: false,
               title: 'PCOS',
