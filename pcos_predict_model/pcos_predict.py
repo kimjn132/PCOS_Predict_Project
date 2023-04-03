@@ -6,6 +6,8 @@ Description : Flutter와 Python의 AI의 예측값 보내기
 
 from flask import Flask, jsonify, render_template, request
 import joblib
+# 경로 위치 함수
+import os
 
 app = Flask(__name__)
 
@@ -22,7 +24,8 @@ def pcos():
 
     BMI = weight/ (height/100)**2
     print(BMI)
-    clf = joblib.load("PCOS_final_898.h5")
+    wh_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "PCOS_final_898.h5")
+    clf = joblib.load(wh_path)
     pre = clf.predict_proba([[hair_growthYN,skin_darkeningYN,weight_gainYN,BMI,waist,fastfoodYN,pimmplesYN]])
     
     #return jsonify({"result":round(pre[0][1]*100,2)})

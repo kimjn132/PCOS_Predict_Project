@@ -2,16 +2,13 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pcos_app/controller/map_clipboard.dart';
 import 'package:pcos_app/view/map/map_favorite.dart';
 import 'package:pcos_app/widget/map/hospital_data.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -86,7 +83,16 @@ class _MapPageState extends State<MapPage> {
             ),
           ),
           // 찍은 마커 정보 리스트뷰로 정보 제공
-          _buildcontainer()
+          _buildcontainer(),
+
+          // Padding(
+          //   padding: const EdgeInsets.all(200.0),
+          //   child: zoomin(),
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.all(50.0),
+          //   child: zoomout(),
+          // ),
         ],
       ),
     );
@@ -104,16 +110,12 @@ class _MapPageState extends State<MapPage> {
           child: ListView.builder(
             itemCount: _markers.length,
             itemBuilder: (BuildContext context, int index) {
-              // Marker marker = _markers[index];
-              //print(_markers[0]);
-              // String markerTitle = marker.infoWindow.title!;
-              // String markerSnippet = marker.infoWindow.snippet!;
+              
 
               String title = markersJson.map((e) => e['name']).toList()[index];
               String address =
                   markersJson.map((e) => e['address']).toList()[index];
               String call = markersJson.map((e) => e['call']).toList()[index];
-              // print(markerSnippet);
               return Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: _boxes(title, call, address),
@@ -128,7 +130,7 @@ class _MapPageState extends State<MapPage> {
 
 //1-1. 리스트 뷰 디자인
   Widget _boxes(String title, String call, String address) {
-    // final clipboard = Provider.of<MapClipboard>(context);
+    final clipboard = Provider.of<MapClipboard>(context);
     return FittedBox(
       child: Material(
         color: const Color(0xFFF16A6E),
@@ -174,7 +176,6 @@ class _MapPageState extends State<MapPage> {
                             const Padding(
                               padding: EdgeInsets.all(10.0),
                               child: Text(
-                                //copyClipboard(snippet),
                                 '전화:',
                                 style: TextStyle(
                                   fontSize: 30.0,
@@ -183,7 +184,7 @@ class _MapPageState extends State<MapPage> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () => makePhoneCall(call),
+                              onTap: () => clipboard.makePhoneCall(call),
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Text(
@@ -198,7 +199,7 @@ class _MapPageState extends State<MapPage> {
                           ],
                         ),
                         GestureDetector(
-                          onTap: () => copyClipboard(address),
+                          onTap: () => clipboard.copyClipboard(address),
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
@@ -214,7 +215,7 @@ class _MapPageState extends State<MapPage> {
                       ],
                     ),
                     Positioned(
-                        top: 0.0, right: 0.0, child: MapFavorite(name: title)),
+                        top: 0.0, right: 0.0, child: MapFavorite(name: title, phone:call, address:address)),
                   ],
                 ),
               ),
@@ -280,32 +281,12 @@ class _MapPageState extends State<MapPage> {
     // Filter the markers to show only the ones that are inside the visible region
     List<Marker> visibleMarkers =
         allMarkers.where((marker) => bounds.contains(marker.position)).toList();
-    // allMarkers = await csvdata.loadDetails(context);
-    // List<dynamic> visibleMarkers = allMarkers.where((element) => bounds.contains(element.position)).toList();
-    // Update the state to show the visible markers
     setState(() {
       _markers = visibleMarkers;
-      //print(_markers);
     });
   }
 
-//clipboard에 복사하는 함수(미완성)
-  copyClipboard(String txt) {
-    Clipboard.setData(ClipboardData(text: txt));
-    Get.snackbar('Message', '클립보드에 복사되었습니다.',
-        duration: const Duration(seconds: 2),
-        backgroundColor: Colors.pinkAccent);
-  }
 
-  // 전화거는 함수
-  void makePhoneCall(String phoneNumber) async {
-    String telUrl = 'tel:$phoneNumber';
-    if (await canLaunchUrlString(telUrl)) {
-      await launchUrlString(telUrl);
-    } else {
-      throw 'Could not launch $telUrl';
-    }
-  }
 
   //-----widget for floating buttong---------
 
@@ -347,12 +328,12 @@ Future<Position> getCurrentLocation() async {
           ),
         );
         //실제 gps
-        longitude = gps.longitude;
-        latitude = gps.latitude;
+        // longitude = gps.longitude;
+        // latitude = gps.latitude;
 
         // 임시 테스트용
-        // longitude = 126.8495;
-        // latitude = 37.5510;
+        longitude = 126.8495;
+        latitude = 37.5510;
 
         bounds = _getVisibleRegion();
         //버튼 누르면 실행할 함수
@@ -367,22 +348,22 @@ Future<Position> getCurrentLocation() async {
   } // gps floating button
 
 // 지도 줌인 줌아웃 - 만들어 놨으나 사용할 지 말지 미정
-  // Widget zoomout() {
-  //   return FloatingActionButton(
-  //     onPressed: () {
-  //       mapController.animateCamera(CameraUpdate.zoomOut());
-  //     },
-  //     child: const Icon(Icons.zoom_out),
-  //   );
-  // } //zoomout
+  Widget zoomout() {
+    return FloatingActionButton(
+      onPressed: () {
+        mapController.animateCamera(CameraUpdate.zoomOut());
+      },
+      child: const Icon(Icons.zoom_out),
+    );
+  } //zoomout
 
-  // Widget zoomin() {
-  //   return FloatingActionButton(
-  //     onPressed: () {
-  //       mapController.animateCamera(CameraUpdate.zoomIn());
-  //     },
-  //     child: const Icon(Icons.zoom_in),
-  //   );
-  // } //zoomin
+  Widget zoomin() {
+    return FloatingActionButton(
+      onPressed: () {
+        mapController.animateCamera(CameraUpdate.zoomIn());
+      },
+      child: const Icon(Icons.zoom_in),
+    );
+  } //zoomin
 } //End
 

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pcos_app/model/hospitals/hospital_list.dart';
 import 'package:pcos_app/model/login/userInfo.dart';
 
 class FavoriteProvider extends ChangeNotifier {
@@ -12,25 +14,33 @@ class FavoriteProvider extends ChangeNotifier {
     _favorites = [];
   }
 
+//병원 리스트 불러오기
+  Stream<List<HospitalList>> get hospitalListStream {
+  return _firestore
+      .collection('hospital')
+      .where('userId', isEqualTo: UserInfoStatic.userNickname)
+      .snapshots()
+      .map((snapshot) {
+    return snapshot.docs.map((doc) => HospitalList.fromMap(doc.data())).toList();
+  });
+}
 
-  Stream<List<String>> get hospitalListStream {
-    return _firestore
-        .collection('hospital')
-        .where('userId', isEqualTo: UserInfoStatic.userNickname)
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => doc.data()['name'] as String).toList());
-  }
+  //  buildItemWidget(DocumentSnapshot doc){
+  //   final hospital =HospitalList(
+  //     name: doc['name'], 
+  //     phone: doc['phone'], 
+  //     address: doc['address']);
+  // }
 
-
+// 병원 리스트 like button click 여부
   bool isFavorite(String name) {
     return _favorites.contains(name);
   }
 
 
-  void addFavorite(String name) {
+  void addFavorite(String name, String phone, String address) {
     _favorites.add(name);
-    _firestore.collection('hospital').doc().set({'userId': UserInfoStatic.userNickname, 'name':name});
+    _firestore.collection('hospital').doc().set({'userId': UserInfoStatic.userNickname, 'name':name, 'phone':phone, 'address':address});
     notifyListeners();
   }
 
